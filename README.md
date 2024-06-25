@@ -4,7 +4,7 @@
 
 ## Demo
 
-You can visit [mixvisitor.com](https://mixvisitor.com) for check our demo example 
+You can visit [mixvisit.com](https://mixvisit.com) for check our demo example 
 
 ## Usage
 
