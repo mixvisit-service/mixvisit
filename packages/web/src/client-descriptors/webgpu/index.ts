@@ -1,10 +1,10 @@
+import { getWebgGPUAPI } from './apiStatuses';
+import { getWebGPUParams } from './webgpuParams';
 import type {
   WebGPUInfo,
   WebGPUSupportedAdapters,
   WebGPUSupportedAdaptersParam,
 } from '../../types/index';
-import { getWebgGPUAPI } from './apiStatuses';
-import { getWebGPUParams } from './webgpuParams';
 
 const requestAdapterOptions: WebGPUSupportedAdaptersParam = {
   fallback: {

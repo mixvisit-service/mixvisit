@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { CanvasImageStatus } from '../../utils/enums';
 import { wait } from '../../utils/helpers';
 

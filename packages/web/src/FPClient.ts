@@ -2,8 +2,8 @@ import { descriptors } from './client-descriptors/index';
 import type { Descriptors } from './client-descriptors/index';
 import type { DescriptorsRes, FPClientInterface } from './types/index';
 import { x64 } from './utils/hashing';
-import { loadClientDescriptors } from './utils/load';
 import { hasProperty } from './utils/helpers';
+import { loadClientDescriptors } from './utils/load';
 
 export class FPClient implements FPClientInterface {
   public loadTime: number | null = null;

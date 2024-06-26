@@ -1,7 +1,7 @@
-import { FrameSize } from '../../types/index';
-import { BrowserUtils } from '../../utils/browser';
 import { getBaseScreenFrame } from './screenFrame';
 import { processSize } from './utils';
+import { FrameSize } from '../../types/index';
+import { BrowserUtils } from '../../utils/browser';
 
 /**
  * Sometimes the available screen resolution changes a bit, e.g. 1900x1440 → 1900x1439.

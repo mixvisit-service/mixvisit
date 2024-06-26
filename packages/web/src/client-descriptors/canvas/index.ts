@@ -1,9 +1,7 @@
-/* eslint-disable no-param-reassign */
-
-import { BrowserUtils } from '../../utils/browser';
-import { CanvasImageStatus } from '../../utils/enums';
 import { renderImages } from './images';
 import { doesSupportWinding, makeCanvasContext } from './utils';
+import { BrowserUtils } from '../../utils/browser';
+import { CanvasImageStatus } from '../../utils/enums';
 
 interface CanvasFingerprint {
   winding: boolean;

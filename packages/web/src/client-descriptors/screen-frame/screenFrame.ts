@@ -1,6 +1,6 @@
+import { getCurrentScreenFrame, isFrameSizeNull } from './utils';
 import { FrameSize } from '../../types/index';
 import { exitFullscreen, getFullscreenElement } from '../../utils/helpers';
-import { getCurrentScreenFrame, isFrameSizeNull } from './utils';
 
 let screenFrameBackup: Readonly<FrameSize> | null = null;
 let screenFrameSizeTimeoutId: number | null = null;
