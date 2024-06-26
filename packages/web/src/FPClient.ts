@@ -27,7 +27,7 @@ export class FPClient implements FPClientInterface {
 
       console.log('Data loaded and cached');
     } catch (err) {
-      console.error('Error loading data:', err);
+      console.error(err);
     }
   }
 

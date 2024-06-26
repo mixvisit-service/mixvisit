@@ -1,3 +1,3 @@
 export function getVendor(): string {
-  return navigator.vendor || '';
+  return navigator.vendor;
 }

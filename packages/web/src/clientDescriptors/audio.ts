@@ -15,9 +15,9 @@ export const enum SpecialFingerprint {
   Timeout = -3,
 }
 
-const SAMPLE_RATE = 44100;
-const CLONE_COUNT = 40000;
-const STABILIZATION_PRECISION = 6.2;
+const sampleRate = 44100;
+const cloneCount = 40000;
+const stabilizationPrecision = 6.2;
 
 /**
  * Calculates a stable audio fingerprint using Web Audio API
@@ -26,7 +26,7 @@ export async function getAudioFingerprint(): Promise<number> {
   const finish = await getUnstableAudioFingerprint();
   const rawFingerprint = finish();
 
-  return stabilize(rawFingerprint, STABILIZATION_PRECISION);
+  return stabilize(rawFingerprint, stabilizationPrecision);
 }
 
 export async function getUnstableAudioFingerprint(): Promise<() => number> {
@@ -74,12 +74,12 @@ async function getBaseAudioFingerprint(): Promise<number> {
 
   // This context copies the last sample of the base signal many times.
   // The array of copies helps to cancel the noise.
-  const context = new AudioContext(1, baseSignal.length - 1 + CLONE_COUNT, SAMPLE_RATE);
+  const context = new AudioContext(1, baseSignal.length - 1 + cloneCount, sampleRate);
   const sourceNode = context.createBufferSource();
   sourceNode.buffer = baseSignal;
   sourceNode.loop = true;
-  sourceNode.loopStart = (baseSignal.length - 1) / SAMPLE_RATE;
-  sourceNode.loopEnd = baseSignal.length / SAMPLE_RATE;
+  sourceNode.loopStart = (baseSignal.length - 1) / sampleRate;
+  sourceNode.loopEnd = baseSignal.length / sampleRate;
   sourceNode.connect(context.destination);
   sourceNode.start();
 
@@ -98,7 +98,7 @@ async function getBaseAudioFingerprint(): Promise<number> {
  */
 async function getBaseSignal(AudioContext: typeof OfflineAudioContext): Promise<AudioBuffer | null> {
   const targetSampleIndex = 3395;
-  const context = new AudioContext(1, targetSampleIndex + 1, SAMPLE_RATE);
+  const context = new AudioContext(1, targetSampleIndex + 1, sampleRate);
 
   const oscillator = context.createOscillator();
   oscillator.type = 'square';

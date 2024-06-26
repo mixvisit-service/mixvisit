@@ -1,3 +1,3 @@
-export function isHaveOpenDatabase(): boolean {
-  return !!window.openDatabase;
+export function isHaveOpenDatabase(): boolean | null {
+  return !!window.openDatabase ?? null;
 }

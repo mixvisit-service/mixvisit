@@ -1,4 +1,4 @@
-const VENDOR_FLAVOR_FIELDS = [
+const vendorFlavorFields = [
   // Blink and some browsers on iOS
   'chrome',
   // Safari on macOS
@@ -30,7 +30,7 @@ const VENDOR_FLAVOR_FIELDS = [
 export function getVendorFlavors(): string[] {
   const flavors: string[] = [];
 
-  for (const key of VENDOR_FLAVOR_FIELDS) {
+  for (const key of vendorFlavorFields) {
     const value = (window as unknown as Record<string, unknown>)[key];
     if (value && typeof value === 'object') {
       flavors.push(key);

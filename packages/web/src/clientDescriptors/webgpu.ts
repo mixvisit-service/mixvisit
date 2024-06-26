@@ -10,6 +10,14 @@ import type {
 } from '../types/index';
 import { TEXTURE_FORMATS } from '../utils/constants';
 
+const requestAdapterOptions: WebGPUSupportedAdaptersParam = {
+  fallback: {
+    powerPreference: 'low-power',
+    forceFallbackAdapter: true,
+  },
+  highPerformance: { powerPreference: 'high-performance' },
+} as const;
+
 export async function getWebGPU(): Promise<WebGPUInfo | null> {
   try {
     const res: WebGPUInfo = {
@@ -23,16 +31,8 @@ export async function getWebGPU(): Promise<WebGPUInfo | null> {
     }
 
     res.supportedAdapters = {} as WebGPUSupportedAdapters;
-
-    const requestAdapterOptions: WebGPUSupportedAdaptersParam = {
-      fallback: {
-        powerPreference: 'low-power',
-        forceFallbackAdapter: true,
-      },
-      highPerformance: { powerPreference: 'high-performance' },
-    } as const;
-
     const supportedAdaptersPromises: Promise<void>[] = [];
+
     for (const [type, option] of Object.entries(requestAdapterOptions)) {
       const promise = getWebGPUParams(option).then((params) => {
         res.supportedAdapters[type] = params;
