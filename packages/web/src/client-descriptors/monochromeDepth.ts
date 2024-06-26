@@ -1,4 +1,4 @@
-import { mediaQueryMatcher } from '../utils/utils';
+import { mediaQueryMatcher } from '../utils/helpers';
 
 /**
  * If the display is monochrome (e.g. black&white), the value will be ≥0 and will mean the number of bits per pixel.

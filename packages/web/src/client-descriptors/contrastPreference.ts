@@ -1,5 +1,5 @@
 import { ContrastPreferenceStatus } from '../utils/enums';
-import { mediaQueryMatcher } from '../utils/utils';
+import { mediaQueryMatcher } from '../utils/helpers';
 
 export function getContrastPreference(): number | null {
   const matchForPrefersContrast = mediaQueryMatcher('prefers-contrast') as (value: string) => boolean;

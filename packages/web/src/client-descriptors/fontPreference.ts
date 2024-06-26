@@ -1,6 +1,6 @@
 import { MaybePromise } from '../types/index';
 import { BrowserUtils } from '../utils/browser';
-import { withIframe } from '../utils/utils';
+import { withIframe } from '../utils/helpers';
 
 type WritableCSSProperties = {
   [K in keyof CSSStyleDeclaration]: CSSStyleDeclaration[K] extends string ? K : never;

@@ -1,4 +1,4 @@
-import { mediaQueryMatcher } from '../utils/utils';
+import { mediaQueryMatcher } from '../utils/helpers';
 
 export function areColorsForced(): boolean | null {
   const matchForForcedColors = mediaQueryMatcher('forced-colors') as (value: string) => boolean;

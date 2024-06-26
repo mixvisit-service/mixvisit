@@ -1,4 +1,4 @@
-import { toInt, hasProperty } from '../utils/utils';
+import { toInt, hasProperty } from '../utils/helpers';
 
 type TouchSupport = {
   maxTouchPoints: number;

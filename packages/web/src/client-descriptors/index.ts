@@ -27,7 +27,7 @@ import { getPlatform } from './platform';
 import { getPlugins } from './plugins';
 import { isMotionReduced } from './reducedMotion';
 import { isTransparencyReduced } from './reducedTransparency';
-import { getScreenFrame } from './screenFrame';
+import { getScreenFrame } from './screen-frame/index';
 import { getScreenResolution } from './screenResolution';
 import { isHaveSessionStorage } from './sessionStorage';
 import { getTimezone } from './timezone';

@@ -1,4 +1,4 @@
-import { isPromise, suppressUnhandledRejectionWarning } from '../../utils/utils';
+import { isPromise, suppressUnhandledRejectionWarning } from '../../utils/helpers';
 
 /**
  * Renders the given audio context with configured nodes.

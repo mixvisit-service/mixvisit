@@ -1,4 +1,4 @@
-import { withIframe, wait } from '../utils/utils';
+import { withIframe, wait } from '../utils/helpers';
 
 // We use m or w because these two characters take up the maximum width.
 // And we use a LLi so that the same matching fonts can get separated

@@ -1,4 +1,4 @@
-import { mediaQueryMatcher } from '../utils/utils';
+import { mediaQueryMatcher } from '../utils/helpers';
 
 export function areColorsInverted(): boolean | null {
   const matchForInvertedColors = mediaQueryMatcher('inverted-colors') as (value: string) => boolean;

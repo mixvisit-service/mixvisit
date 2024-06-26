@@ -1,4 +1,4 @@
-import { mediaQueryMatcher } from '../utils/utils';
+import { mediaQueryMatcher } from '../utils/helpers';
 
 export function isTransparencyReduced(): boolean | null {
   const matchForReducedTransparency = mediaQueryMatcher('prefers-reduced-transparency') as (value: string) => boolean;

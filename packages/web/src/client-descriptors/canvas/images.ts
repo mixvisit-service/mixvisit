@@ -1,5 +1,5 @@
 import { CanvasImageStatus } from '../../utils/enums';
-import { wait } from '../../utils/utils';
+import { wait } from '../../utils/helpers';
 
 export async function renderImages(
   canvas: HTMLCanvasElement,

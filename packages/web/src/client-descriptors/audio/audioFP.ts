@@ -1,6 +1,6 @@
 import { BrowserUtils } from '../../utils/browser';
 import { AudioFingerprintStatus } from '../../utils/enums';
-import { wait, whenDocumentVisible } from '../../utils/utils';
+import { wait, whenDocumentVisible } from '../../utils/helpers';
 import { extractFingerprint, renderAudio } from './utils';
 
 export async function getUnstableAudioFingerprint(): Promise<() => number> {

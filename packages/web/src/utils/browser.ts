@@ -1,4 +1,4 @@
-import { calcTruthy, hasProperty, isFunctionNative } from './utils';
+import { calcTruthy, hasProperty, isFunctionNative } from './helpers';
 
 export class BrowserUtils {
   /**

@@ -1,4 +1,4 @@
-import { mediaQueryMatcher } from '../utils/utils';
+import { mediaQueryMatcher } from '../utils/helpers';
 
 export function isMotionReduced(): boolean | null {
   const matchForReducedMotion = mediaQueryMatcher('prefers-reduced-motion') as (value: string) => boolean;

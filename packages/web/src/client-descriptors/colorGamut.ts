@@ -1,4 +1,4 @@
-import { mediaQueryMatcher } from '../utils/utils';
+import { mediaQueryMatcher } from '../utils/helpers';
 
 export type ColorGamut = 'srgb' | 'p3' | 'rec2020';
 

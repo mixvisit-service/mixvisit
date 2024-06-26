@@ -1,5 +1,5 @@
 import { BrowserUtils } from '../utils/browser';
-import { replaceNaN, toInt } from '../utils/utils';
+import { replaceNaN, toInt } from '../utils/helpers';
 
 type ScreenResolution = [number | null, number | null];
 
