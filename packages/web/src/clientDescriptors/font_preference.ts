@@ -66,7 +66,7 @@ export function getFontPreferences(): Promise<Record<string, number>> {
 
       for (const name of Object.keys(style) as Array<keyof typeof style>) {
         const value = style[name];
-        if (value !== undefined) {
+        if (value) {
           element.style[name] = value;
         }
       }

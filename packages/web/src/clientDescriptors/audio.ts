@@ -30,7 +30,7 @@ export async function getAudioFingerprint(): Promise<number> {
 }
 
 export async function getUnstableAudioFingerprint(): Promise<() => number> {
-  let fingerprintResult: [true, number] | [false, unknown] | undefined;
+  let fingerprintResult: [true, number] | [false, unknown];
 
   // The timeout is not started until the browser tab becomes visible because some browsers may not want to render
   // an audio context in background.

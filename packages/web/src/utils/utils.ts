@@ -33,7 +33,7 @@ export function isFunctionNative(func: (...args: unknown[]) => unknown): boolean
 }
 
 export function mediaQueryMatcher(field: string, value?: string): boolean | ((value: string) => boolean) {
-  if (value !== undefined) {
+  if (value) {
     return matchMedia(`(${field}: ${value})`).matches;
   }
 

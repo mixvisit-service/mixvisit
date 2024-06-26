@@ -17,8 +17,6 @@ export function getTouchSupport(): TouchSupport {
 
   if (navigator.maxTouchPoints !== undefined) {
     maxTouchPoints = toInt(navigator.maxTouchPoints);
-  } else if (navigator.msMaxTouchPoints !== undefined) {
-    maxTouchPoints = navigator.msMaxTouchPoints;
   }
 
   try {

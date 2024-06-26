@@ -20,8 +20,8 @@ type FrameSize = [
 const screenFrameCheckInterval = 2500;
 const roundingPrecision = 10;
 
-let screenFrameBackup: Readonly<FrameSize> | undefined;
-let screenFrameSizeTimeoutId: number | undefined;
+let screenFrameBackup: Readonly<FrameSize> | null = null;
+let screenFrameSizeTimeoutId: number | null = null;
 
 /**
  * Sometimes the available screen resolution changes a bit, e.g. 1900x1440 → 1900x1439.
@@ -76,7 +76,7 @@ async function getBaseScreenFrame(): Promise<FrameSize> {
  * This trick is required to mitigate the fact that the screen frame turns null in some cases.
  */
 function watchScreenFrame(): void {
-  if (screenFrameSizeTimeoutId !== undefined) {
+  if (screenFrameSizeTimeoutId !== null) {
     return;
   }
 
@@ -86,7 +86,7 @@ function watchScreenFrame(): void {
       screenFrameSizeTimeoutId = (setTimeout as typeof window.setTimeout)(checkScreenFrame, screenFrameCheckInterval);
     } else {
       screenFrameBackup = frameSize;
-      screenFrameSizeTimeoutId = undefined;
+      screenFrameSizeTimeoutId = null;
     }
   };
 
