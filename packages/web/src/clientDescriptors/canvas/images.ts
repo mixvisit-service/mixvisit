@@ -1,59 +1,7 @@
-/* eslint-disable no-param-reassign */
-import { BrowserUtils } from '../utils/browser';
-import { wait } from '../utils/utils';
+import { CanvasImageStatus } from '../../utils/enums';
+import { wait } from '../../utils/utils';
 
-interface CanvasFingerprint {
-  winding: boolean;
-  geometry: string;
-  text: string;
-}
-
-const enum ImageStatus {
-  Unsupported = 'unsupported',
-  Skipped = 'skipped',
-  Unstable = 'unstable',
-}
-
-export async function getCanvasFingerprint(): Promise<CanvasFingerprint> {
-  let winding = false;
-  let geometry: string;
-  let text: string;
-
-  const [canvas, context] = makeCanvasContext();
-  if (!(context && canvas.toDataURL)) {
-    geometry = ImageStatus.Unsupported;
-    text = ImageStatus.Unsupported;
-  } else {
-    winding = doesSupportWinding(context);
-
-    // Checks if the current browser is known for applying anti-fingerprinting measures in all or some critical modes
-    if (BrowserUtils.isWebKit() && BrowserUtils.isWebKit616OrNewer() && BrowserUtils.isSafariWebKit()) {
-      geometry = ImageStatus.Skipped;
-      text = ImageStatus.Skipped;
-    } else {
-      [geometry, text] = await renderImages(canvas, context);
-    }
-  }
-
-  return { winding, geometry, text };
-}
-
-function makeCanvasContext(): readonly [HTMLCanvasElement, CanvasRenderingContext2D | null] {
-  const canvas = document.createElement('canvas');
-  canvas.width = 1;
-  canvas.height = 1;
-
-  return [canvas, canvas.getContext('2d')] as const;
-}
-
-function doesSupportWinding(context: CanvasRenderingContext2D): boolean {
-  context.rect(0, 0, 10, 10);
-  context.rect(2, 2, 6, 6);
-
-  return !context.isPointInPath(5, 5, 'evenodd');
-}
-
-async function renderImages(
+export async function renderImages(
   canvas: HTMLCanvasElement,
   context: CanvasRenderingContext2D,
 ): Promise<[geometry: string, text: string]> {
@@ -66,7 +14,7 @@ async function renderImages(
 
   // The canvas is excluded from the fingerprint in this case
   if (textImage1 !== textImage2) {
-    return [ImageStatus.Unstable, ImageStatus.Unstable];
+    return [CanvasImageStatus.Unstable, CanvasImageStatus.Unstable];
   }
 
   // Text is unstable. Therefore it's extracted into a separate image

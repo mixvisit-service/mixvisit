@@ -16,7 +16,7 @@ export function getScreenResolution(): ScreenResolution | null {
   }
 
   // Some browsers return screen resolution as strings, e.g. "1200", instead of a number, e.g. 1200.
-  const parseDimension = (value: unknown) => replaceNaN(toInt(value), null);
+  const parseDimension = (value: unknown) => replaceNaN<number, null>(toInt(value), null);
 
   const dimensions = [
     parseDimension(window.screen.width),

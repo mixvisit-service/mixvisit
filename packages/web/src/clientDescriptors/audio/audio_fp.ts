@@ -1,15 +1,7 @@
 import { BrowserUtils } from '../../utils/browser';
+import { AudioFingerprintStatus } from '../../utils/enums';
 import { wait, whenDocumentVisible } from '../../utils/utils';
 import { extractFingerprint, renderAudio } from './utils';
-
-const enum SpecialFingerprint {
-  /** The browser is known for always suspending audio context, thus making fingerprinting impossible */
-  KnownForSuspending = -1,
-  /** The browser doesn't support audio context */
-  NotSupported = -2,
-  /** An unexpected timeout has happened */
-  Timeout = -3,
-}
 
 export async function getUnstableAudioFingerprint(): Promise<() => number> {
   let fingerprintResult: [true, number] | [false, unknown];
@@ -26,7 +18,7 @@ export async function getUnstableAudioFingerprint(): Promise<() => number> {
 
   return () => {
     if (!fingerprintResult) {
-      return SpecialFingerprint.Timeout;
+      return AudioFingerprintStatus.Timeout;
     }
 
     if (!fingerprintResult[0]) {
@@ -44,19 +36,19 @@ async function getBaseAudioFingerprint(): Promise<number> {
 
   const AudioContext = window.OfflineAudioContext;
   if (!AudioContext) {
-    return SpecialFingerprint.NotSupported;
+    return AudioFingerprintStatus.NotSupported;
   }
 
   // In some browsers, audio context always stays suspended unless the context is started in response to a user action
   // (e.g. a click or a tap). It prevents audio fingerprint from being taken at an arbitrary moment of time
   if (BrowserUtils.isWebKit() && !(BrowserUtils.isDesktopWebKit() || BrowserUtils.isWebKit606OrNewer())) {
-    return SpecialFingerprint.KnownForSuspending;
+    return AudioFingerprintStatus.KnownForSuspending;
   }
 
   const contextForBaseSignal = new AudioContext(1, targetSampleIndex + 1, sampleRate);
   const baseSignal = await getBaseSignal(contextForBaseSignal);
   if (!baseSignal) {
-    return SpecialFingerprint.Timeout;
+    return AudioFingerprintStatus.Timeout;
   }
 
   // This context copies the last sample of the base signal many times.
@@ -72,7 +64,7 @@ async function getBaseAudioFingerprint(): Promise<number> {
 
   const clonedSignal = await renderAudio(context);
   if (!clonedSignal) {
-    return SpecialFingerprint.Timeout;
+    return AudioFingerprintStatus.Timeout;
   }
 
   const fingerprint = extractFingerprint(baseSignal, clonedSignal.getChannelData(0).subarray(baseSignal.length - 1));

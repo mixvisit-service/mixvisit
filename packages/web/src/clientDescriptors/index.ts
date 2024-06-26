@@ -1,7 +1,7 @@
 import { getArchitecture } from './architecture';
 import { getAudioFingerprint } from './audio/index';
 import { getAudioContextBaseLatency } from './audio_base_latency';
-import { getCanvasFingerprint } from './canvas';
+import { getCanvasFingerprint } from './canvas/index';
 import { getColorDepth } from './color_depth';
 import { getColorGamut } from './color_gamut';
 import { getContrastPreference } from './contrast_preference';

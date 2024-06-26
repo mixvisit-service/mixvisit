@@ -25,15 +25,9 @@ import {
   WEBGL_FUNCTIONS,
   WEBGL_PARAMS,
 } from '../../utils/constants';
+import { WebGLStatus } from '../../utils/enums';
 
 type WebGLStatuses = Values<typeof WebGLStatus>;
-
-export const enum WebGLStatus {
-  /** WebGl context is not available */
-  NoWebGLContext = -1,
-  /** WebGL context `getParameter` method is not a function */
-  GetParameterNotAFunction = -2,
-}
 
 const cache: { webgl: CanvasWithContextRes | null } = {
   webgl: null,

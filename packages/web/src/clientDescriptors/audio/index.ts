@@ -12,4 +12,3 @@ export async function getAudioFingerprint(): Promise<number> {
 
   return stabilize(rawFingerprint, stabilizationPrecision);
 }
-
