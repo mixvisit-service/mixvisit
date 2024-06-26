@@ -37,7 +37,7 @@ import { getUserAgentData } from './userAgentData';
 import { getVendor } from './vendor';
 import { getVendorFlavors } from './vendorFlavors';
 import { getWebGL } from './webgl/index';
-import { getWebGPU } from './webgpu';
+import { getWebGPU } from './webgpu/index';
 
 export type Descriptors = typeof descriptors;
 
