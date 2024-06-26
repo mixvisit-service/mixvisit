@@ -1,5 +1,5 @@
 import { getArchitecture } from './architecture';
-import { getAudioFingerprint } from './audio';
+import { getAudioFingerprint } from './audio/index';
 import { getAudioContextBaseLatency } from './audio_base_latency';
 import { getCanvasFingerprint } from './canvas';
 import { getColorDepth } from './color_depth';
