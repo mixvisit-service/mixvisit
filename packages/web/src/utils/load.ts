@@ -1,4 +1,4 @@
-import type { Descriptors } from '../clientDescriptors/index';
+import type { Descriptors } from '../client-descriptors/index';
 import type { DescriptorsRes } from '../types/index';
 
 type LoadClientResult = Promise<{

@@ -1,4 +1,4 @@
-import { getUnstableAudioFingerprint } from './audio_fp';
+import { getUnstableAudioFingerprint } from './audioFP';
 import { stabilize } from './utils';
 
 /**

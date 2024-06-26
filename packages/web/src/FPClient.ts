@@ -1,5 +1,5 @@
-import { descriptors } from './clientDescriptors/index';
-import type { Descriptors } from './clientDescriptors/index';
+import { descriptors } from './client-descriptors/index';
+import type { Descriptors } from './client-descriptors/index';
 import type { DescriptorsRes, FPClientInterface } from './types/index';
 import { x64 } from './utils/hashing';
 import { loadClientDescriptors } from './utils/load';
