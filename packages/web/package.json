@@ -1,0 +1,55 @@
+{
+  "name": "@mix-visit/web",
+  "version": "0.1.0",
+  "description": "Fingerprint library for generating client fingerprint",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "packageManager": "yarn@1.22.22",
+  "types": "./dist/index.es.d.ts",
+  "main": "./dist/index.cjs.js",
+  "unpkg": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs.js",
+      "import": "./dist/index.es.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/easync/mixvisitjs.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/easync/mixvisitjs/issues"
+  },
+  "homepage": "http://mixvisitor.com/",
+  "keywords": [
+    "fingerprint",
+    "fraud detection",
+    "browser",
+    "identification",
+    "fingerprinting",
+    "browser fingerprint",
+    "device fingerprint",
+    "privacy"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "@webgpu/types": "^0.1.43",
+    "vite": "^5.2.9",
+    "vite-plugin-dts": "^3.8.3"
+  }
+}
