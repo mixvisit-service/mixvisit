@@ -12,6 +12,7 @@ import { getFontPreferences } from './fontPreference';
 import { getFonts } from './fonts';
 import { areColorsForced } from './forcedColors';
 import { getHardwareConcurrency } from './hardwareConcurrency';
+import { getHDCPPolicyCheck } from './hdcp';
 import { isHDR } from './hdr';
 import { getHighEntropyValues } from './hightEntropyValues';
 import { isHaveIndexedDB } from './indexedDB';
@@ -62,6 +63,7 @@ export const descriptors = {
   indexedDB: isHaveIndexedDB,
   colorGamut: getColorGamut,
   hdr: isHDR,
+  hdcp: getHDCPPolicyCheck,
   invertedColors: areColorsInverted,
   cookiesEnabled: areCookiesEnabled,
   forcedColors: areColorsForced,
