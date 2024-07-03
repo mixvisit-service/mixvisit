@@ -1,10 +1,10 @@
 export type WebGPUInfo = {
-  api: WebGPUAPI;
+  statuses: WebGPUAPI;
   supportedAdapters?: WebGPUSupportedAdapters;
 };
 
 export type WebGPUAPI = {
-  gpu?: boolean;
+  api?: boolean;
   adapter?: boolean;
   device?: boolean;
   context?: boolean;
