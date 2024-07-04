@@ -30,6 +30,7 @@ import { isTransparencyReduced } from './reducedTransparency';
 import { getScreenFrame } from './screen-frame/index';
 import { getScreenResolution } from './screenResolution';
 import { isHaveSessionStorage } from './sessionStorage';
+import { getSystemMetrics } from './system-metrics/index';
 import { getTimezone } from './timezone';
 import { getTouchSupport } from './touchSupport';
 import { getUserAgent } from './userAgent';
@@ -62,6 +63,7 @@ export const descriptors = {
   indexedDB: isHaveIndexedDB,
   colorGamut: getColorGamut,
   hdr: isHDR,
+  systemMetrics: getSystemMetrics,
   invertedColors: areColorsInverted,
   cookiesEnabled: areCookiesEnabled,
   forcedColors: areColorsForced,

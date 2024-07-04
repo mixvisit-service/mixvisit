@@ -32,6 +32,10 @@ export function isFunctionNative(func: (...args: unknown[]) => unknown): boolean
   return /^function\s.*?\{\s*\[native code]\s*}$/.test(String(func));
 }
 
+export function toGBString(bytes: number): string | null {
+  return bytes ? `${+(+(bytes) / 1073741824).toFixed(2)} GB` : null;
+}
+
 export function mediaQueryMatcher(field: string, value?: string): boolean | ((value: string) => boolean) {
   if (value) {
     return matchMedia(`(${field}: ${value})`).matches;

@@ -97,3 +97,9 @@ type ExtendedGPUTextureUsage = typeof GPUTextureUsage & {
   readonly OUTPUT_ATTACHMENT: GPUFlagsConstant;
   readonly STORAGE: GPUFlagsConstant;
 };
+
+interface Performance {
+  readonly memory: {
+    readonly jsHeapSizeLimit: number;
+  };
+}
