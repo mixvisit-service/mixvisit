@@ -3,12 +3,8 @@
 import Leaflet from 'leaflet';
 import tippy from 'tippy.js';
 
-import {
-  DISABLED,
-  LOCAL_STORAGE_VARS,
-  NO,
-  YES,
-} from '../constants';
+import { DISABLED, LOCAL_STORAGE_VARS } from '../constants';
+import { VisitorBlockTooltips } from '../enums';
 import type { VisitorData, VisitorStorageData } from '../types';
 import {
   bindMarkerPopup,
@@ -301,21 +297,17 @@ function createTippyForAllElements(): void {
     '#visitor-block > .visitor-location-info > div:nth-child(1) > div:nth-child(1) > span:nth-child(2) > button',
     '#visitor-block > .visitor-location-info > div:nth-child(1) > div:nth-child(2) > span:nth-child(2) > button',
     '#visitor-block > .visitor-location-info > div:nth-child(1) > div:nth-child(3) > span:nth-child(2) > button',
-    '#visitor-block > .visitor-location-info > div:nth-child(1) > div:nth-child(4) > span:nth-child(2) > button',
     '#visitor-block > .visitor-location-info > div:nth-child(2) > div:nth-child(1) > span:nth-child(2) > button',
     '#visitor-block > .visitor-location-info > div:nth-child(2) > div:nth-child(2) > span:nth-child(2) > button',
     '#visitor-block > .visitor-location-info > div:nth-child(2) > div:nth-child(3) > span:nth-child(2) > button',
-    '#visitor-block > .visitor-location-info > div:nth-child(2) > div:nth-child(4) > span:nth-child(2) > button',
   ];
 
-  tippy(infoButtons[0], { content: 'Location info about visitor' });
-  tippy(infoButtons[1], { content: 'Info about visitor IP' });
-  tippy(infoButtons[2], { content: 'Is this visit in incognito mode' });
-  tippy(infoButtons[3], { content: 'Your personal id for this visit' });
-  tippy(infoButtons[4], { content: 'Counting the number of times you visit this site' });
-  tippy(infoButtons[5], { content: 'Number of incognito visits' });
-  tippy(infoButtons[6], { content: 'The number of different addresses during your visit' });
-  tippy(infoButtons[7], { content: 'Unique locations on your visits' });
+  tippy(infoButtons[0], { content: VisitorBlockTooltips.PersonalID });
+  tippy(infoButtons[1], { content: VisitorBlockTooltips.Location });
+  tippy(infoButtons[2], { content: VisitorBlockTooltips.IP });
+  tippy(infoButtons[3], { content: VisitorBlockTooltips.VisitCounter });
+  tippy(infoButtons[4], { content: VisitorBlockTooltips.IPAddress });
+  tippy(infoButtons[5], { content: VisitorBlockTooltips.Geolocations });
 
   // tooltip when clicking on copy icons
   const copyButtons = [
@@ -353,15 +345,27 @@ function createTippyForAllElements(): void {
 }
 
 function createVisitorInfoBlock(visitorInfoElParam: HTMLElement, visitorInfo: VisitorInfo): void {
-  let isIncognito = '—';
-
-  if (TDef.isBoolean(visitorInfo.isIncognito)) {
-    isIncognito = visitorInfo.isIncognito ? YES : NO;
-  }
-
   const visitorInfoElem = `
     <div class="visitor-location-info">
       <div class="location-info-column">
+        <div class="location-item">
+          <span>Personal ID</span>
+          <span>
+            <div class="value">
+              <div class="bold">${visitorInfo.personalId ?? '—'}</div>
+              <button class="button-copy">
+                <svg class="svg-icon">
+                  <use xlink:href="#copyIcon"></use>
+                </svg>
+              </button>
+            </div>
+            <button class="button-info">
+              <svg class="svg-icon">
+                <use xlink:href="#infoIcon"></use>
+              </svg>
+            </button>
+          </span>
+        </div>
         <div class="location-item">
           <span>Location</span>
           <span>
@@ -398,37 +402,6 @@ function createVisitorInfoBlock(visitorInfoElParam: HTMLElement, visitorInfo: Vi
             </button>
           </span>
         </div>
-        <div class="location-item">
-          <span>Incognito</span>
-          <span>
-            <div class="value">
-              <div class="bold">${isIncognito}</div>
-            </div>
-            <button class="button-info">
-              <svg class="svg-icon">
-                <use xlink:href="#infoIcon"></use>
-              </svg>
-            </button>
-          </span>
-        </div>
-        <div class="location-item">
-          <span>Personal ID</span>
-          <span>
-            <div class="value">
-              <div class="bold">${visitorInfo.personalId ?? '—'}</div>
-              <button class="button-copy">
-                <svg class="svg-icon">
-                  <use xlink:href="#copyIcon"></use>
-                </svg>
-              </button>
-            </div>
-            <button class="button-info">
-              <svg class="svg-icon">
-                <use xlink:href="#infoIcon"></use>
-              </svg>
-            </button>
-          </span>
-        </div>
       </div>
 
       <div class="location-info-column">
@@ -437,19 +410,6 @@ function createVisitorInfoBlock(visitorInfoElParam: HTMLElement, visitorInfo: Vi
           <span>
             <div class="value">
               <div class="bold">${visitorInfo.visitCounter ?? '—'}</div> sessions
-            </div>
-            <button class="button-info">
-              <svg class="svg-icon">
-                <use xlink:href="#infoIcon"></use>
-              </svg>
-            </button>
-          </span>
-        </div>
-        <div class="location-item">
-          <span>Incognito</span>
-          <span>
-            <div class="value">
-              <div class="bold">${visitorInfo.incognitoCounter ?? '—'}</div> sessions
             </div>
             <button class="button-info">
               <svg class="svg-icon">
