@@ -9,8 +9,8 @@
 </script>
 
 {#if data}
-<details open>
-  <summary>Customer data obtained {formattedLoadTime}</summary>
+<details>
+  <summary><h3>Client data obtained {formattedLoadTime}</h3></summary>
   <Highlight language={json} code={data} />
 </details>
 {/if}
