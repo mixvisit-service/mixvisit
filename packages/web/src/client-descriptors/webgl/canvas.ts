@@ -1,6 +1,32 @@
-/* eslint-disable no-tabs */
+/*
+  eslint-disable
+    no-param-reassign,
+    no-empty,
+    no-tabs
+*/
 
-import type { CanvasContext } from '../../types/index';
+import {
+  getBestFloatPrecision,
+  getFloatIntPrecision,
+  getMaxAnisotropy,
+  getParamFromObject,
+  getParamsAndReturnArray,
+} from './utils';
+import type {
+  BasicsParams,
+  CanvasContext,
+  ContextInfo,
+  ExtendedParams,
+  ShaderPrecisions,
+  ShaderType,
+} from '../../types/index';
+import {
+  NOT_APPLICABLE,
+  PRECISION_TYPES,
+  SHADER_TYPES,
+  WEBGL_FUNCTIONS,
+  WEBGL_PARAMS,
+} from '../../utils/constants';
 import { x64, bufToHex } from '../../utils/hashing';
 
 const vertextShaderSource = `
@@ -22,7 +48,161 @@ const fragmentShaderSource = `
 	}
 `;
 
-export function createCanvasImage(ctx: CanvasContext): void {
+export function getSupportedContexts(canvas: HTMLCanvasElement): ContextInfo[] {
+  const res: ContextInfo[] = [];
+  const webglVariants = ['webgl2', 'experimental-webgl2', 'webgl', 'experimental-webgl', 'moz-webgl'] as const;
+
+  for (const contextName of webglVariants) {
+    let context: CanvasContext | null = null;
+
+    try {
+      context = canvas.getContext(contextName) as CanvasContext;
+    } catch (err) { }
+
+    if (context) {
+      res.push({
+        context,
+        contextName,
+      });
+    }
+
+    const newCanvas = document.createElement('canvas');
+    newCanvas.width = canvas.width;
+    newCanvas.height = canvas.height;
+    canvas.replaceWith(newCanvas);
+    canvas = newCanvas;
+  }
+
+  return res;
+}
+
+export function getWebGLBasicParams(contextInfo: ContextInfo): BasicsParams | null {
+  const { context: ctx, contextName } = contextInfo || {};
+
+  if (!ctx) {
+    return null;
+  }
+
+  const debugRenderExt = ctx.getExtension('WEBGL_debug_renderer_info');
+  const version = ctx.getParameter(ctx.VERSION) || NOT_APPLICABLE;
+  const shadingLanguageVersion = ctx.getParameter(ctx.SHADING_LANGUAGE_VERSION) || NOT_APPLICABLE;
+  const vendor = ctx.getParameter(ctx.VENDOR) || NOT_APPLICABLE;
+  const renderer = ctx.getParameter(ctx.RENDERER) || NOT_APPLICABLE;
+  const unmaskedVendor = (debugRenderExt && ctx.getParameter(debugRenderExt.UNMASKED_VENDOR_WEBGL)) || NOT_APPLICABLE;
+  const unmaskedRenderer = (debugRenderExt && ctx.getParameter(debugRenderExt.UNMASKED_RENDERER_WEBGL)) || NOT_APPLICABLE;
+
+  return {
+    contextName,
+    version,
+    shadingLanguageVersion,
+    vendor,
+    renderer,
+    unmaskedVendor,
+    unmaskedRenderer,
+  };
+}
+
+export function getWebGLExtendedParams(ctx: CanvasContext): ExtendedParams | null {
+  if (!ctx) {
+    return null;
+  }
+
+  const res = {} as ExtendedParams;
+
+  // Supported functions
+  const isWebGLRenderContextExist = !!window.WebGL2RenderingContext;
+  if (isWebGLRenderContextExist) {
+    const supportedFunctions: string[] = [];
+
+    for (const elem of WEBGL_FUNCTIONS) {
+      if (ctx[elem]) {
+        supportedFunctions.push(elem);
+      }
+    }
+
+    res.supportedFunctions = supportedFunctions.sort();
+  }
+
+  // Context attributes
+  const contextAttributes = ctx.getContextAttributes();
+  if (contextAttributes) {
+    res.contextAttributes = contextAttributes;
+  }
+
+  // WebGL parameters
+  for (const paramType in WEBGL_PARAMS) {
+    const params = {};
+
+    for (const param of WEBGL_PARAMS[paramType as keyof typeof WEBGL_PARAMS]) {
+      let parameter = null;
+
+      const specialHandlers = {
+        ALIASED_LINE_WIDTH_RANGE: () => getParamFromObject(ctx, param),
+        ALIASED_POINT_SIZE_RANGE: () => getParamFromObject(ctx, param),
+        DEPTH_STENCIL_BITS: () => getParamsAndReturnArray(ctx, ['DEPTH_BITS', 'STENCIL_BITS']),
+        FLOAT_INT_PRECISION: () => getFloatIntPrecision(ctx),
+        FRAGMENT_BEST_FLOAT_PRECISION: () => getBestFloatPrecision(ctx, 'FRAGMENT_SHADER'),
+        MAX_TEXTURE_MAX_ANISOTROPY_EXT: () => getMaxAnisotropy(ctx),
+        MAX_VIEWPORT_DIMS: () => getParamFromObject(ctx, param),
+        RGBA_BITS: () => getParamsAndReturnArray(ctx, ['RED_BITS', 'GREEN_BITS', 'BLUE_BITS', 'ALPHA_BITS']),
+        VERTEX_BEST_FLOAT_PRECISION: () => getBestFloatPrecision(ctx, 'VERTEX_SHADER'),
+      };
+
+      try {
+        if (specialHandlers[param]) {
+          parameter = specialHandlers[param]();
+        } else {
+          parameter = ctx.getParameter(ctx[param]);
+        }
+      } catch (err) { }
+
+      params[param] = parameter ?? NOT_APPLICABLE;
+    }
+
+    res[paramType] = params;
+  }
+
+  // Shader precision
+  const shaderPrecisions = {} as ShaderPrecisions;
+  for (const shaderType of SHADER_TYPES) {
+    shaderPrecisions[shaderType] = {} as ShaderPrecisions[ShaderType];
+    for (const precisionType of PRECISION_TYPES) {
+      const shaderPrecision = ctx.getShaderPrecisionFormat(ctx[shaderType], ctx[precisionType]);
+      const shaderPrecisionArr = shaderPrecision ? [shaderPrecision.rangeMin, shaderPrecision.rangeMax, shaderPrecision.precision] : [];
+      shaderPrecisions[shaderType][precisionType] = shaderPrecisionArr.join(',');
+    }
+  }
+
+  res.shaderPrecisions = shaderPrecisions;
+
+  // Extensions
+  const supportedExtensions = ctx.getSupportedExtensions();
+  if (supportedExtensions) {
+    const extensions: string[] = [];
+
+    for (const elem of supportedExtensions) {
+      extensions.push(elem);
+    }
+
+    res.extensions = extensions.sort();
+  }
+
+  return res;
+}
+
+export function getCanvasImageHash(canvas: HTMLCanvasElement, ctx: CanvasContext): string {
+  const { width, height } = canvas;
+  const pixels = new Uint8Array(width * height * 4);
+
+  createCanvasImage(ctx);
+
+  ctx.readPixels(0, 0, width, height, ctx.RGBA, ctx.UNSIGNED_BYTE, pixels);
+  const pixelString = bufToHex(pixels);
+
+  return x64.hash128(pixelString);
+}
+
+function createCanvasImage(ctx: CanvasContext): void {
   ctx.clear(ctx.COLOR_BUFFER_BIT | ctx.DEPTH_BUFFER_BIT);
 
   // Create shaders
@@ -87,14 +267,4 @@ export function createCanvasImage(ctx: CanvasContext): void {
   // Main render loop
   ctx.useProgram(program);
   ctx.drawArrays(ctx.TRIANGLES, 0, 3);
-}
-
-export function getCanvasImageHash(canvas: HTMLCanvasElement, ctx: CanvasContext): string {
-  const { width, height } = canvas;
-  const pixels = new Uint8Array(width * height * 4);
-
-  ctx.readPixels(0, 0, width, height, ctx.RGBA, ctx.UNSIGNED_BYTE, pixels);
-  const pixelString = bufToHex(pixels);
-
-  return x64.hash128(pixelString);
 }

@@ -3,15 +3,11 @@ import type { CanvasContext } from '../base';
 import type { Nullable } from '../utils';
 
 export type WebGLInfo = {
-  basics: BasicsParams | null;
-  contextAttributes: WebGLContextAttributes | null;
-  shaderPrecisions: ShaderPrecisions | null;
-  extensions: string[] | null;
-  supportedFunctions: string[] | null;
-} & Nullable<Parameters>;
+  webglImageHash: string;
+  supportedWebGLContexts: WebGLContextInfo[];
+};
 
 export type BasicsParams = {
-  canvasImageHash: string;
   contextName: string;
   version: string;
   shadingLanguageVersion: string;
@@ -28,8 +24,7 @@ export type ExtendedParams = {
   extensions?: string[];
 } & Parameters;
 
-export type CanvasWithContextRes = {
-  canvas: HTMLCanvasElement;
+export type ContextInfo = {
   context: CanvasContext | null;
   contextName: string;
 };
@@ -42,6 +37,14 @@ export type ShaderPrecisions = {
     [P in PrecisionType]: string;
   };
 };
+
+type WebGLContextInfo = {
+  basics: BasicsParams | null;
+  contextAttributes: WebGLContextAttributes | null;
+  shaderPrecisions: ShaderPrecisions | null;
+  extensions: string[] | null;
+  supportedFunctions: string[] | null;
+} & Nullable<Parameters>;
 
 type Parameters = {
   vertexShader: VertexShader;

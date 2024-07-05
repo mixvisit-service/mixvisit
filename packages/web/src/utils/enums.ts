@@ -19,10 +19,3 @@ export const enum ContrastPreferenceStatus {
   More = 1,
   ForcedColors = 10,
 }
-
-export const enum WebGLStatus {
-  /** WebGl context is not available */
-  NoWebGLContext = -1,
-  /** WebGL context `getParameter` method is not a function */
-  GetParameterNotAFunction = -2,
-}
