@@ -4,8 +4,8 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: hsla(0, 0%, 100%, 0.87);
+  background-color: hsl(0, 0%, 14%);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -19,20 +19,43 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
+#app {
+  width: 100%;
   display: flex;
-  place-items: center;
+  flex-direction: column;
+}
+
+footer {
+  font-size: .8rem;
+  padding-top: 20px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+body {
+  display: flex;
+  margin: 0;
+}
+
+main {
+  flex: 1;
+}
+
+h1.lib-title {
+  font-family: Open Sans;
+  font-size: 5rem;
+  line-height: 1.1;
+  margin: 0;
+  background-image: linear-gradient(45deg, hsl(57, 83%, 68%), hsl(343, 56%, 57%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; 
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-h2 {
-  font-size: 2.1em;
-  line-height: 1.1;
+  font-size: 2.2rem;
 }
 
 #app {
@@ -47,11 +70,31 @@ main {
 }
 
 summary {
+  list-style: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0;
   cursor: pointer;
+}
+
+summary > h3 {
+  margin: 0;
+}
+
+summary::before {
+  content: "\25B6";
+  margin-right: 10px;
+  transition: transform 0.3s ease;
+}
+
+details[open] summary::before {
+  transform: rotate(90deg);
 }
 
 code {
   border-radius: 8px;
+  font-size: .8rem;
 }
 
 pre {
@@ -60,23 +103,11 @@ pre {
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: hsl(14, 59%, 65%);
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #535bf2;
+  color: hsl(36, 69%, 66%);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
