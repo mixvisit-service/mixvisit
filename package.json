@@ -1,0 +1,31 @@
+{
+  "private": true,
+  "name": "mix-visit",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "type": "module",
+  "packageManager": "yarn@1.22.22",
+  "workspaces": [
+    "packages/*",
+    "example"
+  ],
+  "scripts": {
+    "build": "yarn workspaces run build",
+    "build:example": "yarn workspace @mix-visit/example run build",
+    "build:web": "yarn workspace @mix-visit/web run build",
+    "dev:example": "yarn workspace @mix-visit/example run dev",
+    "dev:web": "yarn workspace @mix-visit/web run dev"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.2.0",
+    "@stylistic/eslint-plugin-js": "^1.8.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-plugin-better-max-params": "^0.0.1",
+    "eslint-plugin-import": "^2.29.1"
+  }
+}
