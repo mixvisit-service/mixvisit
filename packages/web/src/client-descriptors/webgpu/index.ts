@@ -17,12 +17,12 @@ const requestAdapterOptions: WebGPUSupportedAdaptersParam = {
 export async function getWebGPU(): Promise<WebGPUInfo | null> {
   try {
     const res: WebGPUInfo = {
-      api: null,
+      statuses: null,
     };
 
-    res.api = await getWebgGPUAPI();
+    res.statuses = await getWebgGPUAPI();
 
-    if (!res.api.adapter) {
+    if (!res.statuses.adapter) {
       return res;
     }
 

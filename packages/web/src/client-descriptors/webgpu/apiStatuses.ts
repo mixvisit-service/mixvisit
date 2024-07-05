@@ -9,7 +9,7 @@ export async function getWebgGPUAPI(): Promise<WebGPUAPI> {
 
   try {
     if (navigator.gpu) {
-      res.gpu = true;
+      res.api = true;
     }
 
     const adapter = await navigator.gpu.requestAdapter();
