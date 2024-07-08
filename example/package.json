@@ -19,6 +19,7 @@
     "tippy.js": "^6.3.7"
   },
   "devDependencies": {
+    "@iconify/svelte": "^4.0.2",
     "@sveltejs/vite-plugin-svelte": "^3.0.2",
     "@tsconfig/svelte": "^5.0.2",
     "@types/leaflet": "^1.9.12",

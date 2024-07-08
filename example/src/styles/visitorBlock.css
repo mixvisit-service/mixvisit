@@ -1,7 +1,7 @@
 #visitor-block {
   display: flex;
   flex-direction: row;
-  padding: 15px 0 75px 0;
+  padding: 15px 0 15px 0;
 }
 
 .leaflet-control-attribution {
@@ -29,8 +29,8 @@
 }
 
 .slider-button {
-  background: #f2f2f2;
-  color: #000;
+  background: hsl(0, 0%, 95%);
+  color: hsl(0, 0%, 0%);
   border: none;
   padding: 10px 12px;
   border-radius: 50%;
@@ -61,7 +61,7 @@
 }
 
 .visit-info {
-  color: #ababab;
+  color: hsl(0, 0%, 67%);
   font-size: smaller;
 }
 
@@ -70,17 +70,14 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  height: fit-content;
   margin-left: 26px;
-  border: 2px solid #6a6a6a;
+  border: 2px solid hsl(0, 0%, 42%);
   border-radius: 10px;
 }
 
 .location-info-column {
   flex: 1 1 0;
-}
-
-.location-info-column + .location-info-column {
-  border-left: 2px solid #6a6a6a;
 }
 
 .location-item {
@@ -109,7 +106,7 @@
 
 .location-item span > .value {
   display: flex;
-  background: #303030;
+  background: hsl(0, 0%, 19%);
   border-radius: 4px;
   padding: 6px 10px;
   width: fit-content;
@@ -125,7 +122,7 @@
 }
 
 .location-item:not(:last-child) {
-  border-bottom: 2px solid #6a6a6a;
+  border-bottom: 2px solid hsl(0, 0%, 42%);
 }
 
 .location-item:last-child {
@@ -137,7 +134,7 @@ button.button-copy {
   align-items: center;
   justify-content: center;
   padding: 0;
-  color: #babac4;
+  color: hsl(240, 8%, 75%);
   background: none;
   border: none;
   cursor: pointer;
@@ -145,11 +142,11 @@ button.button-copy {
 }
 
 button.button-copy:hover {
-  color: #8f8f96;
+  color: hsl(240, 3%, 57%);
 }
 
 button.button-copy:active {
-  color: #babac4;
+  color: hsl(240, 8%, 75%);
 }
 
 button.button-info {
@@ -159,7 +156,7 @@ button.button-info {
   margin-left: 8px;
   padding: 0;
   background: none;
-  color: #d1d1d8;
+  color: hsl(240, 8%, 83%);
   border: none;
 }
 
@@ -173,17 +170,31 @@ button.button-info {
   bottom: -30px;
   right: 0;
   text-align: right;
-  color: #babac4;
+  color: hsl(240, 8%, 75%);
   font-size: x-small;
   text-decoration: none;
 }
 
 .visitor-mixvisit-link:hover {
-  color: #8f8f96;
+  color: hsl(240, 3%, 57%);
 }
 
 .visitor-mixvisit-link:active {
-  color: #babac4;
+  color: hsl(240, 8%, 75%);
+}
+
+.visitor-location-info {
+  display: block;
+}
+
+.location-info-column:first-of-type > .location-item, 
+.location-info-column:last-of-type > .location-item:not(:last-child) {
+  border-bottom: 2px solid hsl(0, 0%, 42%);
+}
+
+.location-item span > .value {
+  max-width: max-content;
+  width: auto;
 }
 
 @supports (-webkit-hyphens: none) {
@@ -204,27 +215,6 @@ button.button-info {
 
   .visit-map-slider {
     margin-bottom: 20px;
-  }
-}
-
-@media screen and (max-width: 880px) {
-  .visitor-location-info {
-    display: block;
-    margin-left: 0;
-  }
-
-  .location-info-column:last-of-type {
-    border-left: 0;
-  }
-
-  .location-info-column:first-of-type > .location-item, 
-  .location-info-column:last-of-type > .location-item:not(:last-child) {
-    border-bottom: 2px solid #6a6a6a;
-  }
-
-  .location-item span > .value {
-    max-width: max-content;
-    width: auto;
   }
 }
 

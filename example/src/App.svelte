@@ -2,9 +2,12 @@
   import { onMount } from 'svelte';
   import highlightStyle from 'svelte-highlight/styles/circus';
 
-  import FPClientData from './components/FPClientData.svelte';
+  import Badges from './components/Badges.svelte';
+  import UsageExample from './components/UsageExample.svelte';
   import VisitorBlock from './components/VisitorBlock.svelte';
-  // import CodeExample from './components/CodeExample.svelte';
+  import ClientData from './components/ClientData.svelte';
+  import About from './components/About.svelte';
+  import GoToTop from './components/GoToTop.svelte';
 
   import { getLocationData } from './logics/api';
   import { TDef, getFPData } from './logics/utils';
@@ -14,6 +17,9 @@
   let fpClientData = '';
   let loadTime = '';
   let visitorData: VisitorData | null = null;
+  let productYears = '';
+
+  const releaseYear = 2024;
 
   onMount(() => {
     (async () => {
@@ -23,6 +29,9 @@
 
   async function main(): Promise<void> {
     try {
+      const currentYear = new Date().getFullYear();
+      productYears = currentYear === releaseYear ? currentYear.toString() : `${releaseYear}-${currentYear}`; 
+
       const fpData = await getFPData();
       const { data, fingerprintHash, loadTime: loadTimeRes } = fpData || {};
       const location = await getLocationData();
@@ -65,15 +74,31 @@
 </svelte:head>
 
 <main>
-  <h2>MixVisitJS example</h2>
+  <h1 class="lib-title">MixVisitJS</h1>
+  <h2>JS Fingerprint to identify & track devices</h2>
+  <Badges />
 
   {#if status === 'loaded'}
+    <UsageExample /> 
     <VisitorBlock {visitorData} />
-    <!-- <CodeExample />  -->
-    <FPClientData data={fpClientData} {loadTime} />
+    <ClientData data={fpClientData} {loadTime} />
+    <About /> 
+
+    <GoToTop />
   {:else if status === 'not loaded'}
     <p>Loading ...</p>
   {:else}
-    <p>Something wrong ...</p>
+    <p>Something wrong</p>
   {/if}
 </main>
+
+<footer>
+  <p>Copyright &copy; {productYears} MixVisitJS. All rights reserved. <a href="https://opensource.org/licenses/MIT" target="_blank">MIT - License</a></p>
+</footer>
+
+<style>
+  h1, h2, footer {
+    display: flex;
+    justify-content: center;
+  }
+</style>
