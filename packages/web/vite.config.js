@@ -1,8 +1,9 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { resolve } from 'node:path';
 
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+
+const __dirname = import.meta.dirname;
 
 export default defineConfig({
   plugins: [dts({ rollupTypes: true })],
