@@ -41,9 +41,9 @@ import { getVendorFlavors } from './vendorFlavors';
 import { getWebGL } from './webgl/index';
 import { getWebGPU } from './webgpu/index';
 
-export type Descriptors = typeof descriptors;
+export type ClientParameters = typeof clientParameters;
 
-export const descriptors = {
+export const clientParameters = {
   userAgent: getUserAgent,
   osCpu: getOsCpu,
   cpuClass: getCpuClass,

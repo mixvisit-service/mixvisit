@@ -1,25 +1,25 @@
-import type { Descriptors } from '../client-descriptors/index';
-import type { DescriptorsRes } from '../types/index';
+import type { ClientParameters } from '../client-parameters/index';
+import type { CompleteClientData } from '../types/index';
 
 type LoadClientResult = Promise<{
   time: number;
-  results: DescriptorsRes;
+  results: CompleteClientData;
 }>;
 
-export async function loadClientDescriptors(descriptors: Descriptors): LoadClientResult {
+export async function loadClientParameters(parameters: ClientParameters): LoadClientResult {
   const startTime = Date.now();
-  const descriptorsRes = {} as DescriptorsRes;
+  const parameterResult = {} as CompleteClientData;
 
-  for (const descriptorKey of Object.keys(descriptors)) {
-    const key = descriptorKey as keyof Descriptors;
+  for (const descriptorKey of Object.keys(parameters)) {
+    const key = descriptorKey as keyof ClientParameters;
 
-    if (typeof descriptors[key] !== 'function') {
+    if (typeof parameters[key] !== 'function') {
       continue;
     }
 
-    const dataFetcher = descriptors[key]();
+    const dataFetcher = parameters[key]();
 
-    (descriptorsRes as any)[key] = dataFetcher instanceof Promise
+    (parameterResult as any)[key] = dataFetcher instanceof Promise
       // eslint-disable-next-line no-await-in-loop
       ? await dataFetcher
       : dataFetcher;
@@ -29,6 +29,6 @@ export async function loadClientDescriptors(descriptors: Descriptors): LoadClien
 
   return {
     time: endTime - startTime,
-    results: descriptorsRes,
+    results: parameterResult,
   };
 }

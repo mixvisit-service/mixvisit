@@ -29,7 +29,7 @@ type GeolocationError = {
   };
 };
 
-type GeolocationPositionRes = GeolocationPosition | GeolocationError;
+type GeolocationPositionResults = GeolocationPosition | GeolocationError;
 
 const geoOptions = {
   enableHighAccuracy: true,
@@ -58,8 +58,8 @@ export async function getGeolocation(): Promise<Geolocation | null> {
       return res;
     }
 
-    const geolocationRes = await getGeolocationPosition();
-    handleGeolocationData(res, geolocationRes);
+    const geolocationResult = await getGeolocationPosition();
+    handleGeolocationData(res, geolocationResult);
 
     return res;
   } catch (err) {
@@ -69,8 +69,8 @@ export async function getGeolocation(): Promise<Geolocation | null> {
   }
 }
 
-async function getGeolocationPosition(): Promise<GeolocationPositionRes> {
-  return new Promise<GeolocationPositionRes>((resolve) => {
+async function getGeolocationPosition(): Promise<GeolocationPositionResults> {
+  return new Promise<GeolocationPositionResults>((resolve) => {
     const rejector = (err) => {
       resolve({
         success: false,
@@ -85,7 +85,7 @@ async function getGeolocationPosition(): Promise<GeolocationPositionRes> {
   });
 }
 
-function handleGeolocationData(result: Geolocation, geolocationPosition: GeolocationPositionRes): void {
+function handleGeolocationData(result: Geolocation, geolocationPosition: GeolocationPositionResults): void {
   if (isGeolocationPosition(geolocationPosition)) {
     result.geolocationPosition = {
       timestamp: geolocationPosition.timestamp,
