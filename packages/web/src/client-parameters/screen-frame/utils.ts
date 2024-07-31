@@ -1,9 +1,5 @@
-import { FrameSize } from '../../types/index';
-import {
-  replaceNaN,
-  round,
-  toFloat,
-} from '../../utils/helpers';
+import type { FrameSize } from '../../types/index';
+import { replaceNaN, round, toFloat } from '../../utils/helpers';
 
 export function processSize(sideSize: FrameSize[number]): number | null {
   const roundingPrecision = 10;

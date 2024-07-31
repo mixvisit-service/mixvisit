@@ -1,17 +1,19 @@
 import type { ClientParameters } from '../client-parameters/index';
-import type { CompleteClientData } from '../types/index';
+import type { ContextualClientParameters } from '../contextual-client-parameters/index';
+import type { UnwrappedClientParameters, UnwrappedContextualClientParameters } from '../types/index';
 
-type LoadClientResult = Promise<{
-  time: number;
-  results: CompleteClientData;
-}>;
+type Parameters = ClientParameters | ContextualClientParameters;
 
-export async function loadClientParameters(parameters: ClientParameters): LoadClientResult {
-  const startTime = Date.now();
-  const parameterResult = {} as CompleteClientData;
+type UnwrapClient<T> = T extends ClientParameters ? UnwrappedClientParameters : never;
+type UnwrapContextual<T> = T extends ContextualClientParameters ? UnwrappedContextualClientParameters : never;
+
+type LoadResult<T> = UnwrapClient<T> | UnwrapContextual<T>;
+
+export async function loadParameters<T extends Parameters>(parameters: Parameters): Promise<LoadResult<T>> {
+  const parameterResult = {} as LoadResult<T>;
 
   for (const descriptorKey of Object.keys(parameters)) {
-    const key = descriptorKey as keyof ClientParameters;
+    const key = descriptorKey as keyof (ClientParameters & ContextualClientParameters);
 
     if (typeof parameters[key] !== 'function') {
       continue;
@@ -25,10 +27,5 @@ export async function loadClientParameters(parameters: ClientParameters): LoadCl
       : dataFetcher;
   }
 
-  const endTime = Date.now();
-
-  return {
-    time: endTime - startTime,
-    results: parameterResult,
-  };
+  return parameterResult;
 }

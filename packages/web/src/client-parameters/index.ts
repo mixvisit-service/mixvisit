@@ -11,7 +11,6 @@ import { getDeviceMemory } from './deviceMemory';
 import { getFontPreferences } from './fontPreference';
 import { getFonts } from './fonts';
 import { areColorsForced } from './forcedColors';
-import { getGeolocation } from './geolocation';
 import { getHardwareConcurrency } from './hardwareConcurrency';
 import { getHDCPPolicyCheck } from './hdcp';
 import { isHDR } from './hdr';
@@ -57,7 +56,6 @@ export const clientParameters = {
   plugins: getPlugins,
   userAgentData: getUserAgentData,
   hightEntropyValues: getHighEntropyValues,
-  geolocation: getGeolocation,
   pdfViewerEnabled: isPdfViewerEnabled,
   sessionStorage: isHaveSessionStorage,
   localStorage: isHaveLocalStorage,
