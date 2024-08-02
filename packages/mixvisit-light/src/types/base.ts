@@ -1,5 +1,5 @@
 import { UnwrapPromise } from './utils';
-import type { Descriptors } from '../client-descriptors/index';
+import type { Descriptors } from '../client-descriptors';
 
 export type DescriptorsRes = {
   [K in keyof Descriptors]: UnwrapPromise<ReturnType<Descriptors[K]>>;

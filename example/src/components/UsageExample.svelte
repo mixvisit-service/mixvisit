@@ -2,18 +2,18 @@
   import Highlight from 'svelte-highlight';
   import typescript from 'svelte-highlight/languages/typescript';
   import bash from 'svelte-highlight/languages/bash';
-  
+
   const installing = `# with npm package manager
-npm install @mix-visit/web
+npm install @mixvisit-service/mixvisit-light
 
 # with yarn package manager
-yarn add @mix-visit/web
+yarn add @mixvisit-service/mixvisit-light
 
 # with pnpm package manager
-pnpm add @mix-visit/web
+pnpm add @mixvisit-service/mixvisit-light
 `;
 
-  const using = `import { FPClient } from '@mix-visit/web';
+  const using = `import { FPClient } from '@mixvisit-service/mixvisit-light';
 
 const fpClient = new FPClient();
 await fpClient.load();

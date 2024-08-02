@@ -1,4 +1,4 @@
-import { FPClient, type DescriptorsRes } from '@mix-visit/web';
+import { FPClient, type DescriptorsRes } from '@mixvisit-service/mixvisit-light';
 import type { Marker } from 'leaflet';
 
 export const type = (value: any): string => {

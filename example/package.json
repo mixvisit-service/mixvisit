@@ -14,7 +14,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "@mix-visit/web": "^0.1.0",
+    "@mixvisit-service/mixvisit-light": "^1.0.1",
     "leaflet": "^1.9.4",
     "tippy.js": "^6.3.7"
   },

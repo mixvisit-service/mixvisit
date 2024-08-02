@@ -4,7 +4,7 @@ import {
   getWebGLBasicParams,
   getWebGLExtendedParams,
 } from './canvas';
-import type { WebGLInfo } from '../../types/index';
+import type { WebGLInfo } from '../../types';
 
 export function getWebGL(): WebGLInfo | null {
   const res: WebGLInfo = {
@@ -22,8 +22,7 @@ export function getWebGL(): WebGLInfo | null {
   }
 
   const [someContext] = supportedContexts;
-  const webglImageHash = getCanvasImageHash(canvas, someContext.context);
-  res.webglImageHash = webglImageHash;
+  res.webglImageHash = getCanvasImageHash(canvas, someContext.context);
 
   for (const contextInfo of supportedContexts) {
     const basics = getWebGLBasicParams(contextInfo);

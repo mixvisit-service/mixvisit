@@ -4,6 +4,7 @@
     "target": "ESNext",
     "declaration": true,
     "outDir": "./dist",
+    "moduleResolution": "bundler",
     "types": ["@webgpu/types"],
   },
   "include": [

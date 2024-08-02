@@ -1,4 +1,4 @@
-import type { WebGPUAPI } from '../../types/index';
+import type { WebGPUAPI } from '../../types';
 
 export async function getWebgGPUAPI(): Promise<WebGPUAPI> {
   const res: WebGPUAPI = {};
