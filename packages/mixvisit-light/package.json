@@ -24,10 +24,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/easync/mixvisitjs.git"
+    "url": "https://github.com/mixvisit-service/mixvisit.git"
   },
   "bugs": {
-    "url": "https://gitlab.com/easync/mixvisitjs/issues"
+    "url": "https://github.com/mixvisit-service/mixvisit/issues"
   },
   "homepage": "https://mixvisit.com/",
   "keywords": [
