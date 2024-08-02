@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { version } from '@mix-visit/web/package.json';
+  import { version } from '@mixvisit-service/mixvisit-light/package.json';
 
   let packageVersion = '';
 
@@ -27,7 +27,7 @@
       <img alt="release" src="https://img.shields.io/badge/release-v{packageVersion}-brightgreen">
     </a>
   {/if}
-  
+
   <a href="https://github.com/mixvisit-service/mixvisit/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">
     <img alt="license" src="https://img.shields.io/badge/license-MIT-brightgreen">
   </a>

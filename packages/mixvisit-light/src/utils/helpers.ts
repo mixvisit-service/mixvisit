@@ -1,4 +1,4 @@
-import { MaybePromise } from '../types/index';
+import { MaybePromise } from '../types';
 
 export function wait<T = void>(durationMs: number, resolveWith?: T): Promise<T> {
   return new Promise((resolve) => { setTimeout(resolve, durationMs, resolveWith); });
