@@ -49,6 +49,34 @@ export function suppressUnhandledRejectionWarning(promise: PromiseLike<unknown>)
   promise.then(null, () => null);
 }
 
+class ResponseError extends Error {
+  data: any;
+
+  response: Response;
+
+  status: number;
+
+  constructor(response: Response, data: any) {
+    super(`Request failed with status ${response.status}`);
+
+    this.data = data;
+    this.name = 'ResponseError';
+    this.response = response;
+    this.status = response.status;
+  }
+}
+
+export async function fetcher<T>(url: string, options?: RequestInit): Promise<T> {
+  const response = await fetch(url, options);
+  const data: T = await response.json();
+
+  if (response.ok) {
+    return data;
+  }
+
+  throw new ResponseError(response, data);
+}
+
 export function round(value: number, base = 1): number {
   if (Math.abs(base) >= 1) {
     return Math.round(value / base) * base;
