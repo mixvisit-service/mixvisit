@@ -4,16 +4,16 @@
   import bash from 'svelte-highlight/languages/bash';
 
   const installing = `# with npm package manager
-npm install @mixvisit-service/mixvisit-light
+npm install @mix-visit/light
 
 # with yarn package manager
-yarn add @mixvisit-service/mixvisit-light
+yarn add @mix-visit/light
 
 # with pnpm package manager
-pnpm add @mixvisit-service/mixvisit-light
+pnpm add @mix-visit/light
 `;
 
-  const using = `import { FPClient } from '@mixvisit-service/mixvisit-light';
+  const using = `import { FPClient } from '@mix-visit/light';
 
 const fpClient = new FPClient();
 await fpClient.load();

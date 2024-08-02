@@ -1,5 +1,5 @@
 {
-  "name": "@mixvisit-service/example",
+  "name": "@mix-visit/example",
   "version": "0.1.0",
   "type": "module",
   "license": "MIT",
@@ -14,7 +14,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "@mixvisit-service/mixvisit-light": "^1.0.1",
+    "@mix-visit/light": "^1.0.1",
     "leaflet": "^1.9.4",
     "tippy.js": "^6.3.7"
   },

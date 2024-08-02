@@ -7,7 +7,7 @@ module.exports = {
   ignorePatterns: ['.eslintrc.cjs'],
   parserOptions: {
     tsconfigRootDir: __dirname,
-    project: ['./packages/mixvisit-light/tsconfig.json', './example/tsconfig.json'],
+    project: ['./packages/light/tsconfig.json', './example/tsconfig.json'],
     ecmaVersion: 'latest',
     sourceType: 'module',
   },

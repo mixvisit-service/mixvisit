@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { version } from '@mixvisit-service/mixvisit-light/package.json';
+  import { version } from '@mix-visit/light/package.json';
 
   let packageVersion = '';
 

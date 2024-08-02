@@ -9,7 +9,7 @@ You can visit [mixvisit.com](https://mixvisit.com) for check our demo example
 ## Usage
 
 ```javascript
-import { FPClient } from '@mixvisit-service/mixvisit-light';
+import { FPClient } from '@mix-visit/light';
 
 const fpClient = new FPClient();
 await fpClient.load();
