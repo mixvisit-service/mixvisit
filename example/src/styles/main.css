@@ -26,8 +26,8 @@
 }
 
 footer {
-  font-size: .8rem;
-  padding-top: 20px;
+  font-size: 0.8rem;
+  padding-top: 1.25rem;
   position: relative;
   bottom: 0;
   width: 100%;
@@ -59,7 +59,7 @@ h1 {
 }
 
 #app {
-  width: 1280px;
+  width: 80rem;
   height: 100vh;
   margin: 0 auto;
   padding: 0;
@@ -84,7 +84,7 @@ summary > h3 {
 
 summary::before {
   content: "\25B6";
-  margin-right: 10px;
+  margin-right: 0.63rem;
   transition: transform 0.3s ease;
 }
 
@@ -93,8 +93,8 @@ details[open] summary::before {
 }
 
 code {
-  border-radius: 8px;
-  font-size: .8rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
 }
 
 pre {

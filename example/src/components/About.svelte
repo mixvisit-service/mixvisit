@@ -13,11 +13,11 @@
 
 <style>
   .question {
-    margin-top: .6rem;
+    margin-top: 0.6rem;
   }
 
   .lib-info {
-    font-size: .8rem;
+    font-size: 0.8rem;
     color: hsl(0, 0%, 70%);
   }
 </style>

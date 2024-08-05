@@ -38,11 +38,11 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin: 15px 0;
+    margin: 0.94rem 0;
   }
 
   .badges > img, a {
-    margin: 0 5px;
+    margin: 0 0.3rem;
   }
 
   a {

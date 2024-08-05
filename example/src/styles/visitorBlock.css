@@ -1,7 +1,7 @@
 #visitor-block {
   display: flex;
   flex-direction: row;
-  padding: 15px 0 15px 0;
+  padding: 1rem 0 1rem 0;
 }
 
 .leaflet-control-attribution {
@@ -10,29 +10,29 @@
 
 #visit-map {
   width: 100%;
-  height: 200px;
+  height: 12rem;
   background-size: cover;
   background-position: center;
-  border-radius: 10px;
+  border-radius: 0.6rem;
 }
 
 .visit-map-slider {
   width: 100%;
-  min-width: 200px;
+  min-width: 12rem;
 }
 
 .visit-map-slider-controls {
-  width: 100px;
+  width: 6rem;
   display: flex;
   justify-content: space-between;
-  margin: 20px auto;
+  margin: 1.3rem auto;
 }
 
 .slider-button {
   background: hsl(0, 0%, 95%);
   color: hsl(0, 0%, 0%);
   border: none;
-  padding: 10px 12px;
+  padding: 0.6rem 0.8rem;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -53,7 +53,7 @@
 }
 
 .visit-map-date-info span {
-  padding-top: 5px;
+  padding-top: 0.3rem;
 }
 
 .date-info {
@@ -71,9 +71,9 @@
   justify-content: space-between;
   width: 100%;
   height: fit-content;
-  margin-left: 26px;
-  border: 2px solid hsl(0, 0%, 42%);
-  border-radius: 10px;
+  margin-left: 1.6rem;
+  border: 0.13rem solid hsl(0, 0%, 42%);
+  border-radius: 0.63rem;
 }
 
 .location-info-column {
@@ -85,8 +85,8 @@
   flex-direction: row;
   overflow: hidden;
   align-items: center;
-  height: 90px;
-  padding: 25px;
+  height: 5.63rem;
+  padding: 1.57rem;
 }
 
 .location-item {
@@ -94,8 +94,8 @@
 }
 
 .location-item span:first-of-type {
-  width: 140px;
-  margin-right: 10px;
+  width: 9rem;
+  margin-right: 0.63rem;
 }
 
 .location-item span:last-of-type {
@@ -107,22 +107,22 @@
 .location-item span > .value {
   display: flex;
   background: hsl(0, 0%, 19%);
-  border-radius: 4px;
-  padding: 6px 10px;
+  border-radius: 0.3rem;
+  padding: 0.4rem 0.63rem;
   width: fit-content;
-  max-width: 190px;
+  max-width: 12rem;
 }
 
 .location-item span > .value .bold {
   font-weight: 600;
-  margin-right: 5px;
+  margin-right: 0.3rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .location-item:not(:last-child) {
-  border-bottom: 2px solid hsl(0, 0%, 42%);
+  border-bottom: 0.13rem solid hsl(0, 0%, 42%);
 }
 
 .location-item:last-child {
@@ -153,7 +153,7 @@ button.button-info {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: 8px;
+  margin-left: 0.5rem;
   padding: 0;
   background: none;
   color: hsl(240, 8%, 83%);
@@ -161,13 +161,13 @@ button.button-info {
 }
 
 .svg-icon {
-  width: 18px;
-  height: 18px;
+  width: 1.13rem;
+  height: 1.13rem;
 }
 
 .visitor-mixvisit-link {
   position: absolute;
-  bottom: -30px;
+  bottom: -1.9rem;
   right: 0;
   text-align: right;
   color: hsl(240, 8%, 75%);
@@ -189,7 +189,7 @@ button.button-info {
 
 .location-info-column:first-of-type > .location-item, 
 .location-info-column:last-of-type > .location-item:not(:last-child) {
-  border-bottom: 2px solid hsl(0, 0%, 42%);
+  border-bottom: 0.13rem solid hsl(0, 0%, 42%);
 }
 
 .location-item span > .value {
@@ -199,8 +199,8 @@ button.button-info {
 
 @supports (-webkit-hyphens: none) {
   .slider-button {
-    font-size: 18px;
-    padding: 10px 14px;
+    font-size: 1.13rem;
+    padding: 0.63rem 0.9rem;
   }
 }
 
@@ -214,13 +214,13 @@ button.button-info {
   }
 
   .visit-map-slider {
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
   }
 }
 
-@media screen and (max-width: 758px) {
+@media screen and (max-width: 760px) {
   .location-item span > .value {
     width: fit-content;
-    max-width: 190px;
+    max-width: 11.88rem;
   }
 }

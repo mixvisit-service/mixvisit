@@ -36,7 +36,7 @@
     color: white;
     cursor: pointer;
     padding: 1rem;
-    border-radius: .25rem;
+    border-radius: 0.25rem;
     transition: background-color 0.3s;
   }
 
