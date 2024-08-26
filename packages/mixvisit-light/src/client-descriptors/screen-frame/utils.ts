@@ -1,4 +1,4 @@
-import { FrameSize } from '../../types/index';
+import { FrameSize } from '../../types';
 import {
   replaceNaN,
   round,

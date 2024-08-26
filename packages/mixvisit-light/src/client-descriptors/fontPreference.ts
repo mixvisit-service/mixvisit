@@ -1,4 +1,4 @@
-import { MaybePromise } from '../types/index';
+import { MaybePromise } from '../types';
 import { BrowserUtils } from '../utils/browser';
 import { withIframe } from '../utils/helpers';
 

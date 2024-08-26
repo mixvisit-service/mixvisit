@@ -1,5 +1,5 @@
 import { getArchitecture } from './architecture';
-import { getAudioFingerprint } from './audio/index';
+import { getAudioFingerprint } from './audio';
 import { getAudioContextBaseLatency } from './audioBaseLatency';
 import { getCanvasFingerprint } from './canvas/index';
 import { getClientRects } from './client-rects/index';
@@ -30,7 +30,7 @@ import { getPlatform } from './platform';
 import { getPlugins } from './plugins';
 import { isMotionReduced } from './reducedMotion';
 import { isTransparencyReduced } from './reducedTransparency';
-import { getScreenFrame } from './screen-frame/index';
+import { getScreenFrame } from './screen-frame';
 import { getScreenResolution } from './screenResolution';
 import { isHaveSessionStorage } from './sessionStorage';
 import { getTimezone } from './timezone';
@@ -39,8 +39,8 @@ import { getUserAgent } from './userAgent';
 import { getUserAgentData } from './userAgentData';
 import { getVendor } from './vendor';
 import { getVendorFlavors } from './vendorFlavors';
-import { getWebGL } from './webgl/index';
-import { getWebGPU } from './webgpu/index';
+import { getWebGL } from './webgl';
+import { getWebGPU } from './webgpu';
 
 export type Descriptors = typeof descriptors;
 

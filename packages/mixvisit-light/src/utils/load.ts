@@ -1,5 +1,5 @@
-import type { Descriptors } from '../client-descriptors/index';
-import type { DescriptorsRes } from '../types/index';
+import type { Descriptors } from '../client-descriptors';
+import type { DescriptorsRes } from '../types';
 
 type LoadClientResult = Promise<{
   time: number;

@@ -1,9 +1,9 @@
 {
-  "private": true,
-  "name": "mix-visit",
+  "name": "mixvisit",
   "engines": {
     "node": ">=20.9.0"
   },
+  "private": true,
   "type": "module",
   "packageManager": "yarn@1.22.22",
   "workspaces": [
@@ -13,9 +13,9 @@
   "scripts": {
     "build": "yarn workspaces run build",
     "build:example": "yarn workspace @mix-visit/example run build",
-    "build:web": "yarn workspace @mix-visit/web run build",
+    "build:light": "yarn workspace @mix-visit/light run build",
     "dev:example": "yarn workspace @mix-visit/example run dev",
-    "dev:web": "yarn workspace @mix-visit/web run dev"
+    "dev:light": "yarn workspace @mix-visit/light run dev"
   },
   "devDependencies": {
     "@eslint/js": "^9.2.0",

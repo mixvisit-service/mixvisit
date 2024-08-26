@@ -1,6 +1,6 @@
 {
-  "name": "@mix-visit/web",
-  "version": "0.1.0",
+  "name": "@mix-visit/light",
+  "version": "1.0.1",
   "description": "Fingerprint library for generating client fingerprint",
   "license": "MIT",
   "type": "module",
@@ -24,12 +24,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/easync/mixvisitjs.git"
+    "url": "https://github.com/mixvisit-service/mixvisit.git"
   },
   "bugs": {
-    "url": "https://gitlab.com/easync/mixvisitjs/issues"
+    "url": "https://github.com/mixvisit-service/mixvisit/issues"
   },
-  "homepage": "http://mixvisitor.com/",
+  "homepage": "https://mixvisit.com/",
   "keywords": [
     "fingerprint",
     "fraud detection",
