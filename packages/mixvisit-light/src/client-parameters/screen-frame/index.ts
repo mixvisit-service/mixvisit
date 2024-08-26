@@ -1,6 +1,6 @@
 import { getBaseScreenFrame } from './screenFrame';
 import { processSize } from './utils';
-import { FrameSize } from '../../types';
+import type { FrameSize } from '../../types/index';
 import { BrowserUtils } from '../../utils/browser';
 
 /**

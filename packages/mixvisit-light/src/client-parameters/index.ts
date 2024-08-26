@@ -12,7 +12,6 @@ import { getDeviceMemory } from './deviceMemory';
 import { getFontPreferences } from './fontPreference';
 import { getFonts } from './fonts';
 import { areColorsForced } from './forcedColors';
-import { getGeolocation } from './geolocation';
 import { getHardwareConcurrency } from './hardwareConcurrency';
 import { getHDCPPolicyCheck } from './hdcp';
 import { isHDR } from './hdr';
@@ -42,9 +41,9 @@ import { getVendorFlavors } from './vendorFlavors';
 import { getWebGL } from './webgl';
 import { getWebGPU } from './webgpu';
 
-export type Descriptors = typeof descriptors;
+export type ClientParameters = typeof clientParameters;
 
-export const descriptors = {
+export const clientParameters = {
   userAgent: getUserAgent,
   osCpu: getOsCpu,
   cpuClass: getCpuClass,
@@ -58,7 +57,6 @@ export const descriptors = {
   plugins: getPlugins,
   userAgentData: getUserAgentData,
   hightEntropyValues: getHighEntropyValues,
-  geolocation: getGeolocation,
   pdfViewerEnabled: isPdfViewerEnabled,
   sessionStorage: isHaveSessionStorage,
   localStorage: isHaveLocalStorage,

@@ -24,10 +24,10 @@ export function getFloatIntPrecision(ctx: CanvasContext): string | null {
     return null;
   }
 
-  const floatStrRes = highFloatPrecisionInfo.precision !== 0 ? 'highp/' : 'mediump/';
-  const intStrRes = highIntPrecisionInfo.rangeMax !== 0 ? 'highp' : 'lowp';
+  const floatStrResult = highFloatPrecisionInfo.precision !== 0 ? 'highp/' : 'mediump/';
+  const intStrResult = highIntPrecisionInfo.rangeMax !== 0 ? 'highp' : 'lowp';
 
-  return `${floatStrRes}${intStrRes}`;
+  return `${floatStrResult}${intStrResult}`;
 }
 
 export function getMaxAnisotropy(ctx: CanvasContext): number | null {
@@ -49,9 +49,9 @@ export function getMaxAnisotropy(ctx: CanvasContext): number | null {
 }
 
 export function getParamFromObject(ctx: CanvasContext, param: string): unknown[] | null {
-  const parameterRes = ctx.getParameter(ctx[param]);
+  const parameterResult = ctx.getParameter(ctx[param]);
 
-  return parameterRes ? Object.values(parameterRes) : null;
+  return parameterResult ? Object.values(parameterResult) : null;
 }
 
 export function getParamsAndReturnArray(ctx: CanvasContext, params: string[]): unknown[] | null {

@@ -1,34 +1,31 @@
-import type { Descriptors } from '../client-descriptors';
-import type { DescriptorsRes } from '../types';
+import type { ClientParameters } from '../client-parameters/index';
+import type { ContextualClientParameters } from '../contextual-client-parameters/index';
+import type { UnwrappedClientParameters, UnwrappedContextualClientParameters } from '../types/index';
 
-type LoadClientResult = Promise<{
-  time: number;
-  results: DescriptorsRes;
-}>;
+type Parameters = ClientParameters | ContextualClientParameters;
 
-export async function loadClientDescriptors(descriptors: Descriptors): LoadClientResult {
-  const startTime = Date.now();
-  const descriptorsRes = {} as DescriptorsRes;
+type UnwrapClient<T> = T extends ClientParameters ? UnwrappedClientParameters : never;
+type UnwrapContextual<T> = T extends ContextualClientParameters ? UnwrappedContextualClientParameters : never;
 
-  for (const descriptorKey of Object.keys(descriptors)) {
-    const key = descriptorKey as keyof Descriptors;
+type LoadResult<T> = UnwrapClient<T> | UnwrapContextual<T>;
 
-    if (typeof descriptors[key] !== 'function') {
+export async function loadParameters<T extends Parameters>(parameters: Parameters): Promise<LoadResult<T>> {
+  const parameterResult = {} as LoadResult<T>;
+
+  for (const descriptorKey of Object.keys(parameters)) {
+    const key = descriptorKey as keyof (ClientParameters & ContextualClientParameters);
+
+    if (typeof parameters[key] !== 'function') {
       continue;
     }
 
-    const dataFetcher = descriptors[key]();
+    const dataFetcher = parameters[key]();
 
-    (descriptorsRes as any)[key] = dataFetcher instanceof Promise
+    (parameterResult as any)[key] = dataFetcher instanceof Promise
       // eslint-disable-next-line no-await-in-loop
       ? await dataFetcher
       : dataFetcher;
   }
 
-  const endTime = Date.now();
-
-  return {
-    time: endTime - startTime,
-    results: descriptorsRes,
-  };
+  return parameterResult;
 }

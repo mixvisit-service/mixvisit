@@ -17,9 +17,9 @@ const supportedConfig = [{
   }],
 }];
 
-type HDCPStatusRes = Record<typeof HDCPVersions[number], string>;
+type HDCPStatusResults = Record<typeof HDCPVersions[number], string>;
 
-export async function getHDCPPolicyCheck(): Promise<HDCPStatusRes | string | null> {
+export async function getHDCPPolicyCheck(): Promise<HDCPStatusResults | string | null> {
   try {
     const mediaKeySystemAccess = await navigator.requestMediaKeySystemAccess('com.widevine.alpha', supportedConfig);
     const mediaKeys = await mediaKeySystemAccess.createMediaKeys();
@@ -28,13 +28,13 @@ export async function getHDCPPolicyCheck(): Promise<HDCPStatusRes | string | nul
       return 'HDCP Policy Check API is not available';
     }
 
-    const res = {} as HDCPStatusRes;
+    const result = {} as HDCPStatusResults;
     const HDCPVersionsPromises: Promise<void>[] = [];
 
     for (const ver of HDCPVersions) {
       const statusForPolicyPromise = (mediaKeys as any).getStatusForPolicy({ minHdcpVersion: ver }) as Promise<string>;
       const promise = statusForPolicyPromise.then((status) => {
-        res[ver] = status !== 'usable' ? status : 'available';
+        result[ver] = status !== 'usable' ? status : 'available';
       });
 
       HDCPVersionsPromises.push(promise);
@@ -42,7 +42,7 @@ export async function getHDCPPolicyCheck(): Promise<HDCPStatusRes | string | nul
 
     await Promise.all(HDCPVersionsPromises);
 
-    return res;
+    return result;
   } catch (err) {
     console.log(err);
 

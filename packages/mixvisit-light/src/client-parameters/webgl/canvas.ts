@@ -107,7 +107,7 @@ export function getWebGLExtendedParams(ctx: CanvasContext): ExtendedParams | nul
     return null;
   }
 
-  const res = {} as ExtendedParams;
+  const result = {} as ExtendedParams;
 
   // Supported functions
   const isWebGLRenderContextExist = !!window.WebGL2RenderingContext;
@@ -120,13 +120,13 @@ export function getWebGLExtendedParams(ctx: CanvasContext): ExtendedParams | nul
       }
     }
 
-    res.supportedFunctions = supportedFunctions.sort();
+    result.supportedFunctions = supportedFunctions.sort();
   }
 
   // Context attributes
   const contextAttributes = ctx.getContextAttributes();
   if (contextAttributes) {
-    res.contextAttributes = contextAttributes;
+    result.contextAttributes = contextAttributes;
   }
 
   // WebGL parameters
@@ -159,7 +159,7 @@ export function getWebGLExtendedParams(ctx: CanvasContext): ExtendedParams | nul
       params[param] = parameter ?? NOT_APPLICABLE;
     }
 
-    res[paramType] = params;
+    result[paramType] = params;
   }
 
   // Shader precision
@@ -173,7 +173,7 @@ export function getWebGLExtendedParams(ctx: CanvasContext): ExtendedParams | nul
     }
   }
 
-  res.shaderPrecisions = shaderPrecisions;
+  result.shaderPrecisions = shaderPrecisions;
 
   // Extensions
   const supportedExtensions = ctx.getSupportedExtensions();
@@ -184,10 +184,10 @@ export function getWebGLExtendedParams(ctx: CanvasContext): ExtendedParams | nul
       extensions.push(elem);
     }
 
-    res.extensions = extensions.sort();
+    result.extensions = extensions.sort();
   }
 
-  return res;
+  return result;
 }
 
 export function getCanvasImageHash(canvas: HTMLCanvasElement, ctx: CanvasContext): string {
