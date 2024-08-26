@@ -1,4 +1,4 @@
-import { FPClient, type CompleteClientData } from '@mix-visit/web';
+import { FPClient, type CompleteClientData } from '@mix-visit/light';
 import type { Marker } from 'leaflet';
 
 export const type = (value: any): string => {

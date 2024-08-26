@@ -4,7 +4,7 @@ import type {
   WebGPUInfo,
   WebGPUSupportedAdapters,
   WebGPUSupportedAdaptersParam,
-} from '../../types/index';
+} from '../../types';
 
 const requestAdapterOptions: WebGPUSupportedAdaptersParam = {
   fallback: {

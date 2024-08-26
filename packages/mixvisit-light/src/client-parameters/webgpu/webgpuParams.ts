@@ -1,6 +1,6 @@
 /* eslint-disable no-empty */
 
-import type { AdaptersOption, WebGPUParams } from '../../types/index';
+import type { AdaptersOption, WebGPUParams } from '../../types';
 import { TEXTURE_FORMATS } from '../../utils/constants';
 
 export async function getWebGPUParams(options: AdaptersOption): Promise<WebGPUParams | null> {

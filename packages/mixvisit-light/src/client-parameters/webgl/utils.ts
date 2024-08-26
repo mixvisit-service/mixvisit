@@ -1,4 +1,4 @@
-import type { CanvasContext } from '../../types/index';
+import type { CanvasContext } from '../../types';
 
 export function getBestFloatPrecision(ctx: CanvasContext, shaderType: string): readonly [number, number, number] | null {
   const high = ctx.getShaderPrecisionFormat(ctx[shaderType], ctx.HIGH_FLOAT);

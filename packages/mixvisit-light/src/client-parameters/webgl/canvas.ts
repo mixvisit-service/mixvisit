@@ -19,7 +19,7 @@ import type {
   ExtendedParams,
   ShaderPrecisions,
   ShaderType,
-} from '../../types/index';
+} from '../../types';
 import {
   NOT_APPLICABLE,
   PRECISION_TYPES,
