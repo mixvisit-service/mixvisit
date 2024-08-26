@@ -1,7 +1,8 @@
 import { getArchitecture } from './architecture';
 import { getAudioFingerprint } from './audio';
 import { getAudioContextBaseLatency } from './audioBaseLatency';
-import { getCanvasFingerprint } from './canvas';
+import { getCanvasFingerprint } from './canvas/index';
+import { getClientRects } from './client-rects/index';
 import { getColorDepth } from './colorDepth';
 import { getColorGamut } from './colorGamut';
 import { getContrastPreference } from './contrastPreference';
@@ -84,6 +85,7 @@ export const descriptors = {
   fonts: getFonts,
   audio: getAudioFingerprint,
   canvas: getCanvasFingerprint,
+  clientRects: getClientRects,
   webgl: getWebGL,
   webgpu: getWebGPU,
 };
