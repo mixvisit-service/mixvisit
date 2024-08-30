@@ -1,4 +1,4 @@
-import { FPClient, type CompleteClientData } from '@mix-visit/light';
+import { MixVisit, type CompleteClientData } from '@mix-visit/light';
 import type { Marker } from 'leaflet';
 
 export const type = (value: any): string => {
@@ -56,11 +56,11 @@ type FPInfoRes = {
 };
 
 export async function getFPData(): Promise<FPInfoRes> {
-  const fpClient = new FPClient();
-  await fpClient.load();
+  const mixvisit = new MixVisit();
+  await mixvisit.load();
 
-  const data: CompleteClientData = fpClient.get();
-  const { fingerprintHash, loadTime } = fpClient;
+  const data: CompleteClientData = mixvisit.get();
+  const { fingerprintHash, loadTime } = mixvisit;
 
   return {
     fingerprintHash,

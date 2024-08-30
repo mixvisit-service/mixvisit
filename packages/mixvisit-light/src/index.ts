@@ -1,7 +1,8 @@
-import { FPClient } from './FPClient';
+import { MixVisit } from './MixVisit';
 
-export type { ClientParameters } from './client-parameters/index';
-export type { CompleteClientData, FPClientInterface } from './types/index';
+export type { ClientParameters } from './client-parameters';
+export type { CompleteClientData, MixVisitInterface } from './types';
 
-export { FPClient };
-export default FPClient;
+export { loadParameters } from './utils/load';
+export { MixVisit };
+export default MixVisit;

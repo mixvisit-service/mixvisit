@@ -10,7 +10,7 @@ export default defineConfig({
     target: 'esnext',
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'MixVisitJS',
+      name: 'MV',
       formats: [
         'cjs',
         'es',

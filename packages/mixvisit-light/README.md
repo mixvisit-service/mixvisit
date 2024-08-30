@@ -9,13 +9,13 @@ You can visit [mixvisit.com](https://mixvisit.com) for check our demo example
 ## Usage
 
 ```javascript
-import { FPClient } from '@mix-visit/light';
+import { MixVisit } from '@mix-visit/light';
 
-const fpClient = new FPClient();
-await fpClient.load();
+const mixvisit = new MixVisit();
+await mixvisit.load();
 
-console.log('time on miliseconds:>> ', fpClient.loadTime);
-console.log('fingerprintHash :>> ', fpClient.fingerprintHash);
-console.log('allResults :>> ', fpClient.get());
-console.log('platform :>> ', fpClient.get('platform'));
+console.log('time on miliseconds:>> ', mixvisit.loadTime);
+console.log('fingerprintHash :>> ', mixvisit.fingerprintHash);
+console.log('allResults :>> ', mixvisit.get());
+console.log('platform :>> ', mixvisit.get('platform'));
 ```
