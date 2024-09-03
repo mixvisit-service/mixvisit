@@ -1,13 +1,13 @@
-import { clientParameters } from './client-parameters/index';
-import type { ClientParameters } from './client-parameters/index';
-import { contextualClientParameters } from './contextual-client-parameters/index';
-import type { ContextualClientParameters } from './contextual-client-parameters/index';
-import type { CompleteClientData, FPClientInterface, GetterResults } from './types/index';
+import { clientParameters } from './client-parameters';
+import type { ClientParameters } from './client-parameters';
+import { contextualClientParameters } from './contextual-client-parameters';
+import type { ContextualClientParameters } from './contextual-client-parameters';
+import type { CompleteClientData, MixVisitInterface, GetterResults } from './types';
 import { x64 } from './utils/hashing';
 import { hasProperty } from './utils/helpers';
 import { loadParameters } from './utils/load';
 
-export class FPClient implements FPClientInterface {
+export class MixVisit implements MixVisitInterface {
   public loadTime: number | null = null;
 
   public fingerprintHash: string | null = null;

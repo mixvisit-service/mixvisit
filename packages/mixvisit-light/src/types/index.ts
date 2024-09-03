@@ -1,3 +1,3 @@
-export * from './parameters/index';
+export * from './parameters';
 export * from './base';
 export * from './utils';

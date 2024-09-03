@@ -1,22 +1,15 @@
 import type { UnwrapPromise } from './utils';
-import type { ClientParameters } from '../client-parameters/index';
-import type { ContextualClientParameters } from '../contextual-client-parameters/index';
+import type { ClientParameters } from '../client-parameters';
+import type { ContextualClientParameters } from '../contextual-client-parameters';
 
-type UnwrappedParameters<T extends Record<string, any>> = {
+export type UnwrappedParameters<T extends Record<string, any>> = {
   [K in keyof T]: UnwrapPromise<ReturnType<T[K]>>;
 };
 
-export type UnwrappedClientParameters = UnwrappedParameters<ClientParameters>;
-export type UnwrappedContextualClientParameters = UnwrappedParameters<ContextualClientParameters>;
+export type CompleteClientData = UnwrappedParameters<ClientParameters> & UnwrappedParameters<ContextualClientParameters>;
+export type GetterResults = CompleteClientData[keyof CompleteClientData] | CompleteClientData | null;
 
-export type CompleteClientData = UnwrappedClientParameters & UnwrappedContextualClientParameters;
-
-export type GetterResults =
-  | CompleteClientData[keyof CompleteClientData]
-  | CompleteClientData
-  | null;
-
-export interface FPClientInterface {
+export interface MixVisitInterface {
   loadTime: number | null;
   fingerprintHash: string | null;
   load(): Promise<void>;

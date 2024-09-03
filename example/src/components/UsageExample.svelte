@@ -13,15 +13,15 @@ yarn add @mix-visit/light
 pnpm add @mix-visit/light
 `;
 
-  const using = `import { FPClient } from '@mix-visit/light';
+  const using = `import { MixVisit } from '@mix-visit/light';
 
-const fpClient = new FPClient();
-await fpClient.load();
+const mixvisit = new MixVisit();
+await mixvisit.load();
 
-console.log('load time in miliseconds: ', fpClient.loadTime);
-console.log('fingerprint hash: ', fpClient.fingerprintHash);
-console.log('get all client data: ', fpClient.get());
-console.log('get platform: ', fpClient.get('platform'));
+console.log('load time in miliseconds: ', mixvisit.loadTime);
+console.log('fingerprint hash: ', mixvisit.fingerprintHash);
+console.log('get all client data: ', mixvisit.get());
+console.log('get platform: ', mixvisit.get('platform'));
 `;
 </script>
 
