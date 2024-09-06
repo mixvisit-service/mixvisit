@@ -75,7 +75,7 @@ interface CSSStyleDeclaration {
 }
 
 interface ApplePaySessionConstructor {
-  new(version: number, request: Record<never, never>): never;
+  new (version: number, request: Record<never, never>): never;
   canMakePayments(): boolean;
 }
 

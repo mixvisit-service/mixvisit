@@ -5,10 +5,8 @@
 
   export let visitorData: VisitorData | null;
 
-  onMount(() => {
-    (async () => {
-      await main();
-    })();
+  onMount(async () => {
+    await main();
   });
 
   async function main(): Promise<void> {
