@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { initVisitorBlock, saveVisitorData } from '../logics/services/visitorBlock';
-  import type { VisitorData } from '../logics/types';
+  import { initVisitorBlock, saveVisitorData } from '../services/visitorBlock';
+  import type { VisitorData } from '../types';
 
   export let visitorData: VisitorData | null;
 

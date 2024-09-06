@@ -2,16 +2,16 @@
   import { onMount } from 'svelte';
   import highlightStyle from 'svelte-highlight/styles/circus';
 
-  import Badges from './components/Badges.svelte';
-  import UsageExample from './components/UsageExample.svelte';
-  import VisitorBlock from './components/VisitorBlock.svelte';
-  import ClientData from './components/ClientData.svelte';
-  import About from './components/About.svelte';
-  import GoToTop from './components/GoToTop.svelte';
+  import Badges from './lib/components/Badges.svelte';
+  import UsageExample from './lib/components/UsageExample.svelte';
+  import VisitorBlock from './lib/components/VisitorBlock.svelte';
+  import ClientData from './lib/components/ClientData.svelte';
+  import About from './lib/components/About.svelte';
+  import GoToTop from './lib/components/GoToTop.svelte';
 
-  import { getLocationData } from './logics/api';
-  import { TDef, getFPData } from './logics/utils';
-  import type { VisitorData } from './logics/types';
+  import { getLocationData } from './lib/api/location';
+  import { TDef, getMixVisitClientData } from './lib/utils';
+  import type { VisitorData } from './lib/types';
 
   let status = 'not loaded';
   let data = '';
@@ -29,8 +29,8 @@
 
   async function main(): Promise<void> {
     try {
-      const fpData = await getFPData();
-      const { data: clientData, fingerprintHash, loadTime: loadTimeRes } = fpData || {};
+      const mixvisitClientData = await getMixVisitClientData();
+      const { data: clientData, fingerprintHash, loadTime: loadTimeRes } = mixvisitClientData || {};
       const location = await getLocationData();
 
       if (

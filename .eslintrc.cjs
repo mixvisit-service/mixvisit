@@ -10,6 +10,7 @@ module.exports = {
     project: [
       "./packages/mixvisit-light/tsconfig.json",
       "./example/tsconfig.json",
+      "./example/tsconfig.node.json",
     ],
     ecmaVersion: "latest",
     sourceType: "module",

@@ -33,14 +33,11 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
     margin: 0.94rem 0;
   }
 
   .badges > img, a {
     margin: 0 0.3rem;
-  }
-
-  a {
-    height: 0;
   }
 </style>
