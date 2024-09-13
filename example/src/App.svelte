@@ -2,45 +2,42 @@
   import { onMount } from 'svelte';
   import highlightStyle from 'svelte-highlight/styles/circus';
 
-  import Badges from './components/Badges.svelte';
-  import UsageExample from './components/UsageExample.svelte';
-  import VisitorBlock from './components/VisitorBlock.svelte';
-  import ClientData from './components/ClientData.svelte';
-  import About from './components/About.svelte';
-  import GoToTop from './components/GoToTop.svelte';
+  import Badges from './lib/components/Badges.svelte';
+  import UsageExample from './lib/components/UsageExample.svelte';
+  import VisitorBlock from './lib/components/VisitorBlock.svelte';
+  import ClientData from './lib/components/ClientData.svelte';
+  import About from './lib/components/About.svelte';
+  import GoToTop from './lib/components/GoToTop.svelte';
 
-  import { getLocationData } from './logics/api';
-  import { TDef, getFPData } from './logics/utils';
-  import type { VisitorData } from './logics/types';
+  import { getLocationData } from './lib/api/location';
+  import { TDef, getMixVisitClientData } from './lib/utils';
+  import type { VisitorData } from './lib/types';
 
   let status = 'not loaded';
-  let fpClientData = '';
+  let data = '';
   let loadTime = '';
   let visitorData: VisitorData | null = null;
   let productYears = '';
 
   const releaseYear = 2024;
+  const currentYear = new Date().getFullYear();
+  productYears = currentYear === releaseYear ? currentYear.toString() : `${releaseYear}-${currentYear}`; 
 
-  onMount(() => {
-    (async () => {
-      await main();
-    })();
+  onMount(async () => {
+    await main();
   });
 
   async function main(): Promise<void> {
     try {
-      const currentYear = new Date().getFullYear();
-      productYears = currentYear === releaseYear ? currentYear.toString() : `${releaseYear}-${currentYear}`; 
-
-      const fpData = await getFPData();
-      const { data, fingerprintHash, loadTime: loadTimeRes } = fpData || {};
+      const mixvisitClientData = await getMixVisitClientData();
+      const { data: clientData, fingerprintHash, loadTime: loadTimeRes } = mixvisitClientData || {};
       const location = await getLocationData();
 
       if (
         !(
           fingerprintHash &&
           location &&
-          TDef.isObject(data) &&
+          TDef.isObject(clientData) &&
           TDef.isObject(location) &&
           TDef.isNumber(loadTimeRes)
         )
@@ -55,8 +52,8 @@
 
       status = 'loaded';
 
-      if (data && TDef.isObject(data)) {
-        fpClientData = JSON.stringify(data, null, 2);
+      if (clientData && TDef.isObject(clientData)) {
+        data = JSON.stringify(clientData, null, 2);
       }
 
       if (loadTimeRes && TDef.isNumber(loadTimeRes)) {
@@ -81,9 +78,8 @@
   {#if status === 'loaded'}
     <UsageExample /> 
     <VisitorBlock {visitorData} />
-    <ClientData data={fpClientData} {loadTime} />
+    <ClientData {data} {loadTime} />
     <About /> 
-
     <GoToTop />
   {:else if status === 'not loaded'}
     <p>Loading ...</p>
@@ -98,7 +94,17 @@
 
 <style>
   h1, h2, footer {
-    display: flex;
-    justify-content: center;
+    text-align: center;
+    word-wrap: break-word;
+  }
+
+  @media screen and (max-width: 690px) {
+    .lib-title {
+      font-size: 3.3rem;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+    }
   }
 </style>

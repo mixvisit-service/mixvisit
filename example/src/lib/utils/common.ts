@@ -1,9 +1,7 @@
-import { MixVisit, type CompleteClientData } from '@mix-visit/light';
 import type { Marker } from 'leaflet';
 
 export const type = (value: any): string => {
-  const matches = Object.prototype.toString.call(value)
-    .match(/^\[object (\S+?)\]$/) || [];
+  const matches = Object.prototype.toString.call(value).match(/^\[object (\S+?)\]$/) || [];
 
   return matches[1]?.toLowerCase() || 'undefined';
 };
@@ -33,42 +31,6 @@ export const TDef = {
   isNil: (value: any) => TDef.isUndefined(value) || TDef.isNull(value),
 };
 
-export async function fetchJSON<T>(request: string): Promise<T | null> {
-  try {
-    const response = await fetch(request);
-    const contentType = response.headers.get('content-type');
-    if (!(contentType && contentType.includes('application/json'))) {
-      throw new TypeError('Oops, we haven\'t got JSON!');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Error:', error);
-
-    return null;
-  }
-}
-
-type FPInfoRes = {
-  fingerprintHash: string | null;
-  loadTime: number | null;
-  data: Record<string, any>;
-};
-
-export async function getFPData(): Promise<FPInfoRes> {
-  const mixvisit = new MixVisit();
-  await mixvisit.load();
-
-  const data: CompleteClientData = mixvisit.get();
-  const { fingerprintHash, loadTime } = mixvisit;
-
-  return {
-    fingerprintHash,
-    loadTime,
-    data,
-  };
-}
-
 export function formatDate(date: string): string {
   const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'] as const;
   const givenDate = new Date(date);
@@ -91,15 +53,14 @@ export function formatDateDifference(date: string): string {
   const diffTime = today.getTime() - givenDate.getTime();
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-  if (diffDays === 0) {
-    return 'TODAY';
+  switch (diffDays) {
+    case 0:
+      return 'TODAY';
+    case 1:
+      return 'YESTERDAY';
+    default:
+      return `${diffDays} DAYS AGO`;
   }
-
-  if (diffDays === 1) {
-    return 'YESTERDAY';
-  }
-
-  return `${diffDays} DAYS AGO`;
 }
 
 export function bindMarkerPopup(data: { marker: Marker<any>; country: string; city: string }): void {

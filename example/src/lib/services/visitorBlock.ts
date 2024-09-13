@@ -31,7 +31,7 @@ type VisitData = {
   lng: number;
   time: string;
   when: string;
-  visitStatus: typeof VisitStatus[keyof typeof VisitStatus];
+  visitStatus: (typeof VisitStatus)[keyof typeof VisitStatus];
   isIncognito: null;
 };
 
@@ -58,12 +58,7 @@ export function initVisitorBlock(selector: string): void {
 
     // block element with information about the visitor
     visitorInfoEl = document.querySelector(selector);
-    if (!(
-      TDef.isString(selector)
-      && TDef.isArray(visitorData)
-      && visitorData.length
-      && visitorInfoEl
-    )) {
+    if (!(TDef.isString(selector) && TDef.isArray(visitorData) && visitorData.length && visitorInfoEl)) {
       return;
     }
 
@@ -178,17 +173,14 @@ function createOrUpdateVisitMapSliderBlock(visitorInfoElParam: HTMLElement, visi
         zoom: 8,
       });
 
-      mapMarker = Leaflet.marker(
-        location,
-        {
-          icon: Leaflet.icon({
-            iconUrl: '/location-marker.svg',
-            iconSize: [26, 36],
-            iconAnchor: [16, 36],
-            popupAnchor: [-2, -40],
-          }),
-        },
-      );
+      mapMarker = Leaflet.marker(location, {
+        icon: Leaflet.icon({
+          iconUrl: '/location-marker.svg',
+          iconSize: [26, 36],
+          iconAnchor: [16, 36],
+          popupAnchor: [-2, -40],
+        }),
+      });
 
       mapMarker.addTo(visitsMap);
       bindMarkerPopup({

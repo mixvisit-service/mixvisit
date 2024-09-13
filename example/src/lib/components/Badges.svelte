@@ -1,17 +1,7 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  // TODO: add version from package.json
-  // import { version } from '@mix-visit/light'; 
-  
-  const version = '1.0.1';
+  import { version } from '@mix-visit/light/package.json'; 
 
-  let packageVersion = '';
-
-  onMount(() => {
-    if (version) {
-      packageVersion = version;
-    }
-  });
+  let packageVersion = version ?? '';
 </script>
 
 <section class="badges">
@@ -19,7 +9,9 @@
     <img alt="github" src="https://img.shields.io/badge/github-1C2128?logo=github&logoColor=white">
   </a>
 
-  <img alt="npm" src="https://img.shields.io/badge/npm-FFFFFF?logo=npm">
+  <a href="https://www.npmjs.com/package/@mix-visit/light" target="_blank" rel="noopener noreferrer">
+    <img alt="npm" src="https://img.shields.io/badge/npm-white?logo=npm&logoColor=D4262C">
+  </a>
 
   <a href="http://typescriptlang.org/" target="_blank" rel="noopener noreferrer">
     <img alt="typescript" src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white">
@@ -41,14 +33,11 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
     margin: 0.94rem 0;
   }
 
   .badges > img, a {
     margin: 0 0.3rem;
-  }
-
-  a {
-    height: 0;
   }
 </style>

@@ -18,10 +18,7 @@ export class MixVisit implements MixVisitInterface {
     try {
       const startTime = Date.now();
 
-      const [
-        clientParametersResult,
-        contextualClientParametersResult,
-      ] = await Promise.all([
+      const [clientParametersResult, contextualClientParametersResult] = await Promise.all([
         loadParameters<ClientParameters>(clientParameters),
         loadParameters<ContextualClientParameters>(contextualClientParameters),
       ]);

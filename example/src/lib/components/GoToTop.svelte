@@ -32,8 +32,8 @@
     z-index: 99;
     border: none;
     outline: none;
-    background-color: #555;
-    color: white;
+    background-color: hsl(0, 0%, 33%);
+    color: hsl(0, 0%, 100%);
     cursor: pointer;
     padding: 1rem;
     border-radius: 0.25rem;
@@ -45,6 +45,6 @@
   }
 
   .to-top:hover {
-    background-color: #333;
+    background-color: hsl(0, 0%, 20%);
   }
 </style>
