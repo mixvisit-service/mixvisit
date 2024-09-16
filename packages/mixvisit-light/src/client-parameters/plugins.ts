@@ -6,6 +6,7 @@ type PluginMimeTypeData = {
 type PluginData = {
   name: string;
   description: string;
+  filename: string;
   mimeTypes: PluginMimeTypeData[];
 };
 
@@ -37,6 +38,7 @@ export function getPlugins(): PluginData[] | null {
     plugins.push({
       name: plugin.name,
       description: plugin.description,
+      filename: plugin.filename,
       mimeTypes,
     });
   }
