@@ -14,10 +14,10 @@ interface Navigator {
   systemLanguage?: string;
   deviceMemory?: number;
   cpuClass?: string;
+  connection?: Connection;
+  mozConnection?: Connection;
+  webkitConnection?: Connection;
   readonly msMaxTouchPoints?: number;
-  connection?: {
-    ontypechange?: () => void;
-  };
 }
 
 interface NavigatorUABrandVersion {
@@ -75,7 +75,7 @@ interface CSSStyleDeclaration {
 }
 
 interface ApplePaySessionConstructor {
-  new (version: number, request: Record<never, never>): never;
+  new(version: number, request: Record<never, never>): never;
   canMakePayments(): boolean;
 }
 
@@ -96,4 +96,9 @@ type ExtendedGPUTextureUsage = typeof GPUTextureUsage & {
   readonly SAMPLED: GPUFlagsConstant;
   readonly OUTPUT_ATTACHMENT: GPUFlagsConstant;
   readonly STORAGE: GPUFlagsConstant;
+};
+
+type Connection = {
+  ontypechange?: () => void;
+  effectiveType: string;
 };
