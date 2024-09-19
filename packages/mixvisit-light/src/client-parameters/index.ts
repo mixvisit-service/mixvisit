@@ -10,9 +10,7 @@ import { getColorSpaceSupport } from './colorSpaceSupport';
 import { getComputedStyleProperties } from './computedStyleProperties';
 import { getContrastPreference } from './contrastPreference';
 import { areCookiesEnabled } from './cookiesEnabled';
-import { getCpuClass } from './cpuClass';
 import { getCSSSupport } from './cssSupport';
-import { getDeviceMemory } from './deviceMemory';
 import { isDevToolsOpened } from './devToolsDetector';
 import { getDRMSupportInfo } from './drmSupport';
 import { getFileAPIsInfo } from './fileAPIs';
@@ -21,26 +19,20 @@ import { getFontRendering } from './fontRendering';
 import { getFonts } from './fonts';
 import { areColorsForced } from './forcedColors';
 import { getGlobalObjects } from './globalObjects';
-import { getHardwareConcurrency } from './hardwareConcurrency';
 import { getHDCPPolicyCheck } from './hdcp';
 import { isHDR } from './hdr';
-import { getHighEntropyValues } from './hightEntropyValues';
 import { isHaveIndexedDB } from './indexedDB';
 import { areColorsInverted } from './invertedColors';
-import { getLanguages } from './languages';
 import { isHaveLocalStorage } from './localStorage';
 import { getMathResults } from './math';
 import { getMediaCapabilities } from './mediaCapabilities';
 import { getMediaDecodingCapabilities } from './mediaDecodingCapabilities';
 import { getMemoryInfo } from './memory';
 import { getMonochromeDepth } from './monochromeDepth';
+import { getNavigatorInfo } from './navigator';
 import { getNavigatorProperties } from './navigatorProperties';
 import { isHaveOpenDatabase } from './openDatabase';
-import { getOsCpu } from './osCPU';
-import { isPdfViewerEnabled } from './pdfViewerEnabled';
 import { getPerformanceData } from './performance';
-import { getPlatform } from './platform';
-import { getPlugins } from './plugins';
 import { isMotionReduced } from './reducedMotion';
 import { isTransparencyReduced } from './reducedTransparency';
 import { getScreenFrame } from './screen-frame';
@@ -51,9 +43,6 @@ import { getSymbolPropertiesInfo } from './symbolProperties';
 import { getSystemInfo } from './systemInfo';
 import { getTimezone } from './timezone';
 import { getTouchSupport } from './touchSupport';
-import { getUserAgent } from './userAgent';
-import { getUserAgentData } from './userAgentData';
-import { getVendor } from './vendor';
 import { getVendorFlavors } from './vendorFlavors';
 import { getWebGL } from './webgl';
 import { getWebGPU } from './webgpu';
@@ -62,20 +51,9 @@ import { getWebKitAPIsInfo } from './webkitAPIs';
 export type ClientParameters = typeof clientParameters;
 
 export const clientParameters = {
-  userAgent: getUserAgent,
-  osCpu: getOsCpu,
-  cpuClass: getCpuClass,
-  platform: getPlatform,
-  languages: getLanguages,
+  navigator: getNavigatorInfo,
   timezone: getTimezone,
-  vendor: getVendor,
   colorDepth: getColorDepth,
-  hardwareConcurrency: getHardwareConcurrency,
-  deviceMemory: getDeviceMemory,
-  plugins: getPlugins,
-  userAgentData: getUserAgentData,
-  hightEntropyValues: getHighEntropyValues,
-  pdfViewerEnabled: isPdfViewerEnabled,
   sessionStorage: isHaveSessionStorage,
   localStorage: isHaveLocalStorage,
   openDatabase: isHaveOpenDatabase,
