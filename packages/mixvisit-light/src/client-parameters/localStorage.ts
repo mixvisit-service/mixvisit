@@ -2,7 +2,7 @@
 export function isHaveLocalStorage(): boolean {
   try {
     return !!window.localStorage;
-  } catch (e) {
+  } catch (err) {
     /* SecurityError when referencing it means it exists */
     return true;
   }

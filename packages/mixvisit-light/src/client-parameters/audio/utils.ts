@@ -40,8 +40,8 @@ export function renderAudio(context: OfflineAudioContext): Promise<AudioBuffer |
             resolve(null);
           }
         }
-      } catch (error) {
-        reject(error);
+      } catch (err) {
+        reject(err);
       }
     };
 
