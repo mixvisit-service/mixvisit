@@ -1,7 +1,40 @@
 import { MaybePromise } from '../types';
 
+export const type = (value: any): string => {
+  const matches = Object.prototype.toString.call(value).match(/^\[object (\S+?)\]$/) || [];
+
+  return matches[1]?.toLowerCase() || 'undefined';
+};
+
+export const TDef = {
+  isString: (value: any) => type(value) === 'string',
+  isNumber: (value: any) => type(value) === 'number',
+  isNumberFinity: (value: any) => Number.isFinite(value),
+  isNegativeInfinity: (value: any) => value === Number.NEGATIVE_INFINITY,
+  isPositiveInfinity: (value: any) => value === Number.POSITIVE_INFINITY,
+  isNaN: (value: any) => Number.isNaN(value),
+  isObject: (value: any) => type(value) === 'object',
+  isArray: (value: any) => type(value) === 'array',
+  isBoolean: (value: any) => type(value) === 'boolean',
+  isSymbol: (value: any) => type(value) === 'symbol',
+  isUndefined: (value: any) => type(value) === 'undefined',
+  isNull: (value: any) => type(value) === 'null',
+  isDate: (value: any) => type(value) === 'date',
+  isBigIng: (value: any) => type(value) === 'bigint',
+  isMap: (value: any) => type(value) === 'map',
+  isSet: (value: any) => type(value) === 'set',
+  isWeakMap: (value: any) => type(value) === 'weakmap',
+  isWeakSet: (value: any) => type(value) === 'weakset',
+  isRegExp: (value: any) => type(value) === 'regexp',
+  isFunc: (value: any) => type(value) === 'function',
+  isError: (value: any) => type(value) === 'error',
+  isNil: (value: any) => TDef.isUndefined(value) || TDef.isNull(value),
+};
+
 export function wait<T = void>(durationMs: number, resolveWith?: T): Promise<T> {
-  return new Promise((resolve) => { setTimeout(resolve, durationMs, resolveWith); });
+  return new Promise((resolve) => {
+    setTimeout(resolve, durationMs, resolveWith);
+  });
 }
 
 export function toInt(value: unknown): number {
@@ -20,8 +53,19 @@ export function calcTruthy(values: unknown[]): number {
   return values.reduce<number>((sum, value) => sum + (value ? 1 : 0), 0);
 }
 
-export function hasProperty<T extends object, K extends PropertyKey>(obj: T, key: K): obj is T & Record<K, unknown> {
-  return Object.hasOwn(obj, key);
+export function hasProperty<T extends object, K extends PropertyKey>(
+  object: T,
+  key: K,
+): object is T & Record<K, unknown> {
+  if (TDef.isNil(object)) {
+    return false;
+  }
+
+  if (Object.hasOwn(object, key)) {
+    return true;
+  }
+
+  return key in object;
 }
 
 export function isPromise<T>(value: PromiseLike<T> | unknown): value is PromiseLike<T> {
@@ -88,11 +132,13 @@ export function round(value: number, base = 1): number {
 }
 
 export function getFullscreenElement(): Element | null {
-  return document.fullscreenElement
+  return (
+    document.fullscreenElement
     || document.msFullscreenElement
     || document.mozFullScreenElement
     || document.webkitFullscreenElement
-    || null;
+    || null
+  );
 }
 
 export function exitFullscreen(): Promise<void> {
@@ -121,9 +167,9 @@ export function getUTF8Bytes(input: string): Uint8Array {
 }
 
 type WithIframeProps<T> = {
-  action: (iframe: HTMLIFrameElement, iWindow: typeof window) => MaybePromise<T>,
-  initialHtml?: string,
-  domPollInterval?: number,
+  action: (iframe: HTMLIFrameElement, iWindow: typeof window) => MaybePromise<T>;
+  initialHtml?: string;
+  domPollInterval?: number;
 };
 
 /**
@@ -133,11 +179,7 @@ type WithIframeProps<T> = {
  *
  * Notice: passing an initial HTML code doesn't work in IE
  */
-export async function withIframe<T>({
-  action,
-  initialHtml,
-  domPollInterval = 50,
-}: WithIframeProps<T>): Promise<T> {
+export async function withIframe<T>({ action, initialHtml, domPollInterval = 50 }: WithIframeProps<T>): Promise<T> {
   // document.body can be null while the page is loading
   while (!document.body) {
     // eslint-disable-next-line no-await-in-loop
