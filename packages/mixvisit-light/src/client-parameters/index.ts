@@ -35,6 +35,7 @@ import { isHaveOpenDatabase } from './openDatabase';
 import { getPerformanceData } from './performance';
 import { isMotionReduced } from './reducedMotion';
 import { isTransparencyReduced } from './reducedTransparency';
+import { getScreenData } from './screen';
 import { getScreenFrame } from './screen-frame';
 import { getScreenResolution } from './screenResolution';
 import { isHaveSessionStorage } from './sessionStorage';
@@ -72,6 +73,7 @@ export const clientParameters = {
   touchSupport: getTouchSupport,
   architecture: getArchitecture,
   baseLatency: getAudioContextBaseLatency,
+  screen: getScreenData,
   screenResolution: getScreenResolution,
   screenFrame: getScreenFrame,
   math: getMathResults,
