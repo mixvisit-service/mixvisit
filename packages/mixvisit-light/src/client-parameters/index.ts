@@ -22,6 +22,7 @@ import { getGlobalObjects } from './globalObjects';
 import { getHDCPPolicyCheck } from './hdcp';
 import { isHDR } from './hdr';
 import { isHaveIndexedDB } from './indexedDB';
+import { getIntlData } from './intl';
 import { areColorsInverted } from './invertedColors';
 import { isHaveLocalStorage } from './localStorage';
 import { getMathResults } from './math';
@@ -76,6 +77,7 @@ export const clientParameters = {
   screen: getScreenData,
   screenResolution: getScreenResolution,
   screenFrame: getScreenFrame,
+  intl: getIntlData,
   math: getMathResults,
   fontPreferences: getFontPreferences,
   fonts: getFonts,

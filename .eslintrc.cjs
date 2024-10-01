@@ -76,6 +76,7 @@ module.exports = {
     ],
     "max-lines": ["warn", 500],
     "max-len": ["warn", 150],
+    "@typescript-eslint/indent": "off",
     "@typescript-eslint/no-use-before-define": "off",
   },
 };
