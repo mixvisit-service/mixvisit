@@ -8,7 +8,7 @@ module.exports = {
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: [
-      "./packages/mixvisit-light/tsconfig.json",
+      "./packages/mixvisit-lite/tsconfig.json",
       "./example/tsconfig.json",
       "./example/tsconfig.node.json",
     ],

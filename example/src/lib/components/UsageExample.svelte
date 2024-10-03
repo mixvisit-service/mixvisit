@@ -4,16 +4,16 @@
   import bash from 'svelte-highlight/languages/bash';
 
   const installing = `# with npm package manager
-npm install @mix-visit/light
+npm install @mix-visit/lite
 
 # with yarn package manager
-yarn add @mix-visit/light
+yarn add @mix-visit/lite
 
 # with pnpm package manager
-pnpm add @mix-visit/light
+pnpm add @mix-visit/lite
 `;
 
-  const using = `import { MixVisit } from '@mix-visit/light';
+  const using = `import { MixVisit } from '@mix-visit/lite';
 
 const mixvisit = new MixVisit();
 await mixvisit.load();

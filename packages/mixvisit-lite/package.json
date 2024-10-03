@@ -1,5 +1,5 @@
 {
-  "name": "@mix-visit/light",
+  "name": "@mix-visit/lite",
   "version": "1.0.1",
   "description": "Fingerprint library for generating client fingerprint",
   "license": "MIT",

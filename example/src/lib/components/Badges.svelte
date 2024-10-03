@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { version } from '@mix-visit/light/package.json'; 
+  import { version } from '@mix-visit/lite/package.json'; 
 
   let packageVersion = version ?? '';
 </script>
@@ -9,7 +9,7 @@
     <img alt="github" src="https://img.shields.io/badge/github-1C2128?logo=github&logoColor=white">
   </a>
 
-  <a href="https://www.npmjs.com/package/@mix-visit/light" target="_blank" rel="noopener noreferrer">
+  <a href="https://www.npmjs.com/package/@mix-visit/lite" target="_blank" rel="noopener noreferrer">
     <img alt="npm" src="https://img.shields.io/badge/npm-white?logo=npm&logoColor=D4262C">
   </a>
 
