@@ -15,7 +15,6 @@ import { getContrastPreference } from './contrastPreference';
 import { areCookiesEnabled } from './cookiesEnabled';
 import { getCSSSupport } from './cssSupport';
 import { getDevicePixelRatio } from './devicePixelRatio';
-import { isDevToolsOpened } from './devToolsDetector';
 import { getDRMSupportInfo } from './drmSupport';
 import { getFileAPIsInfo } from './fileAPIs';
 import { isHaveFlash } from './flash';
@@ -43,7 +42,6 @@ import { isHaveOpenDatabase } from './openDatabase';
 import { isMotionReduced } from './reducedMotion';
 import { isTransparencyReduced } from './reducedTransparency';
 import { schedulingData } from './scheduling';
-import { getScreenData } from './screen';
 import { getScreenFrame } from './screen-frame';
 import { getScreenResolution } from './screenResolution';
 import { isHaveSessionStorage } from './sessionStorage';
@@ -63,7 +61,6 @@ export type ClientParameters = typeof clientParameters;
 
 export const clientParameters = {
   navigator: getNavigatorInfo,
-  devToolsOpen: isDevToolsOpened,
   cookiesEnabled: areCookiesEnabled,
   sessionStorage: isHaveSessionStorage,
   localStorage: isHaveLocalStorage,
@@ -94,7 +91,6 @@ export const clientParameters = {
   touchSupport: getTouchSupport,
   scheduling: schedulingData,
   baseLatency: getAudioContextBaseLatency,
-  screen: getScreenData,
   screenResolution: getScreenResolution,
   screenFrame: getScreenFrame,
   intl: getIntlData,
