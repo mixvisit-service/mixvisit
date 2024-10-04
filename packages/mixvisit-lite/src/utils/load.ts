@@ -1,3 +1,4 @@
+import { TDef } from './helpers';
 import type { ClientParameters } from '../client-parameters';
 import type { ContextualClientParameters } from '../contextual-client-parameters';
 import type { UnwrappedParameters } from '../types';
@@ -15,16 +16,20 @@ export async function loadParameters<T extends Parameters>(parameters: Parameter
   const result = {} as LoadResult<T>;
 
   for (const key of Object.keys(parameters)) {
-    if (typeof parameters[key] !== 'function') {
-      continue;
+    try {
+      if (!TDef.isFunc(parameters[key])) {
+        continue;
+      }
+
+      const dataFetcher = parameters[key]();
+
+      (result as any)[key] = dataFetcher instanceof Promise
+        // eslint-disable-next-line no-await-in-loop
+        ? await dataFetcher
+        : dataFetcher;
+    } catch (err) {
+      console.error('Something wrong in loadParameters function. ', err);
     }
-
-    const dataFetcher = parameters[key]();
-
-    (result as any)[key] = dataFetcher instanceof Promise
-      // eslint-disable-next-line no-await-in-loop
-      ? await dataFetcher
-      : dataFetcher;
   }
 
   return result;

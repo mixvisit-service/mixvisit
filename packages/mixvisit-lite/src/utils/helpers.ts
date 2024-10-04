@@ -26,7 +26,7 @@ export const TDef = {
   isWeakMap: (value: any) => type(value) === 'weakmap',
   isWeakSet: (value: any) => type(value) === 'weakset',
   isRegExp: (value: any) => type(value) === 'regexp',
-  isFunc: (value: any) => type(value) === 'function',
+  isFunc: (value: any) => ['asyncfunction', 'function'].includes(type(value)),
   isError: (value: any) => type(value) === 'error',
   isNil: (value: any) => TDef.isUndefined(value) || TDef.isNull(value),
 };
