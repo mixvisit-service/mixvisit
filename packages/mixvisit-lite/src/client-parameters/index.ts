@@ -22,7 +22,6 @@ import { getFontPreferences } from './fontPreference';
 import { getFontRendering } from './fontRendering';
 import { getFonts } from './fonts';
 import { areColorsForced } from './forcedColors';
-import { getGlobalObjects } from './globalObjects';
 import { getGlobalPrivacyControl } from './globalPrivacyControl';
 import { getHDCPPolicyCheck } from './hdcp';
 import { isHDR } from './hdr';
@@ -105,7 +104,6 @@ export const clientParameters = {
   webgpu: getWebGPU,
   storageQuota: getStorageQuota,
   mediaCapabilities: getMediaCapabilities,
-  globalObjests: getGlobalObjects,
   computedStyleProperties: getComputedStyleProperties,
   systemInfo: getSystemInfo,
   drmSupport: getDRMSupportInfo,
