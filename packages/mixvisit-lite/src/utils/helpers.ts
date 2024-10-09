@@ -1,3 +1,8 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-return-assign */
+
+import { x86 } from './hashing';
 import { MaybePromise } from '../types';
 
 export function type(value: any): string {
@@ -31,10 +36,21 @@ export const TDef = {
   isNil: (value: any) => TDef.isUndefined(value) || TDef.isNull(value),
 };
 
+export function getSum(arr?: Float32Array | number[]): number {
+  return !arr ? 0 : [...arr].reduce((acc, curr) => (acc += Math.abs(curr)), 0);
+}
+
 export function wait<T = void>(durationMs: number, resolveWith?: T): Promise<T> {
   return new Promise((resolve) => {
     setTimeout(resolve, durationMs, resolveWith);
   });
+}
+export function miniHash(str: string): string {
+  if (!TDef.isString(str)) {
+    throw new TypeError('Expected a string');
+  }
+
+  return !str ? str : x86.hash128(str).slice(0, 10);
 }
 
 export function toInt(value: unknown): number {
@@ -186,7 +202,6 @@ export async function withIframe<T, P extends any[]>({
 }: WithIframeProps<T, P>, ...args: P): Promise<T> {
   // document.body can be null while the page is loading
   while (!document.body) {
-    // eslint-disable-next-line no-await-in-loop
     await wait(domPollInterval);
   }
 
@@ -246,7 +261,6 @@ export async function withIframe<T, P extends any[]>({
     });
 
     while (!iframe.contentWindow?.document?.body) {
-      // eslint-disable-next-line no-await-in-loop
       await wait(domPollInterval);
     }
 

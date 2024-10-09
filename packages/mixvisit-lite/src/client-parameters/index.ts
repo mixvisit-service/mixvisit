@@ -1,6 +1,6 @@
 import { isHaveActiveX } from './activeX';
 import { getArchitecture } from './architecture';
-import { getAudioFingerprint } from './audio';
+import { getAudioContext } from './audio';
 import { getAudioContextBaseLatency } from './audioBaseLatency';
 import { isHaveBatteryAPI } from './battery';
 import { isHaveBluetoothAPI } from './bluetooth';
@@ -96,7 +96,7 @@ export const clientParameters = {
   math: getMathResults,
   fontPreferences: getFontPreferences,
   fonts: getFonts,
-  audio: getAudioFingerprint,
+  audio: getAudioContext,
   canvas: getCanvasFingerprint,
   clientRects: getClientRects,
   speechSynthesisVoices: getSpeechSynthesisVoices,

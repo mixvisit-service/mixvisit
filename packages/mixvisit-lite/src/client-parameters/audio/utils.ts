@@ -1,131 +1,71 @@
-import { isPromise, suppressUnhandledRejectionWarning } from '../../utils/helpers';
+/* eslint-disable no-return-assign */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-empty */
 
-/**
- * Renders the given audio context with configured nodes.
- * Returns `null` when the rendering runs out of attempts
- */
-export function renderAudio(context: OfflineAudioContext): Promise<AudioBuffer | null> {
-  return new Promise<AudioBuffer | null>((resolve, reject) => {
-    const retryDelay = 200;
-    let attemptsLeft = 25;
+import { hasProperty } from '../../utils/helpers';
 
-    context.oncomplete = (event) => resolve(event.renderedBuffer);
+type AudioData = {
+  floatFrequencyData: Float32Array;
+  floatTimeDomainData: Float32Array;
+  buffer: AudioBuffer;
+  compressorGainReduction: number;
+};
 
-    const tryRender = () => {
+export function getRenderedBuffer(context: OfflineAudioContext): Promise<AudioData | null> {
+  return new Promise((resolve) => {
+    const analyser = context.createAnalyser();
+    const oscillator = context.createOscillator();
+    const dynamicsCompressor = context.createDynamicsCompressor();
+
+    try {
+      oscillator.type = 'triangle';
+      oscillator.frequency.value = 10000;
+      dynamicsCompressor.threshold.value = -50;
+      dynamicsCompressor.knee.value = 40;
+      dynamicsCompressor.attack.value = 0;
+    } catch (err) { }
+
+    oscillator.connect(dynamicsCompressor);
+    dynamicsCompressor.connect(analyser);
+    dynamicsCompressor.connect(context.destination);
+
+    oscillator.start(0);
+    context.startRendering();
+
+    context.addEventListener('complete', (event) => {
       try {
-        const renderingPromise = context.startRendering();
+        dynamicsCompressor.disconnect();
+        oscillator.disconnect();
 
-        // `context.startRendering` has two APIs: Promise and callback, we check that it's really a promise just in case
-        if (isPromise(renderingPromise)) {
-          // Suppresses all unhandled rejections in case of scheduled redundant retries after successful rendering
-          suppressUnhandledRejectionWarning(renderingPromise);
+        const floatFrequencyData = new Float32Array(analyser.frequencyBinCount);
+        analyser.getFloatFrequencyData(floatFrequencyData);
+
+        const floatTimeDomainData = new Float32Array(analyser.fftSize);
+        if (hasProperty(analyser, 'getFloatTimeDomainData')) {
+          analyser.getFloatTimeDomainData(floatTimeDomainData);
         }
 
-        // Sometimes the audio context doesn't start after calling `startRendering`
-        // (in addition to the cases where audio context doesn't start at all).
-        // A known case is starting an audio context when the browser tab is in background on iPhone.
-        // Retries usually help in this case
-        if (context.state === 'suspended') {
-          // The audio context can reject starting until the tab is in foreground.
-          // Long fingerprint duration in background isn't a problem, therefore the retry attempts don't count in background.
-          // It can lead to a situation when a fingerprint takes very long time and finishes successfully.
-          // FYI, the audio context can be suspended when `document.hidden === false` and start running after a retry
-          if (!document.hidden) {
-            attemptsLeft--;
-          }
-
-          if (attemptsLeft > 0) {
-            setTimeout(tryRender, retryDelay);
-          } else {
-            resolve(null);
-          }
-        }
+        return resolve({
+          floatFrequencyData,
+          floatTimeDomainData,
+          buffer: event.renderedBuffer,
+          compressorGainReduction: (
+            // @ts-expect-error if unsupported
+            dynamicsCompressor.reduction.value || dynamicsCompressor.reduction
+          ),
+        });
       } catch (err) {
-        reject(err);
+        return resolve(null);
       }
-    };
-
-    tryRender();
+    });
   });
 }
 
-export function extractFingerprint(baseSignal: AudioBuffer, clonedSample: Float32Array): number {
-  let fingerprint: number | null = null;
-  let needsDenoising = false;
-
-  for (let i = 0; i < clonedSample.length; i += Math.floor(clonedSample.length / 10)) {
-    // In some cases the signal is 0 on a short range for some reason. Ignoring such samples
-    if (!clonedSample[i]) {
-      continue;
-    }
-
-    if (fingerprint === null) {
-      fingerprint = clonedSample[i];
-      continue;
-    }
-
-    if (fingerprint !== clonedSample[i]) {
-      needsDenoising = true;
-      break;
-    }
+export function getSnapshot(arr: number[], start: number, end: number): number[] {
+  const collection: number[] = [];
+  for (let i = start; i < end; i++) {
+    collection.push(arr[i]);
   }
 
-  // The looped buffer source works incorrectly in old Safari versions (>14 desktop, >15 mobile).
-  // The looped signal contains only 0s. To fix it, the loop start should be `baseSignal.length - 1.00000000001` and
-  // the loop end should be `baseSignal.length + 0.00000000001` (there can be 10 or 11 0s after the point).
-  // But this solution breaks the looped signal in other browsers. Instead of checking the browser version, we check that the
-  // looped signals comprises only 0s, and if it does, we return the last value of the base signal, because old Safari
-  // versions don't add noise that we want to cancel
-  if (fingerprint === null) {
-    fingerprint = baseSignal.getChannelData(0)[baseSignal.length - 1];
-  } else if (needsDenoising) {
-    fingerprint = getMiddle(clonedSample);
-  }
-
-  return fingerprint;
-}
-
-/**
- * Truncates some digits of the number to make it stable.
- * `precision` is the number of significant digits to keep.
- * The number may be not integer:
- *  - If it ends with `.2`, the last digit is rounded to the nearest multiple of 5;
- *  - If it ends with `.5`, the last digit is rounded to the nearest even number;
- */
-export function stabilize(value: number, precision: number): number {
-  if (value === 0) {
-    return value;
-  }
-
-  const power = Math.floor(Math.log10(Math.abs(value)));
-  const precisionPower = power - Math.floor(precision) + 1;
-  const precisionBase = 10 ** -precisionPower * ((precision * 10) % 10 || 1);
-
-  return Math.round(value * precisionBase) / precisionBase;
-}
-
-/**
- * Calculates the middle between the minimum and the maximum array item
- */
-function getMiddle(signal: ArrayLike<number>): number {
-  let min = Infinity;
-  let max = -Infinity;
-
-  for (let i = 0; i < signal.length; i++) {
-    const value = signal[i];
-    // In very rare cases the signal is 0 on a short range for some reason. Ignoring such samples.
-    if (value === 0) {
-      continue;
-    }
-
-    if (value < min) {
-      min = value;
-    }
-
-    if (value > max) {
-      max = value;
-    }
-  }
-
-  return (min + max) / 2;
+  return collection;
 }
