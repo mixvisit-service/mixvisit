@@ -1,10 +1,10 @@
 import { MaybePromise } from '../types';
 
-export const type = (value: any): string => {
+export function type(value: any): string {
   const matches = Object.prototype.toString.call(value).match(/^\[object (\S+?)\]$/) || [];
 
   return matches[1]?.toLowerCase() || 'undefined';
-};
+}
 
 export const TDef = {
   isString: (value: any) => type(value) === 'string',
