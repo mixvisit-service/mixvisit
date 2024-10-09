@@ -1,6 +1,5 @@
 type PerformanceData = {
   commitLoadTime: number;
-  connectionInfo: string;
   finishDocumentLoadTime: number;
   finishLoadTime: number;
   firstPaintAfterLoadTime: number;
@@ -19,14 +18,11 @@ export function getPerformanceData(): PerformanceData {
     performance: { navigation, timing },
   } = window;
 
-  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-
   const navigationEntries = performance.getEntriesByType('navigation')[0] as PerformanceResourceTiming;
   const paintEntries = performance.getEntriesByType('paint');
 
   return {
     commitLoadTime: timing.responseStart,
-    connectionInfo: connection ? connection.effectiveType : 'unknown',
     finishDocumentLoadTime: timing.domContentLoadedEventEnd,
     finishLoadTime: timing.loadEventEnd,
     firstPaintAfterLoadTime: paintEntries.length > 0 ? paintEntries[0].startTime : 0,

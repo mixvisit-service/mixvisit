@@ -1,9 +1,6 @@
-/*
-  eslint-disable
-    no-param-reassign,
-    no-empty,
-    no-tabs
-*/
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-empty */
+/* eslint-disable no-tabs */
 
 import {
   getBestFloatPrecision,

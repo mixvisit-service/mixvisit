@@ -1,4 +1,4 @@
-import { MixVisit, type CompleteClientData } from '@mix-visit/light';
+import { MixVisit, type CompleteClientData } from '@mix-visit/lite';
 
 type MixVisitResult = {
   fingerprintHash: string | null;

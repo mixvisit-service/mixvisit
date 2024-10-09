@@ -1,78 +1,148 @@
 import { withIframe, wait } from '../utils/helpers';
 
-// We use m or w because these two characters take up the maximum width.
-// And we use a LLi so that the same matching fonts can get separated
-const testString = 'mmMwWLliI0O&1';
-
 // We test using 48px font size, we may use any size. I guess larger the better
 const textSize = '48px';
+
+// We use m or w because these two characters take up the maximum width.
+// And we use a LLi so that the same matching fonts can get separated
+const testString = 'mmmMMMmmmlllmmmLLL₹▁₺ꜽ�₸׆ẞॿmmmiiimmmIIImmmwwwmmmWWW';
 
 // A font will be compared against all the three default fonts.
 // And if for any default fonts it doesn't match, then that font is available
 const baseFonts = ['monospace', 'sans-serif', 'serif'] as const;
 
 const fontList = [
-  'sans-serif-thin',
   'ARNO PRO',
   'Agency FB',
+  'Andale Mono',
+  'Apple Braille',
+  'Apple Chancery',
+  'Apple Color Emoji',
+  'Apple SD Gothic Neo',
+  'Apple Symbols',
+  'AppleGothic',
   'Arabic Typesetting',
+  'Arial',
+  'Arial Black',
+  'Arial Hebrew',
+  'Arial MT',
+  'Arial Narrow',
+  'Arial Rounded MT Bold',
   'Arial Unicode MS',
   'AvantGarde Bk BT',
   'BankGothic Md BT',
   'Batang',
   'Bitstream Vera Sans Mono',
+  'Book Antiqua',
+  'Bookman Old Style',
   'Calibri',
+  'Cambria',
+  'Cambria Math',
   'Century',
   'Century Gothic',
+  'Century Schoolbook',
   'Clarendon',
+  'Comic Sans',
+  'Comic Sans MS',
+  'Consolas',
+  'Courier',
+  'Courier New',
   'EUROSTILE',
   'Franklin Gothic',
   'Futura Bk BT',
   'Futura Md BT',
   'GOTHAM',
+  'Garamond',
+  'Geneva',
+  'Georgia',
   'Gill Sans',
   'HELV',
   'Haettenschweiler',
+  'Helvetica',
   'Helvetica Neue',
   'Humanst521 BT',
+  'Impact',
+  'LUCIDA GRANDE',
   'Leelawadee',
   'Letter Gothic',
   'Levenim MT',
   'Lucida Bright',
+  'Lucida Calligraphy',
+  'Lucida Console',
+  'Lucida Fax',
+  'Lucida Grande',
+  'Lucida Handwriting',
   'Lucida Sans',
-  'Menlo',
+  'Lucida Sans Typewriter',
+  'Lucida Sans Unicode',
+  'MS Gothic',
   'MS Mincho',
   'MS Outlook',
+  'MS PGothic',
+  'MS Reference Sans Serif',
   'MS Reference Specialty',
+  'MS Sans Serif',
+  'MS Serif',
   'MS UI Gothic',
   'MT Extra',
+  'MYRIAD',
   'MYRIAD PRO',
   'Marlett',
   'Meiryo UI',
+  'Menlo',
+  'Microsoft Himalaya',
+  'Microsoft JhengHei',
+  'Microsoft Sans Serif',
+  'Microsoft Tai Le',
   'Microsoft Uighur',
+  'Microsoft YaHei',
+  'Microsoft Yi Baiti',
   'Minion Pro',
+  'Monaco',
   'Monotype Corsiva',
   'PMingLiU',
+  'Palatino',
+  'Palatino Linotype',
   'Pristina',
   'SCRIPTINA',
+  'Segoe Print',
+  'Segoe Script',
+  'Segoe UI',
   'Segoe UI Light',
+  'Segoe UI Semibold',
+  'Segoe UI Symbol',
   'Serifa',
   'SimHei',
   'Small Fonts',
   'Staccato222 BT',
   'TRAJAN PRO',
+  'Tahoma',
+  'Times',
+  'Times New Roman',
+  'Times New Roman PS',
+  'Trebuchet MS',
   'Univers CE 55 Medium',
+  'Verdana',
   'Vrinda',
+  'Webdings',
+  'Wingdings',
+  'Wingdings 2',
+  'Wingdings 3',
   'ZWAdobeF',
-] as const;
+  'sans-serif-thin',
+];
 
-export function getFonts(): Promise<string[]> {
+export function getFonts(fonts: string[] = fontList): Promise<string[]> {
   return withIframe({
     action: loadFonts,
-  });
+  }, fonts);
 }
 
-async function loadFonts(_: HTMLIFrameElement, { document }: typeof window): Promise<string[]> {
+async function loadFonts(
+  _: HTMLIFrameElement,
+  { document }: typeof window,
+  fonts: string[],
+): Promise<string[]> {
   const holder = document.body;
   holder.style.fontSize = textSize;
 
@@ -108,7 +178,7 @@ async function loadFonts(_: HTMLIFrameElement, { document }: typeof window): Pro
     // Stores {fontName : [spans for that font]}
     const spans: Record<string, HTMLSpanElement[]> = {};
 
-    for (const font of fontList) {
+    for (const font of fonts) {
       spans[font] = baseFonts.map((baseFont) => createSpanWithFonts(font, baseFont));
     }
 

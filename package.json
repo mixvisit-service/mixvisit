@@ -13,9 +13,9 @@
   "scripts": {
     "build": "yarn workspaces run build",
     "build:example": "yarn workspace @mix-visit/example run build",
-    "build:light": "yarn workspace @mix-visit/light run build",
+    "build:lite": "yarn workspace @mix-visit/lite run build",
     "dev:example": "yarn workspace @mix-visit/example run dev",
-    "dev:light": "yarn workspace @mix-visit/light run dev"
+    "dev:lite": "yarn workspace @mix-visit/lite run dev"
   },
   "devDependencies": {
     "@eslint/js": "^9.2.0",

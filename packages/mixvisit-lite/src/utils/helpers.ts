@@ -1,10 +1,10 @@
 import { MaybePromise } from '../types';
 
-export const type = (value: any): string => {
+export function type(value: any): string {
   const matches = Object.prototype.toString.call(value).match(/^\[object (\S+?)\]$/) || [];
 
   return matches[1]?.toLowerCase() || 'undefined';
-};
+}
 
 export const TDef = {
   isString: (value: any) => type(value) === 'string',
@@ -26,7 +26,7 @@ export const TDef = {
   isWeakMap: (value: any) => type(value) === 'weakmap',
   isWeakSet: (value: any) => type(value) === 'weakset',
   isRegExp: (value: any) => type(value) === 'regexp',
-  isFunc: (value: any) => type(value) === 'function',
+  isFunc: (value: any) => ['asyncfunction', 'function'].includes(type(value)),
   isError: (value: any) => type(value) === 'error',
   isNil: (value: any) => TDef.isUndefined(value) || TDef.isNull(value),
 };
@@ -166,8 +166,8 @@ export function getUTF8Bytes(input: string): Uint8Array {
   return result;
 }
 
-type WithIframeProps<T> = {
-  action: (iframe: HTMLIFrameElement, iWindow: typeof window) => MaybePromise<T>;
+type WithIframeProps<T, P extends any[]> = {
+  action: (iframe: HTMLIFrameElement, iWindow: typeof window, ...args: P) => MaybePromise<T>;
   initialHtml?: string;
   domPollInterval?: number;
 };
@@ -179,7 +179,11 @@ type WithIframeProps<T> = {
  *
  * Notice: passing an initial HTML code doesn't work in IE
  */
-export async function withIframe<T>({ action, initialHtml, domPollInterval = 50 }: WithIframeProps<T>): Promise<T> {
+export async function withIframe<T, P extends any[]>({
+  action,
+  initialHtml,
+  domPollInterval = 50,
+}: WithIframeProps<T, P>, ...args: P): Promise<T> {
   // document.body can be null while the page is loading
   while (!document.body) {
     // eslint-disable-next-line no-await-in-loop
@@ -246,7 +250,7 @@ export async function withIframe<T>({ action, initialHtml, domPollInterval = 50 
       await wait(domPollInterval);
     }
 
-    return await action(iframe, iframe.contentWindow as typeof window);
+    return await action(iframe, iframe.contentWindow as typeof window, ...args);
   } finally {
     iframe.parentNode?.removeChild(iframe);
   }

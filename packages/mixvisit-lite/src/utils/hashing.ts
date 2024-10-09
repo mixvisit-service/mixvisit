@@ -1,13 +1,10 @@
-/*
-  eslint-disable
-    default-case,
-    no-fallthrough,
-    max-lines,
-    no-param-reassign,
-    no-multi-assign,
-    better-max-params/better-max-params,
-    @typescript-eslint/naming-convention
-*/
+/* eslint-disable better-max-params/better-max-params */
+/* eslint-disable max-lines */
+/* eslint-disable no-multi-assign */
+/* eslint-disable default-case */
+/* eslint-disable no-fallthrough */
+/* eslint-disable no-param-reassign */
+/* eslint-disable @typescript-eslint/naming-convention */
 
 /*!
  * +----------------------------------------------------------------------------------+
