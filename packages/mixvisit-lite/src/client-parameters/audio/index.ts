@@ -118,7 +118,7 @@ export async function getAudioContext(): Promise<AudioContextData | null> {
   const binsSample = getSnapshot(binsArr, 4500, 4600);
   const sampleSum = getSum(getSnapshot(binsArr, 4500, bufferLen));
 
-  const binsSampleValue = !TDef.isUndefined(copySample[0]) ? miniHash(`${binsSample}`) : null;
+  const binsSampleValue = !TDef.isUndefined(binsSample[0]) ? miniHash(`${binsSample}`) : null;
   const copySampleValue = !TDef.isUndefined(copySample[0]) ? miniHash(`${copySample}`) : null;
   const totalUniqueSamples = new Set(binsArr).size;
 
