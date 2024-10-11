@@ -24,7 +24,8 @@ import {
   WEBGL_FUNCTIONS,
   WEBGL_PARAMS,
 } from '../../utils/constants';
-import { x64, bufToHex } from '../../utils/hashing';
+import { bufToHex } from '../../utils/hashing';
+import { miniHash } from '../../utils/helpers';
 
 const vertextShaderSource = `
 	precision mediump float;
@@ -196,7 +197,7 @@ export function getCanvasImageHash(canvas: HTMLCanvasElement, ctx: CanvasContext
   ctx.readPixels(0, 0, width, height, ctx.RGBA, ctx.UNSIGNED_BYTE, pixels);
   const pixelString = bufToHex(pixels);
 
-  return x64.hash128(pixelString);
+  return miniHash(pixelString);
 }
 
 function createCanvasImage(ctx: CanvasContext): void {
