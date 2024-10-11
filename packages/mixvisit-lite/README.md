@@ -9,7 +9,7 @@ You can visit [mixvisit.com](https://mixvisit.com) for check our demo example
 ## Usage
 
 ```javascript
-import { MixVisit } from '@mix-visit/light';
+import { MixVisit } from '@mix-visit/lite';
 
 const mixvisit = new MixVisit();
 await mixvisit.load();

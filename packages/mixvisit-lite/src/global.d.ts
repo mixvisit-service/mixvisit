@@ -8,6 +8,7 @@ interface Window {
 
 interface Navigator {
   userAgentData?: NavigatorUAData;
+  globalPrivacyControl?: boolean;
   oscpu?: string;
   userLanguage?: string;
   browserLanguage?: string;
@@ -18,6 +19,8 @@ interface Navigator {
   mozConnection?: Connection;
   webkitConnection?: Connection;
   readonly msMaxTouchPoints?: number;
+  scheduling?: Scheduling;
+  getBattery: () => Promise<BatteryManager>;
 }
 
 interface NavigatorUABrandVersion {
@@ -99,6 +102,27 @@ type ExtendedGPUTextureUsage = typeof GPUTextureUsage & {
 };
 
 type Connection = {
+  type?: string;
+  effectiveType?: string;
+  downlink?: number;
+  downlinkMax?: number;
+  rtt?: number;
+  saveData?: boolean;
+  onchange?: () => void;
   ontypechange?: () => void;
-  effectiveType: string;
+};
+
+type Scheduling = {
+  isInputPending?: (options?: { includeContinuous?: boolean }) => boolean;
+};
+
+type BatteryManager = {
+  charging: boolean;
+  chargingTime: number;
+  dischargingTime: number;
+  level: number;
+  onchargingchange: ((this: BatteryManager, ev: Event) => any) | null;
+  onchargingtimechange: ((this: BatteryManager, ev: Event) => any) | null;
+  ondischargingtimechange: ((this: BatteryManager, ev: Event) => any) | null;
+  onlevelchange: ((this: BatteryManager, ev: Event) => any) | null;
 };

@@ -8,7 +8,7 @@ module.exports = {
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: [
-      "./packages/mixvisit-light/tsconfig.json",
+      "./packages/mixvisit-lite/tsconfig.json",
       "./example/tsconfig.json",
       "./example/tsconfig.node.json",
     ],
@@ -76,6 +76,7 @@ module.exports = {
     ],
     "max-lines": ["warn", 500],
     "max-len": ["warn", 150],
+    "@typescript-eslint/indent": "off",
     "@typescript-eslint/no-use-before-define": "off",
   },
 };
