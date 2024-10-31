@@ -182,7 +182,7 @@ export function getUTF8Bytes(input: string): Uint8Array {
   return result;
 }
 
-type WithIframeProps<T, P extends any[]> = {
+export type WithIframeProps<T, P extends any[]> = {
   action: (iframe: HTMLIFrameElement, iWindow: typeof window, ...args: P) => MaybePromise<T>;
   initialHtml?: string;
   domPollInterval?: number;
