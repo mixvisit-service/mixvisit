@@ -22,9 +22,9 @@ type NavigatorInfo = {
   cookieEnabled: boolean;
   onLine: boolean;
   webdriver: boolean;
-  userAgentData?: UADataValues;
-  mimeTypes: Record<string, MimeTypes>;
   plugins: PluginData[];
+  mimeTypes: Record<string, MimeTypes>;
+  userAgentData?: UADataValues;
   highEntropyValues?: UADataValues;
 };
 
@@ -138,7 +138,7 @@ export async function getNavigatorInfo(): Promise<NavigatorInfo> {
 
   // High Entropy Values
 
-  result.highEntropyValues = await userAgentData?.getHighEntropyValues(highEntropyValuesProps) ?? null;
+  result.highEntropyValues = (await userAgentData?.getHighEntropyValues(highEntropyValuesProps)) ?? null;
 
   return result;
 }
