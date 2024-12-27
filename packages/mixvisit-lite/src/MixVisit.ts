@@ -2,7 +2,12 @@ import { clientParameters } from './client-parameters';
 import type { ClientParameters } from './client-parameters';
 import { contextualClientParameters } from './contextual-client-parameters';
 import type { ContextualClientParameters } from './contextual-client-parameters';
-import type { CompleteClientData, MixVisitInterface, GetterResults } from './types';
+import type {
+  CompleteClientData,
+  GetterResults,
+  LoadOptions,
+  MixVisitInterface,
+} from './types';
 import { x64 } from './utils/hashing';
 import { hasProperty } from './utils/helpers';
 import { loadParameters } from './utils/load';
@@ -14,13 +19,13 @@ export class MixVisit implements MixVisitInterface {
 
   private cache: CompleteClientData | null = null;
 
-  async load(): Promise<void> {
+  async load(options: LoadOptions = {}): Promise<void> {
     try {
       const startTime = Date.now();
 
       const [clientParametersResult, contextualClientParametersResult] = await Promise.all([
-        loadParameters<ClientParameters>(clientParameters),
-        loadParameters<ContextualClientParameters>(contextualClientParameters),
+        loadParameters<ClientParameters>(clientParameters, options),
+        loadParameters<ContextualClientParameters>(contextualClientParameters, options),
       ]);
 
       const results: CompleteClientData = {

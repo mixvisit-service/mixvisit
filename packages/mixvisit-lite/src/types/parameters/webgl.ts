@@ -1,5 +1,5 @@
+import type { CanvasContext } from './canvas';
 import { PRECISION_TYPES, SHADER_TYPES } from '../../utils/constants';
-import type { CanvasContext } from '../base';
 import type { Nullable } from '../utils';
 
 export type WebGLInfo = {
