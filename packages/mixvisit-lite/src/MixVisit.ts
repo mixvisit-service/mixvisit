@@ -52,7 +52,7 @@ export class MixVisit implements MixVisitInterface {
       return this.cache[key].error ?? this.cache[key].value;
     }
 
-    if (!key) {
+    if (!(key && this.cache)) {
       return this.cache;
     }
 
