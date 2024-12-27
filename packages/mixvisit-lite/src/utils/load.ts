@@ -1,7 +1,7 @@
 import { TDef } from './helpers';
 import type { ClientParameters } from '../client-parameters';
 import type { ContextualClientParameters } from '../contextual-client-parameters';
-import type { UnwrappedParameters } from '../types';
+import type { LoadOptions, Result, UnwrappedParameters } from '../types';
 
 type UnknownParameters = Record<string, () => unknown>;
 type Parameters = ClientParameters | ContextualClientParameters | UnknownParameters;
@@ -12,23 +12,36 @@ type UnwrapUnknowParams<T> = T extends UnknownParameters ? UnwrappedParameters<T
 
 type LoadResult<T> = UnwrapClient<T> | UnwrapContextual<T> | UnwrapUnknowParams<T>;
 
-export async function loadParameters<T extends Parameters>(parameters: Parameters): Promise<LoadResult<T>> {
-  const result = {} as LoadResult<T>;
+export async function loadParameters<T extends Parameters>(parameters: Parameters, options: LoadOptions): Promise<Result<LoadResult<T>>> {
+  const result = {} as Result<LoadResult<T>>;
 
   for (const key of Object.keys(parameters)) {
     try {
-      if (!TDef.isFunc(parameters[key])) {
+      if (!TDef.isFunc(parameters[key]) || options?.exclude?.includes(key)) {
         continue;
       }
 
+      const start = Date.now();
       const dataFetcher = parameters[key]();
 
-      (result as any)[key] = dataFetcher instanceof Promise
+      const value = dataFetcher instanceof Promise
         // eslint-disable-next-line no-await-in-loop
         ? await dataFetcher
         : dataFetcher;
+
+      const duration = Date.now() - start;
+
+      result[key] = {
+        value,
+        duration,
+      };
     } catch (err) {
-      console.error('Something wrong in loadParameters function. ', err);
+      result[key] = {
+        error: {
+          code: 'InternalError',
+          message: `An unexpected error occurred while collecting parameter data. Error: ${err.message}`,
+        },
+      };
     }
   }
 

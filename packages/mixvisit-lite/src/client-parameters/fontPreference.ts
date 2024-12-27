@@ -1,5 +1,5 @@
 import { MaybePromise } from '../types';
-import { BrowserUtils } from '../utils/browser';
+import { isChromium, isWebKit } from '../utils/browser';
 import { withIframe } from '../utils/helpers';
 
 type WritableCSSProperties = {
@@ -149,9 +149,9 @@ function withNaturalFonts<T>(
     bodyStyle.webkitTextSizeAdjust = 'none';
     bodyStyle.textSizeAdjust = 'none';
 
-    if (BrowserUtils.isChromium()) {
+    if (isChromium()) {
       iframeBody.style.zoom = `${1 / iframeWindow.devicePixelRatio}`;
-    } else if (BrowserUtils.isWebKit()) {
+    } else if (isWebKit()) {
       iframeBody.style.zoom = 'reset';
     }
 

@@ -1,7 +1,7 @@
 import { MixVisit } from './MixVisit';
 
 export type { ClientParameters } from './client-parameters';
-export type { CompleteClientData, MixVisitInterface } from './types';
+export type { CompleteClientData, MixVisitInterface, LoadOptions } from './types';
 
 export { getFonts } from './client-parameters/fonts';
 export { loadParameters } from './utils/load';
