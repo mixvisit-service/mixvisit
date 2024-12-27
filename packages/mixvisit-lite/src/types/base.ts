@@ -25,7 +25,11 @@ export type LoadOptions = {
 };
 
 export type CompleteClientData = Result<UnwrappedParameters<ClientParameters>> & Result<UnwrappedParameters<ContextualClientParameters>>;
-export type GetterResults = CompleteClientData[keyof CompleteClientData] | CompleteClientData | null;
+export type GetterResults =
+  CompleteClientData[keyof CompleteClientData]['value']
+  | CompleteClientData[keyof CompleteClientData]['error']
+  | CompleteClientData
+  | null;
 
 export interface MixVisitInterface {
   loadTime: number | null;

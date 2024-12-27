@@ -42,8 +42,6 @@ export class MixVisit implements MixVisitInterface {
       this.cache = results;
 
       this.fingerprintHash = x64.hash128(strForHashing);
-
-      console.log(`Data loaded and cached in ${loadTime} ms`);
     } catch (err) {
       console.error(err);
     }
@@ -51,7 +49,7 @@ export class MixVisit implements MixVisitInterface {
 
   get(key?: keyof CompleteClientData): GetterResults {
     if (key && hasProperty(this.cache, key)) {
-      return this.cache?.[key];
+      return this.cache[key].error ?? this.cache[key].value;
     }
 
     if (!key) {

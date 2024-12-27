@@ -1,7 +1,7 @@
 import { getBaseScreenFrame } from './screenFrame';
 import { processSize } from './utils';
 import type { FrameSize } from '../../types';
-import { BrowserUtils } from '../../utils/browser';
+import { isSafariWebKit, isWebKit, isWebKit616OrNewer } from '../../utils/browser';
 
 /**
  * Sometimes the available screen resolution changes a bit, e.g. 1900x1440 → 1900x1439.
@@ -10,7 +10,7 @@ import { BrowserUtils } from '../../utils/browser';
  */
 export async function getScreenFrame(): Promise<FrameSize | null> {
   // The frame width is always 0 in private mode of Safari 17, so the frame is not used in Safari 17.
-  if (BrowserUtils.isWebKit() && BrowserUtils.isWebKit616OrNewer() && BrowserUtils.isSafariWebKit()) {
+  if (isWebKit() && isWebKit616OrNewer() && isSafariWebKit()) {
     return null;
   }
 
