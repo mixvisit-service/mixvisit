@@ -19,7 +19,7 @@ export class MixVisit implements MixVisitInterface {
 
   private cache: CompleteClientData | null = null;
 
-  async load(options: LoadOptions = {}): Promise<void> {
+  public async load(options?: LoadOptions): Promise<void> {
     try {
       const startTime = Date.now();
 
@@ -47,7 +47,7 @@ export class MixVisit implements MixVisitInterface {
     }
   }
 
-  get(key?: keyof CompleteClientData): GetterResults {
+  public get(key?: keyof CompleteClientData): GetterResults {
     if (key && hasProperty(this.cache, key)) {
       return this.cache[key].error ?? this.cache[key].value;
     }

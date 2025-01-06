@@ -20,13 +20,14 @@ export type Result<T> = {
     ? ParametersResultType<R>
     : never;
 };
+
 export type LoadOptions = {
   exclude?: string[];
 };
 
 export type CompleteClientData = Result<UnwrappedParameters<ClientParameters>> & Result<UnwrappedParameters<ContextualClientParameters>>;
 export type GetterResults =
-  CompleteClientData[keyof CompleteClientData]['value']
+  | CompleteClientData[keyof CompleteClientData]['value']
   | CompleteClientData[keyof CompleteClientData]['error']
   | CompleteClientData
   | null;
