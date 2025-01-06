@@ -12,7 +12,7 @@ type UnwrapUnknowParams<T> = T extends UnknownParameters ? UnwrappedParameters<T
 
 type LoadResult<T> = UnwrapClient<T> | UnwrapContextual<T> | UnwrapUnknowParams<T>;
 
-export async function loadParameters<T extends Parameters>(parameters: Parameters, options: LoadOptions): Promise<Result<LoadResult<T>>> {
+export async function loadParameters<T extends Parameters>(parameters: Parameters, options?: LoadOptions): Promise<Result<LoadResult<T>>> {
   const result = {} as Result<LoadResult<T>>;
 
   for (const key of Object.keys(parameters)) {
