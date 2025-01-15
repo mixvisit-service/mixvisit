@@ -62,7 +62,7 @@ export function toFloat(value: unknown): number {
 }
 
 export function replaceNaN<T, U>(value: T, replacement: U): T | U {
-  return typeof value === 'number' && Number.isNaN(value) ? replacement : value;
+  return TDef.isNumber(value) && Number.isNaN(value) ? replacement : value;
 }
 
 export function calcTruthy(values: unknown[]): number {
@@ -180,6 +180,29 @@ export function getUTF8Bytes(input: string): Uint8Array {
   }
 
   return result;
+}
+
+/**
+ * Removes the specified fields from the given object (no deep). If the field doesn't exist in the object or not object, nothing happens.
+ */
+export function removeFields(obj: Record<string, any>, fieldsToRemove: string[]): Record<string, any> {
+  if (!TDef.isObject(obj)) {
+    return obj;
+  }
+
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => {
+      if (TDef.isObject(value)) {
+        const filteredValue = Object.fromEntries(
+          Object.entries(value).filter(([fieldKey]) => !fieldsToRemove.includes(fieldKey)),
+        );
+
+        return [key, filteredValue];
+      }
+
+      return [key, value];
+    }),
+  );
 }
 
 export type WithIframeProps<T, P extends any[]> = {

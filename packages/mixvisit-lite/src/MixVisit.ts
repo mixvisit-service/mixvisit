@@ -9,7 +9,7 @@ import type {
   MixVisitInterface,
 } from './types';
 import { x64 } from './utils/hashing';
-import { hasProperty } from './utils/helpers';
+import { hasProperty, removeFields } from './utils/helpers';
 import { loadParameters } from './utils/load';
 
 export class MixVisit implements MixVisitInterface {
@@ -36,7 +36,8 @@ export class MixVisit implements MixVisitInterface {
       const endTime = Date.now();
       const loadTime = endTime - startTime;
 
-      const strForHashing = JSON.stringify(clientParametersResult);
+      const clientParametersWithoutDuration = removeFields(clientParametersResult, ['duration']);
+      const strForHashing = JSON.stringify(clientParametersWithoutDuration);
 
       this.loadTime = loadTime;
       this.cache = results;
