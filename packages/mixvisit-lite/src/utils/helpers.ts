@@ -183,7 +183,7 @@ export function getUTF8Bytes(input: string): Uint8Array {
 }
 
 /**
- * Removes the specified fields from the given object. If the field doesn't exist in the object or not object, nothing happens.
+ * Removes the specified fields from the given object (no deep). If the field doesn't exist in the object or not object, nothing happens.
  */
 export function removeFields(obj: Record<string, any>, fieldsToRemove: string[]): Record<string, any> {
   if (!TDef.isObject(obj)) {
