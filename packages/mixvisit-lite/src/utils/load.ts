@@ -12,7 +12,12 @@ type UnwrapUnknowParams<T> = T extends UnknownParameters ? UnwrappedParameters<T
 
 type LoadResult<T> = UnwrapClient<T> | UnwrapContextual<T> | UnwrapUnknowParams<T>;
 
-export async function loadParameters<T extends Parameters>(parameters: Parameters, options?: LoadOptions): Promise<Result<LoadResult<T>>> {
+const TIMEOUT_MS = 200;
+
+export async function loadParameters<T extends Parameters>(
+  parameters: Parameters,
+  options?: LoadOptions,
+): Promise<Result<LoadResult<T>>> {
   const result = {} as Result<LoadResult<T>>;
 
   for (const key of Object.keys(parameters)) {
@@ -21,29 +26,48 @@ export async function loadParameters<T extends Parameters>(parameters: Parameter
         continue;
       }
 
-      const start = Date.now();
-      const dataFetcher = parameters[key]();
+      const fn = parameters[key];
 
-      const value = dataFetcher instanceof Promise
+      if (fn.constructor.name === 'AsyncFunction') { // Handle asynchronous functions
+        const start = Date.now();
+        // For asynchronous tasks timeout so that it does not run longer than TIMEOUT_MS
         // eslint-disable-next-line no-await-in-loop
-        ? await dataFetcher
-        : dataFetcher;
+        const value = await Promise.race([
+          fn(),
+          // eslint-disable-next-line no-promise-executor-return
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), TIMEOUT_MS)),
+        ]);
 
-      const duration = Date.now() - start;
-
-      result[key] = {
-        value,
-        duration,
-      };
+        result[key] = { value, duration: Date.now() - start };
+      } else { // Handle synchronous functions
+        const start = Date.now();
+        result[key] = {
+          value: fn(),
+          duration: Date.now() - start,
+        };
+      }
     } catch (err) {
-      result[key] = {
-        error: {
-          code: 'InternalError',
-          message: `An unexpected error occurred while collecting parameter data. Error: ${err.message}`,
-        },
-      };
+      if (err.message === 'Timeout') {
+        result[key] = { error: createError('TimeoutError') };
+      } else {
+        result[key] = { error: createError('InternalError', err.message) };
+      }
     }
   }
 
   return result;
+}
+
+function createError(errorType: 'InternalError' | 'TimeoutError', message?: string): { code: string; message: string } {
+  if (errorType === 'TimeoutError') {
+    return {
+      code: 'TimeoutError',
+      message: `Timeout exceeded by ${TIMEOUT_MS} ms`,
+    };
+  }
+
+  return {
+    code: 'InternalError',
+    message: `An unexpected error occurred while collecting parameter data.${message ? ` Error: ${message}` : ''}`,
+  };
 }
