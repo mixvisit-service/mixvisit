@@ -12,17 +12,18 @@ type UnwrapUnknowParams<T> = T extends UnknownParameters ? UnwrappedParameters<T
 
 type LoadResult<T> = UnwrapClient<T> | UnwrapContextual<T> | UnwrapUnknowParams<T>;
 
-const TIMEOUT_MS = 200;
+const DEFAULT_TIMEOUT_MS = 2000;
 
 export async function loadParameters<T extends Parameters>(
   parameters: Parameters,
   options?: LoadOptions,
 ): Promise<Result<LoadResult<T>>> {
   const result = {} as Result<LoadResult<T>>;
+  const { exclude, timeout = DEFAULT_TIMEOUT_MS } = options || {};
 
   for (const key of Object.keys(parameters)) {
     try {
-      if (!TDef.isFunc(parameters[key]) || options?.exclude?.includes(key)) {
+      if (!TDef.isFunc(parameters[key]) || exclude?.includes(key)) {
         continue;
       }
 
@@ -35,7 +36,7 @@ export async function loadParameters<T extends Parameters>(
         const value = await Promise.race([
           fn(),
           // eslint-disable-next-line no-promise-executor-return
-          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), TIMEOUT_MS)),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout)),
         ]);
 
         result[key] = { value, duration: Date.now() - start };
@@ -48,7 +49,7 @@ export async function loadParameters<T extends Parameters>(
       }
     } catch (err) {
       if (err.message === 'Timeout') {
-        result[key] = { error: createError('TimeoutError') };
+        result[key] = { error: createError('TimeoutError', `Timeout exceeded by ${timeout} ms`) };
       } else {
         result[key] = { error: createError('InternalError', err.message) };
       }
@@ -62,7 +63,7 @@ function createError(errorType: 'InternalError' | 'TimeoutError', message?: stri
   if (errorType === 'TimeoutError') {
     return {
       code: 'TimeoutError',
-      message: `Timeout exceeded by ${TIMEOUT_MS} ms`,
+      message: message || 'Timeout exceeded',
     };
   }
 

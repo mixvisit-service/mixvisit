@@ -23,6 +23,7 @@ export type Result<T> = {
 
 export type LoadOptions = {
   exclude?: string[];
+  timeout?: number;
 };
 
 export type CompleteClientData = Result<UnwrappedParameters<ClientParameters>> & Result<UnwrappedParameters<ContextualClientParameters>>;

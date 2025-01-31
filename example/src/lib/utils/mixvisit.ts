@@ -8,7 +8,7 @@ type MixVisitResult = {
 
 export async function getMixVisitClientData(): Promise<MixVisitResult> {
   const mixvisit = new MixVisit();
-  await mixvisit.load();
+  await mixvisit.load({ timeout: 1000 });
 
   const data: CompleteClientData = mixvisit.get();
   const { fingerprintHash, loadTime } = mixvisit;
