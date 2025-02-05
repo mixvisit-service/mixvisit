@@ -1,3 +1,6 @@
+/* eslint-disable no-promise-executor-return */
+/* eslint-disable no-await-in-loop */
+
 import { TDef } from './helpers';
 import type { ClientParameters } from '../client-parameters';
 import type { ContextualClientParameters } from '../contextual-client-parameters';
@@ -28,25 +31,27 @@ export async function loadParameters<T extends Parameters>(
       }
 
       const fn = parameters[key];
+      const start = Date.now();
 
-      if (fn.constructor.name === 'AsyncFunction') { // Handle asynchronous functions
-        const start = Date.now();
-        // For asynchronous tasks timeout so that it does not run longer than TIMEOUT_MS
-        // eslint-disable-next-line no-await-in-loop
-        const value = await Promise.race([
+      let value: any;
+
+      if (fn.constructor.name === 'AsyncFunction') {
+        // Handle asynchronous functions with timeout
+        value = await Promise.race([
           fn(),
-          // eslint-disable-next-line no-promise-executor-return
           new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout)),
         ]);
-
-        result[key] = { value, duration: Date.now() - start };
-      } else { // Handle synchronous functions
-        const start = Date.now();
-        result[key] = {
-          value: fn(),
-          duration: Date.now() - start,
-        };
+      } else {
+        // Handle synchronous functions
+        value = fn();
       }
+
+      // Ensure that if the result is still a promise, we resolve it
+      if (typeof value?.then === 'function') {
+        value = await value;
+      }
+
+      result[key] = { value, duration: Date.now() - start };
     } catch (err) {
       if (err.message === 'Timeout') {
         result[key] = { error: createError('TimeoutError', `Timeout exceeded by ${timeout} ms`) };
