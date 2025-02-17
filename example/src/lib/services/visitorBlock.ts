@@ -236,8 +236,9 @@ function genereteVisitorInfoObj(visitorStorageDataArr: VisitorStorageData[]): Vi
   }
 
   const ipAddress = visitorStorageDataArr.reduce((res, item) => {
-    if (!res.includes(item.location.ip)) {
-      res.push(item.location.ip);
+    const { location: locationItem } = item;
+    if (!res.includes(locationItem.ip)) {
+      res.push(locationItem.ip);
     }
 
     return res;

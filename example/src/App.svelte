@@ -9,7 +9,6 @@
   import About from './lib/components/About.svelte';
   import GoToTop from './lib/components/GoToTop.svelte';
 
-  import { getLocationData } from './lib/api/location';
   import { TDef, getMixVisitClientData } from './lib/utils';
   import type { VisitorData } from './lib/types';
 
@@ -30,34 +29,32 @@
   async function main(): Promise<void> {
     try {
       const mixvisitClientData = await getMixVisitClientData();
-      const { data: clientData, fingerprintHash, loadTime: loadTimeRes } = mixvisitClientData || {};
-      const location = await getLocationData();
+      const { 
+        data: clientData, 
+        loadTime: loadTimeRes,
+        fingerprintHash, 
+      } = mixvisitClientData || {};
 
-      if (
-        !(
-          fingerprintHash &&
-          location &&
-          TDef.isObject(clientData) &&
-          TDef.isObject(location) &&
-          TDef.isNumber(loadTimeRes)
-        )
-      ) {
-        throw new Error('Something wrong with fingerprint or location data');
+      if (!(clientData && fingerprintHash && TDef.isObject(clientData) && TDef.isString(fingerprintHash))) {
+        throw new Error('Something wrong with mixvisit data');
       }
-
-      visitorData = {
-        visitorID: fingerprintHash,
-        location,
-      };
-
+      
       status = 'loaded';
-
+      
       if (clientData && TDef.isObject(clientData)) {
         data = JSON.stringify(clientData, null, 2);
       }
-
+      
       if (loadTimeRes && TDef.isNumber(loadTimeRes)) {
         loadTime = loadTimeRes.toString();
+      }
+
+      const location = clientData?.location?.value ?? null;
+      if (location && fingerprintHash) {
+        visitorData = {
+          visitorID: fingerprintHash,
+          location,
+        };
       }
     } catch (err) {
       status = 'error';
