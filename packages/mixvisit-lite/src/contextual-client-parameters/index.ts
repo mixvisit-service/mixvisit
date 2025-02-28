@@ -7,7 +7,7 @@ import { getMemoryInfo } from './memory';
 import { getNetworkData } from './network';
 import { getPerformanceData } from './performance';
 import { getScreenData } from './screen';
-import { getWebrtcIPs } from './webrtc';
+import { getWebRTC } from './webrtc';
 
 export type ContextualClientParameters = typeof contextualClientParameters;
 
@@ -21,5 +21,5 @@ export const contextualClientParameters = {
   performance: getPerformanceData,
   networkInfo: getNetworkData,
   batteryInfo: getBatteryData,
-  webrtc: getWebrtcIPs,
+  webrtc: getWebRTC,
 };

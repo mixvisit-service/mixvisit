@@ -2,16 +2,16 @@ type IceServerParam = {
   iceServer: string;
 };
 
-type IPsResult = {
+export type IPs = {
   public: string[];
   private: string[];
   allRes: string[];
   log: string;
 };
 
-export async function getWebrtcIPs(
+export async function getWebRTC(
   param: IceServerParam = { iceServer: 'stun.l.google.com:19302' },
-): Promise<IPsResult> {
+): Promise<IPs> {
   return new Promise((resolve, reject) => {
     const ips: string[] = [];
     const servers = { iceServers: [{ urls: `stun:${param.iceServer}` }] };
@@ -26,7 +26,7 @@ export async function getWebrtcIPs(
           ips.push(ipMatch[1]);
         }
       } else {
-        const ipResult: IPsResult = {
+        const ipResult: IPs = {
           public: [],
           private: [],
           allRes: ips,
