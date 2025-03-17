@@ -11,6 +11,50 @@ type AudioData = {
   compressorGainReduction: number;
 };
 
+const AUDIO_TRAP = Math.random();
+
+function getRandFromRange(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getCopyFrom(rand: number, buffer: AudioBuffer, copy: Float32Array): number[] {
+  const { length } = buffer;
+
+  const max = 20;
+  const start = getRandFromRange(275, length - (max + 1));
+  const mid = start + max / 2;
+  const end = start + max;
+
+  buffer.getChannelData(0)[start] = rand;
+  buffer.getChannelData(0)[mid] = rand;
+  buffer.getChannelData(0)[end] = rand;
+  buffer.copyFromChannel(copy, 0);
+
+  const attack = [
+    buffer.getChannelData(0)[start] === 0 ? Math.random() : 0,
+    buffer.getChannelData(0)[mid] === 0 ? Math.random() : 0,
+    buffer.getChannelData(0)[end] === 0 ? Math.random() : 0,
+  ];
+
+  const bufferData = buffer.getChannelData(0);
+  const combined = [...bufferData, ...copy, ...attack];
+  const unique = [...new Set(combined)];
+  const filtered = unique.filter((x) => x !== 0);
+
+  return filtered;
+}
+
+function getCopyTo(rand: number, buffer: AudioBuffer, copy: Float32Array): number[] {
+  const filledCopy = copy.map(() => rand);
+  buffer.copyToChannel(filledCopy, 0);
+
+  const bufferData = buffer.getChannelData(0);
+  const [frequency] = bufferData;
+  const dataAttacked = [...bufferData].map((x) => (x !== frequency || x === 0 ? Math.random() : x));
+
+  return dataAttacked.filter((x) => x !== frequency);
+}
+
 export function getRenderedBuffer(context: OfflineAudioContext): Promise<AudioData | null> {
   return new Promise((resolve) => {
     const analyser = context.createAnalyser();
@@ -59,6 +103,51 @@ export function getRenderedBuffer(context: OfflineAudioContext): Promise<AudioDa
       }
     });
   });
+}
+
+export function hasFakeAudio(): Promise<boolean> {
+  const context = new OfflineAudioContext(1, 100, 44100);
+  const oscillator = context.createOscillator();
+  oscillator.frequency.value = 0;
+  oscillator.start(0);
+  context.startRendering();
+
+  return new Promise((resolve) => {
+    const timeout = setTimeout(() => resolve(false), 2500);
+
+    context.oncomplete = (event) => {
+      clearTimeout(timeout);
+
+      const channelData = event.renderedBuffer.getChannelData?.(0);
+      if (!channelData) {
+        resolve(false);
+
+        return;
+      }
+
+      const isFake = `${[...new Set(channelData)]}` !== '0';
+      resolve(isFake);
+    };
+  }).finally(() => oscillator.disconnect()) as Promise<boolean>;
+}
+
+export function getNoiseFactor(): number {
+  const length = 2000;
+
+  try {
+    const buffer = new AudioBuffer({ length, sampleRate: 44100 });
+    const copy = new Float32Array(length);
+
+    const copyFromResult = getCopyFrom(AUDIO_TRAP, buffer, copy);
+    const copyToResult = getCopyTo(AUDIO_TRAP, buffer, copy);
+
+    const uniqueValues = [...new Set([...copyFromResult, ...copyToResult])];
+    const sum = uniqueValues.reduce((acc, n) => acc + +n, 0);
+
+    return +(uniqueValues.length !== 1 && sum);
+  } catch {
+    return 0;
+  }
 }
 
 export function getSnapshot(arr: number[], start: number, end: number): number[] {
