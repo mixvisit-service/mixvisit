@@ -2,10 +2,9 @@
   import Highlight from 'svelte-highlight';
   import typescript from 'svelte-highlight/languages/typescript';
   import bash from 'svelte-highlight/languages/bash';
-  import ToggleIcon from './ToggleIcon.svelte';
 
-  let isOpen = true;
-  
+  import Accordion from './Accordion.svelte';
+
   const installing = `# with npm package manager
 npm install @mix-visit/lite
 
@@ -28,15 +27,20 @@ console.log('get platform: ', mixvisit.get('platform'));
 `;
 </script>
 
-<details bind:open={isOpen}>
-  <summary>
-    <ToggleIcon {isOpen} size={32} />
-    <h3>Usage example</h3>
-  </summary>
-
+<Accordion title="Usage example">
   <p>At first install <strong><i>MixvisitJS</i></strong> package</p>
   <Highlight language={bash} code={installing} />
-
-  <p>After you can use it</p>
+  
+  <p class="top-margin">After you can use it</p>
   <Highlight language={typescript} code={using} />
-</details>
+</Accordion>
+
+<style>
+  p {
+    margin: 0 0 0.6rem 0;
+  }
+
+  .top-margin {
+    margin-top: 0.6rem;
+  }
+</style>
