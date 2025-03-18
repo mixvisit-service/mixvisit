@@ -1,5 +1,14 @@
-<details>
-  <summary><h3>About</h3></summary>
+<script>
+  import ToggleIcon from './ToggleIcon.svelte';
+
+  let isOpen = false;
+</script>
+
+<details bind:open={isOpen}>
+  <summary>
+    <ToggleIcon {isOpen} size={32} />
+    <h3>About</h3>
+  </summary>
   <div class="question">
     <strong><i>Looking for a reliable way to determine the IP fingerprint of a device?</i></strong>
   </div>

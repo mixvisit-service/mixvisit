@@ -1,9 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import ToggleIcon from './ToggleIcon.svelte';
   import { initVisitorBlock, saveVisitorData } from '../services/visitorBlock';
   import type { VisitorData } from '../types';
-
+  
   export let visitorData: VisitorData | null;
+
+  let isOpen = true;
 
   onMount(async () => {
     await main();
@@ -21,7 +24,7 @@
   }
 </script>
 
-<details open>
+<details bind:open={isOpen}>
   <svg width="0" height="0" class="hidden">
     <svg
       id="copyIcon"
@@ -45,6 +48,9 @@
     </svg>
   </svg>
 
-  <summary><h3>One of use case</h3></summary>
+  <summary>
+    <ToggleIcon {isOpen} size={32} />
+    <h3>One of use case</h3>
+  </summary>
   <div id="visitor-block"></div>
 </details>

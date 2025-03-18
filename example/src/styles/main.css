@@ -75,12 +75,6 @@ summary > h3 {
   margin: 0;
 }
 
-summary::before {
-  content: "\25B6";
-  margin-right: 0.63rem;
-  transition: transform 0.3s ease;
-}
-
 details[open] summary::before {
   transform: rotate(90deg);
 }
