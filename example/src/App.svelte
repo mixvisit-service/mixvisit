@@ -2,22 +2,24 @@
   import { onMount } from 'svelte';
   import highlightStyle from 'svelte-highlight/styles/circus';
 
-  import Badges from './lib/components/Badges.svelte';
-  import UsageExample from './lib/components/UsageExample.svelte';
-  import VisitorBlock from './lib/components/VisitorBlock.svelte';
-  import ClientData from './lib/components/ClientData.svelte';
   import About from './lib/components/About.svelte';
+  import Badges from './lib/components/Badges.svelte';
+  import ClientData from './lib/components/ClientData.svelte';
+  import Durations from './lib/components/Durations.svelte';
   import GoToTop from './lib/components/GoToTop.svelte';
+  import UsageExample from './lib/components/UsageExample.svelte';
+  import Visitor from './lib/components/Visitor.svelte';
 
   import { getLocationData } from './lib/api/location';
   import { TDef, getMixVisitClientData } from './lib/utils';
   import type { VisitorData } from './lib/types';
 
   let status = 'not loaded';
-  let data = '';
   let loadTime = '';
-  let visitorData: VisitorData | null = null;
   let productYears = '';
+  let clientData = '';
+  let visitorData: VisitorData | null = null;
+  let durationsData: { name: string; duration: number }[] = [];
 
   const releaseYear = 2024;
   const currentYear = new Date().getFullYear();
@@ -30,14 +32,14 @@
   async function main(): Promise<void> {
     try {
       const mixvisitClientData = await getMixVisitClientData();
-      const { data: clientData, fingerprintHash, loadTime: loadTimeRes } = mixvisitClientData || {};
+      const { data, fingerprintHash, loadTime: loadTimeRes } = mixvisitClientData || {};
       const location = await getLocationData();
 
       if (
         !(
           fingerprintHash &&
           location &&
-          TDef.isObject(clientData) &&
+          TDef.isObject(data) &&
           TDef.isObject(location) &&
           TDef.isNumber(loadTimeRes)
         )
@@ -52,8 +54,23 @@
 
       status = 'loaded';
 
-      if (clientData && TDef.isObject(clientData)) {
-        data = JSON.stringify(clientData, null, 2);
+      if (data && TDef.isObject(data)) {
+        clientData = JSON.stringify(data, null, 2);
+
+        const durationsMap = Object.entries(data).reduce(
+          (acc, [key, data]) => {
+            if (TDef.isNumber(data.duration)) {
+              acc[data.duration] = acc[data.duration] ? `${acc[data.duration]}, ${key}` : key;
+            }
+            return acc;
+          },
+          {} as Record<number, string>,
+        );
+
+        durationsData = Object.entries(durationsMap).map(([duration, name]) => ({
+          name,
+          duration: Number(duration),
+        }));
       }
 
       if (loadTimeRes && TDef.isNumber(loadTimeRes)) {
@@ -76,9 +93,10 @@
   <Badges />
 
   {#if status === 'loaded'}
+    <Visitor {visitorData} />
     <UsageExample /> 
-    <VisitorBlock {visitorData} />
-    <ClientData {data} {loadTime} />
+    <ClientData {clientData} {loadTime} />
+    <Durations {durationsData} />
     <About /> 
     <GoToTop />
   {:else if status === 'not loaded'}
