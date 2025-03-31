@@ -15,21 +15,32 @@ type UnwrapUnknowParams<T> = T extends UnknownParameters ? UnwrappedParameters<T
 
 type LoadResult<T> = UnwrapClient<T> | UnwrapContextual<T> | UnwrapUnknowParams<T>;
 
-const DEFAULT_TIMEOUT_MS = 2000;
+const DEFAULT_TIMEOUT = 2000;
+const TIMEOUT_FOR_ONLY_OPTION = 12000;
 
 export async function loadParameters<T extends Parameters>(
   parameters: Parameters,
   options?: LoadOptions,
 ): Promise<Result<LoadResult<T>>> {
   const result = {} as Result<LoadResult<T>>;
-  const { exclude, timeout = DEFAULT_TIMEOUT_MS } = options || {};
+  const { only, exclude, timeout } = options || {};
 
-  for (const key of Object.keys(parameters)) {
+  // Mutually exclusive check
+  if (only && exclude) {
+    throw new Error('Cannot use both "only" and "exclude" options');
+  }
+
+  const requiredTimeout = only && !timeout
+    ? TIMEOUT_FOR_ONLY_OPTION
+    : timeout || DEFAULT_TIMEOUT;
+
+  // Determine the list of keys to process
+  const parameterKeys = only
+    ? only.filter((key) => TDef.isFunc(parameters[key]))
+    : Object.keys(parameters).filter((key) => TDef.isFunc(parameters[key]) && !exclude?.includes(key));
+
+  for (const key of parameterKeys) {
     try {
-      if (!TDef.isFunc(parameters[key]) || exclude?.includes(key)) {
-        continue;
-      }
-
       const fn = parameters[key];
       const start = Date.now();
 
@@ -39,25 +50,27 @@ export async function loadParameters<T extends Parameters>(
         // Handle asynchronous functions with timeout
         value = await Promise.race([
           fn(),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout)),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), requiredTimeout)),
         ]);
       } else {
         // Handle synchronous functions
         value = fn();
-      }
 
-      // Ensure that if the result is still a promise, we resolve it
-      if (typeof value?.then === 'function') {
-        value = await value;
+        // Ensure that if the result is still a promise, we resolve it
+        if (typeof value?.then === 'function') {
+          value = await value;
+        }
       }
 
       result[key] = { value, duration: Date.now() - start };
     } catch (err) {
-      if (err.message === 'Timeout') {
-        result[key] = { error: createError('TimeoutError', `Timeout exceeded by ${timeout} ms`) };
-      } else {
-        result[key] = { error: createError('InternalError', err.message) };
-      }
+      const isTimeout = err.message === 'Timeout';
+      result[key] = {
+        error: createError(
+          isTimeout ? 'TimeoutError' : 'InternalError',
+          isTimeout ? `Timeout exceeded by ${requiredTimeout} ms` : err.message,
+        ),
+      };
     }
   }
 

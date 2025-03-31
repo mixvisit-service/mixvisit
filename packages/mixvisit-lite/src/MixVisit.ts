@@ -9,7 +9,7 @@ import type {
   MixVisitInterface,
 } from './types';
 import { x64 } from './utils/hashing';
-import { hasProperty, removeFields } from './utils/helpers';
+import { cloneDeep, hasProperty, removeFields } from './utils/helpers';
 import { loadParameters } from './utils/load';
 
 export class MixVisit implements MixVisitInterface {
@@ -40,7 +40,16 @@ export class MixVisit implements MixVisitInterface {
       const strForHashing = JSON.stringify(clientParametersWithoutDuration);
 
       this.loadTime = loadTime;
-      this.cache = results;
+
+      const isFirstLoad = !this.cache;
+      const newCache = isFirstLoad ? {} : cloneDeep(this.cache);
+
+      // Update or load clientData to cache
+      for (const key of Object.keys(results)) {
+        newCache[key] = results[key];
+      }
+
+      this.cache = newCache;
 
       this.fingerprintHash = x64.hash128(strForHashing);
     } catch (err) {

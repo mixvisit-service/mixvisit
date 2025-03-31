@@ -23,6 +23,7 @@ export type Result<T> = {
 
 export type LoadOptions = {
   exclude?: string[];
+  only?: string[];
   timeout?: number;
 };
 

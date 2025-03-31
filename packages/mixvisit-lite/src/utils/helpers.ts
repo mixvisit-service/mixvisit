@@ -84,6 +84,44 @@ export function hasProperty<T extends object, K extends PropertyKey>(
   return key in object;
 }
 
+export function cloneDeep(value: any, seen = new WeakMap()) {
+  if (TDef.isNull(value) || !TDef.isObject(value)) {
+    return value;
+  }
+
+  // For cyclic links
+  if (seen.has(value)) {
+    return seen.get(value);
+  }
+
+  switch (type(value)) {
+    case 'array':
+      return value.map((item: any) => cloneDeep(item, seen));
+    case 'object': {
+      const newObj = {};
+      seen.set(value, newObj); // Remember the link for cyclic structures
+
+      for (const key in value) {
+        if (hasProperty(value, key)) {
+          newObj[key] = cloneDeep(value[key], seen);
+        }
+      }
+
+      return newObj;
+    }
+    case 'date':
+      return new Date(value);
+    case 'regexp':
+      return new RegExp(value);
+    case 'map':
+      return new Map([...value.entries()].map(([k, v]) => [k, cloneDeep(v, seen)]));
+    case 'set':
+      return new Set([...value].map((v) => cloneDeep(v, seen)));
+    default:
+      return value; // Return functions and other structures as it is
+  }
+}
+
 export function isPromise<T>(value: PromiseLike<T> | unknown): value is PromiseLike<T> {
   return !!value && typeof (value as PromiseLike<T>).then === 'function';
 }
