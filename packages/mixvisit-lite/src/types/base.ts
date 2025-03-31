@@ -26,16 +26,16 @@ export type LoadOptions = {
   timeout?: number;
 };
 
-export type CompleteClientData = Result<UnwrappedParameters<ClientParameters>> & Result<UnwrappedParameters<ContextualClientParameters>>;
+export type ClientData = Result<UnwrappedParameters<ClientParameters>> & Result<UnwrappedParameters<ContextualClientParameters>>;
 export type GetterResults =
-  | CompleteClientData[keyof CompleteClientData]['value']
-  | CompleteClientData[keyof CompleteClientData]['error']
-  | CompleteClientData
+  | ClientData[keyof ClientData]['value']
+  | ClientData[keyof ClientData]['error']
+  | ClientData
   | null;
 
 export interface MixVisitInterface {
   loadTime: number | null;
   fingerprintHash: string | null;
   load(options?: LoadOptions): Promise<void>;
-  get(key?: keyof CompleteClientData): GetterResults;
+  get(key?: keyof ClientData): GetterResults;
 }
