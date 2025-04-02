@@ -2,15 +2,16 @@
   import Highlight from 'svelte-highlight';
   import json from 'svelte-highlight/languages/json';
 
-  export let data = '';
+  import Accordion from './Accordion.svelte';
+
+  export let clientData = '';
   export let loadTime = '';
 
-  let formattedLoadTime = loadTime ? `(${loadTime} ms)` : '';
+  $: formattedLoadTime = loadTime ? `(${loadTime} ms)` : '';
 </script>
 
-<details>
-  <summary><h3>Client data obtained {formattedLoadTime}</h3></summary>
-  {#if data}
-  <Highlight language={json} code={data} />
+<Accordion title={`Client data obtained ${formattedLoadTime}`}>
+  {#if clientData}
+  <Highlight language={json} code={clientData} />
   {/if}
-</details>
+</Accordion>

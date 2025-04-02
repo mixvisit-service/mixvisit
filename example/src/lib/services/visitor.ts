@@ -286,12 +286,12 @@ function genereteVisitDataArr(visitorStorageDataArr: VisitorStorageData[]): Visi
 function createTippyForAllElements(): void {
   // tooltip for displaying information about the viewed block cell
   const infoButtons = [
-    '#visitor-block > .visitor-location-info > div:nth-child(1) > div:nth-child(1) > span:nth-child(2) > button',
-    '#visitor-block > .visitor-location-info > div:nth-child(1) > div:nth-child(2) > span:nth-child(2) > button',
-    '#visitor-block > .visitor-location-info > div:nth-child(1) > div:nth-child(3) > span:nth-child(2) > button',
-    '#visitor-block > .visitor-location-info > div:nth-child(2) > div:nth-child(1) > span:nth-child(2) > button',
-    '#visitor-block > .visitor-location-info > div:nth-child(2) > div:nth-child(2) > span:nth-child(2) > button',
-    '#visitor-block > .visitor-location-info > div:nth-child(2) > div:nth-child(3) > span:nth-child(2) > button',
+    '#visitor > .visitor-location-info > div:nth-child(1) > div:nth-child(1) > span:nth-child(2) > button',
+    '#visitor > .visitor-location-info > div:nth-child(1) > div:nth-child(2) > span:nth-child(2) > button',
+    '#visitor > .visitor-location-info > div:nth-child(1) > div:nth-child(3) > span:nth-child(2) > button',
+    '#visitor > .visitor-location-info > div:nth-child(2) > div:nth-child(1) > span:nth-child(2) > button',
+    '#visitor > .visitor-location-info > div:nth-child(2) > div:nth-child(2) > span:nth-child(2) > button',
+    '#visitor > .visitor-location-info > div:nth-child(2) > div:nth-child(3) > span:nth-child(2) > button',
   ];
 
   tippy(infoButtons[0], { content: VisitorBlockTooltips.PersonalID });
@@ -303,9 +303,9 @@ function createTippyForAllElements(): void {
 
   // tooltip when clicking on copy icons
   const copyButtons = [
-    '#visitor-block > .visitor-location-info > div:nth-child(1) > div:nth-child(1) > span:nth-child(2) > div > button',
-    '#visitor-block > .visitor-location-info > div:nth-child(1) > div:nth-child(2) > span:nth-child(2) > div > button',
-    '#visitor-block > .visitor-location-info > div:nth-child(1) > div:nth-child(4) > span:nth-child(2) > div > button',
+    '#visitor > .visitor-location-info > div:nth-child(1) > div:nth-child(1) > span:nth-child(2) > div > button',
+    '#visitor > .visitor-location-info > div:nth-child(1) > div:nth-child(2) > span:nth-child(2) > div > button',
+    '#visitor > .visitor-location-info > div:nth-child(1) > div:nth-child(4) > span:nth-child(2) > div > button',
   ].join(', ');
 
   const buttons = document.querySelectorAll(copyButtons);
@@ -381,11 +381,6 @@ function createVisitorInfoBlock(visitorInfoElParam: HTMLElement, visitorInfo: Vi
           <span>
             <div class="value">
               <div class="bold">${visitorInfo.ip ?? '—'}</div>
-              <button class="button-copy">
-                <svg class="svg-icon">
-                  <use xlink:href="#copyIcon"></use>
-                </svg>
-              </button>
             </div>
             <button class="button-info">
               <svg class="svg-icon">
