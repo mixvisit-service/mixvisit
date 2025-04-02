@@ -1,4 +1,4 @@
-<details>
+<details open>
   <summary><h3>About</h3></summary>
   <div class="question">
     <strong><i>Looking for a reliable way to determine the IP fingerprint of a device?</i></strong>

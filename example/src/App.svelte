@@ -76,10 +76,10 @@
   <Badges />
 
   {#if status === 'loaded'}
-    <UsageExample /> 
-    <VisitorBlock {visitorData} />
-    <ClientData {data} {loadTime} />
     <About /> 
+    <VisitorBlock {visitorData} />
+    <UsageExample /> 
+    <ClientData {data} {loadTime} />
     <GoToTop />
   {:else if status === 'not loaded'}
     <p>Loading ...</p>

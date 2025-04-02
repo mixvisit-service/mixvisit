@@ -8,7 +8,7 @@
   let formattedLoadTime = loadTime ? `(${loadTime} ms)` : '';
 </script>
 
-<details>
+<details open>
   <summary><h3>Client data obtained {formattedLoadTime}</h3></summary>
   {#if data}
   <Highlight language={json} code={data} />
