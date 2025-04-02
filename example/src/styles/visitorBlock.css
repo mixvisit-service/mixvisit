@@ -1,7 +1,6 @@
-#visitor-block {
+#visitor {
   display: flex;
   flex-direction: row;
-  padding: 1rem 0 1rem 0;
 }
 
 .leaflet-control-attribution {
@@ -205,7 +204,7 @@ button.button-info {
 }
 
 @media screen and (max-width: 1100px) {
-  #visitor-block {
+  #visitor {
     display: grid;
   }
 

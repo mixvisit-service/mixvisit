@@ -2,17 +2,29 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-empty */
 
-import { getRenderedBuffer, getSnapshot } from './utils';
+import {
+  getNoiseFactor,
+  getRenderedBuffer,
+  getSnapshot,
+  hasFakeAudio,
+} from './utils';
 import { getSum, miniHash, TDef } from '../../utils/helpers';
 
 type AudioContextData = {
+  lies: {
+    sampleNoiseDetected: boolean;
+    channelDataMismatch: boolean;
+    audioFake: boolean;
+    unexpectedFrequency: boolean;
+  };
+  noise: number;
+  binsSample: string;
+  copySample: string;
+  sampleSum: number;
   totalUniqueSamples: number;
   compressorGainReduction: number;
   floatFrequencyDataSum: number;
   floatTimeDomainDataSum: number;
-  sampleSum: number;
-  binsSample: string;
-  copySample: string;
   analyserNode: {
     channelCount: number;
     channelCountMode: ChannelCountMode;
@@ -87,13 +99,40 @@ export async function getAudioContext(): Promise<AudioContextData | null> {
   }
 
   const bufferLen = 5000;
+  const lies = {
+    sampleNoiseDetected: false,
+    channelDataMismatch: false,
+    audioFake: false,
+    unexpectedFrequency: false,
+  };
+
   const context = new OfflineAudioContext(1, bufferLen, 44100);
   const analyser = context.createAnalyser();
   const oscillator = context.createOscillator();
   const dynamicsCompressor = context.createDynamicsCompressor();
   const biquadFilter = context.createBiquadFilter();
 
-  const audioData = await getRenderedBuffer(new OfflineAudioContext(1, bufferLen, 44100));
+  // detect lie -> floatFrequencyUniqueDataSize
+  const dataArray = new Float32Array(analyser.frequencyBinCount);
+  analyser.getFloatFrequencyData?.(dataArray);
+  const floatFrequencyUniqueDataSize = new Set(dataArray).size;
+  if (floatFrequencyUniqueDataSize > 1) {
+    lies.unexpectedFrequency = true;
+  }
+
+  const [
+    audioData,
+    audioIsFake,
+  ] = await Promise.all([
+    getRenderedBuffer(new OfflineAudioContext(1, bufferLen, 44100)),
+    hasFakeAudio().catch(() => false),
+  ]);
+
+  // detect lies -> audioIsFake
+  if (audioIsFake) {
+    lies.audioFake = true;
+  }
+
   const {
     floatFrequencyData,
     floatTimeDomainData,
@@ -111,25 +150,40 @@ export async function getAudioContext(): Promise<AudioContextData | null> {
     bins = buffer.getChannelData(0) || [];
   }
 
-  const copyArr = [...copy];
-  const binsArr = [...bins];
+  const copySample = getSnapshot([...copy], 4500, 4600);
+  const binsSample = getSnapshot([...bins], 4500, 4600);
+  const sampleSum = getSum(getSnapshot([...bins], 4500, bufferLen));
 
-  const copySample = getSnapshot(copyArr, 4500, 4600);
-  const binsSample = getSnapshot(binsArr, 4500, 4600);
-  const sampleSum = getSum(getSnapshot(binsArr, 4500, bufferLen));
+  // detect lies -> sample matching
+  const matching = `${binsSample}` === `${copySample}`;
+  const copyFromChannelSupported = 'copyFromChannel' in AudioBuffer.prototype;
+  if (copyFromChannelSupported && !matching) {
+    lies.channelDataMismatch = true;
+  }
+
+  const totalUniqueSamples = new Set([...bins]).size;
+
+  const noiseFactor = getNoiseFactor();
+  const noise = noiseFactor || [...new Set(bins.slice(0, 100))].reduce((acc, n) => (acc += n), 0);
+
+  // detect lies -> sample noise factor
+  if (noise) {
+    lies.sampleNoiseDetected = true;
+  }
 
   const binsSampleValue = !TDef.isUndefined(binsSample[0]) ? miniHash(`${binsSample}`) : null;
   const copySampleValue = !TDef.isUndefined(copySample[0]) ? miniHash(`${copySample}`) : null;
-  const totalUniqueSamples = new Set(binsArr).size;
 
   return {
+    lies,
+    noise,
+    binsSample: binsSampleValue,
+    copySample: copySampleValue,
+    sampleSum: sampleSum || null,
     totalUniqueSamples,
     compressorGainReduction: compressorGainReduction || null,
     floatFrequencyDataSum: floatFrequencyDataSum || null,
     floatTimeDomainDataSum: floatTimeDomainDataSum || null,
-    sampleSum: sampleSum || null,
-    binsSample: binsSampleValue,
-    copySample: copySampleValue,
     analyserNode: {
       channelCount: analyser.channelCount,
       channelCountMode: analyser.channelCountMode,

@@ -1,8 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { initVisitorBlock, saveVisitorData } from '../services/visitorBlock';
-  import type { VisitorData } from '../types';
 
+  import Accordion from './Accordion.svelte';
+  
+  import { initVisitorBlock, saveVisitorData } from '../services/visitor';
+  import type { VisitorData } from '../types';
+  
   export let visitorData: VisitorData | null;
 
   onMount(async () => {
@@ -13,7 +16,7 @@
     try {
       if (visitorData) {
         saveVisitorData(visitorData);
-        initVisitorBlock('#visitor-block');
+        initVisitorBlock('#visitor');
       }
     } catch (err) {
       console.error(err);
@@ -21,8 +24,8 @@
   }
 </script>
 
-<details open>
-  <svg width="0" height="0" class="hidden">
+<Accordion title="Use case" isOpen={true}>
+  <svg width="0" height="0" class="copy-svg">
     <svg
       id="copyIcon"
       xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +47,11 @@
       />
     </svg>
   </svg>
+  <div id="visitor"></div>
+</Accordion>
 
-  <summary><h3>One of use case</h3></summary>
-  <div id="visitor-block"></div>
-</details>
+<style>
+  .copy-svg {
+    display: none;
+  }
+</style>

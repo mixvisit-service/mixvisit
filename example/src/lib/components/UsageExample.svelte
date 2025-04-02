@@ -2,6 +2,8 @@
   import Highlight from 'svelte-highlight';
   import typescript from 'svelte-highlight/languages/typescript';
   import bash from 'svelte-highlight/languages/bash';
+  
+  import Accordion from './Accordion.svelte';
 
   const installingExample = `# with npm package manager
 npm install @mix-visit/lite
@@ -30,9 +32,7 @@ const platform = mixvisit.get('platform');
 const { location, geolocation, webrtc } = mixvisit.get(['location', 'geolocation', 'webrtc']);`;
 </script>
 
-<details open>
-  <summary><h3>Usage example</h3></summary>
-
+<Accordion title="Usage example" isOpen={true}>
   <p>At first install <strong><i>MixvisitJS</i></strong> package</p>
   <Highlight language={bash} code={installingExample} />
 
@@ -66,9 +66,17 @@ const { location, geolocation, webrtc } = mixvisit.get(['location', 'geolocation
     If you need a specific parameter, pass its name as a string. To get multiple parameters, provide an array with the required parameters.
   </p>
   <Highlight language={typescript} code={usingGettersAll} />
-</details>
+</Accordion>
 
 <style>
+  p {
+    margin: 0 0 0.6rem 0;
+  }
+  
+  p:not(:first-of-type) {
+    margin-top: 0.6rem;
+  }
+
   .inline {
     font-family: monospace;
     background: hsl(0deg 0% 20.17%);
