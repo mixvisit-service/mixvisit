@@ -3,7 +3,7 @@ import type { ClientParameters } from './client-parameters';
 import { contextualClientParameters } from './contextual-client-parameters';
 import type { ContextualClientParameters } from './contextual-client-parameters';
 import type {
-  CompleteClientData,
+  ClientData,
   GetterResults,
   LoadOptions,
   MixVisitInterface,
@@ -17,7 +17,7 @@ export class MixVisit implements MixVisitInterface {
 
   public fingerprintHash: string | null = null;
 
-  private cache: CompleteClientData | null = null;
+  private cache: ClientData | null = null;
 
   public async load(options?: LoadOptions): Promise<void> {
     try {
@@ -28,7 +28,7 @@ export class MixVisit implements MixVisitInterface {
         loadParameters<ContextualClientParameters>(contextualClientParameters, options),
       ]);
 
-      const results: CompleteClientData = {
+      const results: ClientData = {
         ...clientParametersResult,
         ...contextualClientParametersResult,
       };
@@ -48,7 +48,7 @@ export class MixVisit implements MixVisitInterface {
     }
   }
 
-  public get(key?: keyof CompleteClientData): GetterResults {
+  public get(key?: keyof ClientData): GetterResults {
     if (key && hasProperty(this.cache, key)) {
       return this.cache[key].error ?? this.cache[key].value;
     }

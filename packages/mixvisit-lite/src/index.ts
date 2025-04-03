@@ -3,7 +3,7 @@ import { MixVisit } from './MixVisit';
 export type { ClientParameters } from './client-parameters';
 export type { ContextualClientParameters } from './contextual-client-parameters';
 export type {
- CompleteClientData,
+ ClientData,
  LoadOptions,
  MixVisitInterface,
  ParametersResultType,

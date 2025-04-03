@@ -45,11 +45,6 @@ export async function getWebrtcIPs(
       }
     };
 
-    pc.onicecandidateerror = (error) => {
-      reject(error);
-      pc.close();
-    };
-
     pc.createDataChannel('');
     pc.createOffer()
       .then((offer) => pc.setLocalDescription(offer))
