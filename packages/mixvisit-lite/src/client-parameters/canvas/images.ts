@@ -16,7 +16,7 @@ export async function renderImages(
 
   // The canvas is excluded from the fingerprint in this case
   if (textImage1 !== textImage2) {
-    return [CanvasImageStatus.Unstable, CanvasImageStatus.Unstable];
+    return [CanvasImageStatus.UNSTABLE, CanvasImageStatus.UNSTABLE];
   }
 
   // Text is unstable. Therefore it's extracted into a separate image

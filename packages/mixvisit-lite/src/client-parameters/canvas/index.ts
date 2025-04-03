@@ -16,15 +16,15 @@ export async function getCanvasFingerprint(): Promise<CanvasFingerprint> {
 
   const [canvas, context] = makeCanvasContext();
   if (!(context && canvas.toDataURL)) {
-    geometry = CanvasImageStatus.Unsupported;
-    text = CanvasImageStatus.Unsupported;
+    geometry = CanvasImageStatus.UNSUPPORTED;
+    text = CanvasImageStatus.UNSUPPORTED;
   } else {
     winding = doesSupportWinding(context);
 
     // Checks if the current browser is known for applying anti-fingerprinting measures in all or some critical modes
     if (isWebKit() && isWebKit616OrNewer() && isSafariWebKit()) {
-      geometry = CanvasImageStatus.Skipped;
-      text = CanvasImageStatus.Skipped;
+      geometry = CanvasImageStatus.SKIPPED;
+      text = CanvasImageStatus.SKIPPED;
     } else {
       [geometry, text] = await renderImages(canvas, context);
     }

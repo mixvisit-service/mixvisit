@@ -1,21 +1,18 @@
 export const enum CanvasImageStatus {
-  Unsupported = 'unsupported',
-  Skipped = 'skipped',
-  Unstable = 'unstable',
+  UNSUPPORTED = 'unsupported',
+  SKIPPED = 'skipped',
+  UNSTABLE = 'unstable',
 }
 
-export const enum AudioFingerprintStatus {
-  /** The browser is known for always suspending audio context, thus making fingerprinting impossible */
-  KnownForSuspending = -1,
-  /** The browser doesn't support audio context */
-  NotSupported = -2,
-  /** An unexpected timeout has happened */
-  Timeout = -3,
+export enum ErrorType {
+  TIMEOUT = 'TimeoutError',
+  INTERNAL = 'InternalError',
+  RESPONSE = 'ResponseError',
 }
 
 export const enum ContrastPreferenceStatus {
-  Less = -1,
-  None = 0,
-  More = 1,
-  ForcedColors = 10,
+  LESS = -1,
+  NONE = 0,
+  MORE = 1,
+  FORCED_COLORS = 10,
 }

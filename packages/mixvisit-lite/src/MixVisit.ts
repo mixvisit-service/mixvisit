@@ -33,17 +33,16 @@ export class MixVisit implements MixVisitInterface {
         loadParameters<ContextualClientParameters>(contextualClientParameters, options),
       ]);
 
+      const endTime = Date.now();
+      this.loadTime = endTime - startTime;
+
       const results: ClientData = {
         ...clientParametersResult,
         ...contextualClientParametersResult,
       };
 
-      const endTime = Date.now();
-
       const clientParametersWithoutDuration = removeFields(clientParametersResult, ['duration']);
       const strForHashing = JSON.stringify(clientParametersWithoutDuration);
-
-      this.loadTime = endTime - startTime;
 
       const isFirstLoad = !this.cache;
       const newCache = isFirstLoad ? {} : cloneDeep(this.cache);
@@ -52,7 +51,6 @@ export class MixVisit implements MixVisitInterface {
       Object.assign(newCache, results);
 
       this.cache = newCache;
-
       this.fingerprintHash = x64.hash128(strForHashing);
     } catch (err) {
       console.error(err);

@@ -1,6 +1,7 @@
 /* eslint-disable no-promise-executor-return */
 /* eslint-disable no-await-in-loop */
 
+import { ErrorType } from './enums';
 import { TDef } from './helpers';
 import type { ClientParameters } from '../client-parameters';
 import type { ContextualClientParameters } from '../contextual-client-parameters';
@@ -67,7 +68,7 @@ export async function loadParameters<T extends Parameters>(
       const isTimeout = err.message === 'Timeout';
       result[key] = {
         error: createError(
-          isTimeout ? 'TimeoutError' : 'InternalError',
+          isTimeout ? ErrorType.TIMEOUT : ErrorType.INTERNAL,
           isTimeout ? `Timeout exceeded by ${requiredTimeout} ms` : err.message,
         ),
       };
@@ -77,16 +78,16 @@ export async function loadParameters<T extends Parameters>(
   return result;
 }
 
-function createError(errorType: 'InternalError' | 'TimeoutError', message?: string): { code: string; message: string } {
-  if (errorType === 'TimeoutError') {
+function createError(errorType: ErrorType.INTERNAL | ErrorType.TIMEOUT, message?: string): { code: string; message: string } {
+  if (errorType === ErrorType.TIMEOUT) {
     return {
-      code: 'TimeoutError',
+      code: ErrorType.TIMEOUT,
       message: message || 'Timeout exceeded',
     };
   }
 
   return {
-    code: 'InternalError',
+    code: ErrorType.INTERNAL,
     message: `An unexpected error occurred while collecting parameter data.${message ? ` Error: ${message}` : ''}`,
   };
 }
