@@ -28,7 +28,7 @@ const extendedData = mixvisit.get();`;
 const hash = mixvisit.fingerprintHash;`;
 
   const usingGettersAll = `const allClientData = mixvisit.get();
-const platform = mixvisit.get('platform');
+const isDevToolsOpen = mixvisit.get('devToolsOpen');
 const { location, geolocation, webrtc } = mixvisit.get(['location', 'geolocation', 'webrtc']);`;
 </script>
 

@@ -61,6 +61,6 @@ You can also retrieve the loaded parameters using the `get()` method. If you wan
 
 ```typescript
 const allClientData = mixvisit.get();
-const platform = mixvisit.get('platform');
+const isDevToolsOpen = mixvisit.get('devToolsOpen');
 const { location, geolocation, webrtc } = mixvisit.get(['location', 'geolocation', 'webrtc']);
 ```
