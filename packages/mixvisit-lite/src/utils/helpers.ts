@@ -2,6 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-return-assign */
 
+import { ErrorType } from './enums';
 import { x86 } from './hashing';
 import { MaybePromise } from '../types';
 
@@ -84,6 +85,44 @@ export function hasProperty<T extends object, K extends PropertyKey>(
   return key in object;
 }
 
+export function cloneDeep(value: any, seen = new WeakMap()) {
+  if (TDef.isNull(value) || !TDef.isObject(value)) {
+    return value;
+  }
+
+  // For cyclic links
+  if (seen.has(value)) {
+    return seen.get(value);
+  }
+
+  switch (type(value)) {
+    case 'array':
+      return value.map((item: any) => cloneDeep(item, seen));
+    case 'object': {
+      const newObj = {};
+      seen.set(value, newObj); // Remember the link for cyclic structures
+
+      for (const key in value) {
+        if (hasProperty(value, key)) {
+          newObj[key] = cloneDeep(value[key], seen);
+        }
+      }
+
+      return newObj;
+    }
+    case 'date':
+      return new Date(value);
+    case 'regexp':
+      return new RegExp(value);
+    case 'map':
+      return new Map([...value.entries()].map(([k, v]) => [k, cloneDeep(v, seen)]));
+    case 'set':
+      return new Set([...value].map((v) => cloneDeep(v, seen)));
+    default:
+      return value; // Return functions and other structures as it is
+  }
+}
+
 export function isPromise<T>(value: PromiseLike<T> | unknown): value is PromiseLike<T> {
   return !!value && typeof (value as PromiseLike<T>).then === 'function';
 }
@@ -120,7 +159,7 @@ class ResponseError extends Error {
     super(`Request failed with status ${response.status}`);
 
     this.data = data;
-    this.name = 'ResponseError';
+    this.name = ErrorType.RESPONSE;
     this.response = response;
     this.status = response.status;
   }
@@ -183,7 +222,8 @@ export function getUTF8Bytes(input: string): Uint8Array {
 }
 
 /**
- * Removes the specified fields from the given object (no deep). If the field doesn't exist in the object or not object, nothing happens.
+ * Removes the specified fields from the given object (no deep).
+ * If the field doesn't exist in the object or not object, nothing happens.
  */
 export function removeFields(obj: Record<string, any>, fieldsToRemove: string[]): Record<string, any> {
   if (!TDef.isObject(obj)) {

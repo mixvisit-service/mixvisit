@@ -11,7 +11,7 @@
   }
 </script>
 
-<Accordion title="Durations">
+<Accordion title="Durations" isOpen={true}>
   <button on:click={toggleSortOrder} title={sortOrder === 'asc' ? 'Sort ascending' : 'Sort descending'}>
     <Icon icon={sortOrder === 'asc' ? 'ph:sort-ascending' : 'ph:sort-descending'} width="18" height="18" />
   </button>

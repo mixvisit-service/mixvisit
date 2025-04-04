@@ -3,11 +3,11 @@ import { MixVisit } from './MixVisit';
 export type { ClientParameters } from './client-parameters';
 export type { ContextualClientParameters } from './contextual-client-parameters';
 export type {
- ClientData,
- LoadOptions,
- MixVisitInterface,
- ParametersResultType,
- Result,
+  ClientData,
+  LoadOptions,
+  MixVisitInterface,
+  ParametersResult,
+  Result,
 } from './types';
 
 export { getFonts } from './client-parameters/fonts';

@@ -2,7 +2,7 @@
   import Accordion from './Accordion.svelte';
 </script>
 
-<Accordion title="About">
+<Accordion title="About" isOpen={true}>
   <strong><i>Looking for a reliable way to determine the IP fingerprint of a device?</i></strong>
   <div class="description">
     <p>MixVisit offers an advanced solution that includes IP fingerprinting to identify and track devices accurately.</p>

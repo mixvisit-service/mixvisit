@@ -25,9 +25,7 @@
   const currentYear = new Date().getFullYear();
   productYears = currentYear === releaseYear ? currentYear.toString() : `${releaseYear}-${currentYear}`; 
 
-  onMount(async () => {
-    await main();
-  });
+  onMount(main);
 
   async function main(): Promise<void> {
     try {
@@ -93,11 +91,11 @@
   <Badges />
 
   {#if status === 'loaded'}
+    <About /> 
     <Visitor {visitorData} />
     <UsageExample /> 
     <ClientData {clientData} {loadTime} />
     <Durations {durationsData} />
-    <About /> 
     <GoToTop />
   {:else if status === 'not loaded'}
     <p>Loading ...</p>

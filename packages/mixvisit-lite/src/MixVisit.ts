@@ -9,7 +9,12 @@ import type {
   MixVisitInterface,
 } from './types';
 import { x64 } from './utils/hashing';
-import { hasProperty, removeFields } from './utils/helpers';
+import {
+  cloneDeep,
+  hasProperty,
+  removeFields,
+  TDef,
+} from './utils/helpers';
 import { loadParameters } from './utils/load';
 
 export class MixVisit implements MixVisitInterface {
@@ -28,35 +33,51 @@ export class MixVisit implements MixVisitInterface {
         loadParameters<ContextualClientParameters>(contextualClientParameters, options),
       ]);
 
+      const endTime = Date.now();
+      this.loadTime = endTime - startTime;
+
       const results: ClientData = {
         ...clientParametersResult,
         ...contextualClientParametersResult,
       };
 
-      const endTime = Date.now();
-      const loadTime = endTime - startTime;
-
       const clientParametersWithoutDuration = removeFields(clientParametersResult, ['duration']);
       const strForHashing = JSON.stringify(clientParametersWithoutDuration);
 
-      this.loadTime = loadTime;
-      this.cache = results;
+      const isFirstLoad = !this.cache;
+      const newCache = isFirstLoad ? {} : cloneDeep(this.cache);
 
+      // Update or load clientData to cache
+      Object.assign(newCache, results);
+
+      this.cache = newCache;
       this.fingerprintHash = x64.hash128(strForHashing);
     } catch (err) {
       console.error(err);
     }
   }
 
-  public get(key?: keyof ClientData): GetterResults {
-    if (key && hasProperty(this.cache, key)) {
-      return this.cache[key].error ?? this.cache[key].value;
+  public get(param?: keyof ClientData | (keyof ClientData)[]): GetterResults {
+    if (!this.cache) {
+      return null;
     }
 
-    if (!(key && this.cache)) {
-      return this.cache;
+    if (this.isClientDataKey(param)) {
+      return this.cache[param].error ?? this.cache[param].value;
     }
 
-    return null;
+    if (this.isArrayOfClientDataKey(param)) {
+      return Object.fromEntries(param.map((key) => [key, this.cache[key]]));
+    }
+
+    return this.cache;
+  }
+
+  private isClientDataKey(key: unknown): key is keyof ClientData {
+    return key && TDef.isString(key) && hasProperty(this.cache, key as string);
+  }
+
+  private isArrayOfClientDataKey(keys: unknown): keys is (keyof ClientData)[] {
+    return keys && TDef.isArray(keys) && (keys as string[]).every((key) => this.isClientDataKey(key));
   }
 }
