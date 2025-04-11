@@ -21,10 +21,21 @@ export async function renderImages(
 
   // Text is unstable. Therefore it's extracted into a separate image
   renderGeometryImage(canvas, context);
+
   await wait(0);
   const geometryImage = canvas.toDataURL();
 
   return [geometryImage, textImage1];
+}
+
+export function renderTextImageForDetectSpoofing(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D | null) {
+  canvas.width = 21;
+  canvas.height = 120;
+
+  context.fillStyle = '#66666666';
+  context.fillRect(0, 0, 21, 120);
+  context.font = '8pt Times New Roman';
+  context.fillText('H', 6, 14);
 }
 
 function renderTextImage(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): void {
