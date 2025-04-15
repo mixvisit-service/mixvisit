@@ -1,47 +1,57 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
-  import Accordion from './Accordion.svelte';
 
-  export let durationsData: { name: string; duration: number }[] = [];
+  import Accordion from './Accordion.svelte';
+  import ErrorBadge from './ErrorBadge.svelte';
+
+  import type { GroupedError } from '../types';
+
+  export let errorsData: GroupedError[] = [];
 
   let sortOrder = 'desc';
+
+  $: errors = [...errorsData].sort((a, b) =>
+    sortOrder === 'desc'
+      ? b.code.localeCompare(a.code)
+      : a.code.localeCompare(b.code)
+  );
 
   function toggleSortOrder(): void {
     sortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
   }
 </script>
 
-<Accordion title="Durations" isOpen={true}>
+<Accordion title="Errors" isOpen={true}>
   <button on:click={toggleSortOrder} title={sortOrder === 'asc' ? 'Sort ascending' : 'Sort descending'}>
     <Icon icon={sortOrder === 'asc' ? 'ph:sort-ascending' : 'ph:sort-descending'} width="18" height="18" />
   </button>
-  <div class="durations">
-    {#each durationsData.sort( (a, b) => (sortOrder === 'desc' ? b.duration - a.duration : a.duration - b.duration), ) as { name, duration }}
-      <div class="durations__item">
-        <span class="durations__item-name">{name}</span>
-        <span>{duration} ms</span>
+  <div class="errors">
+    {#each errors as { code, message, params }}
+      <div class="errors__item">
+        <span class="errors__item-name">{params.join(', ')}</span>
+        <ErrorBadge error={{ code, message }} />
       </div>
     {/each}
   </div>
 </Accordion>
 
 <style>
-  .durations {
+  .errors {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
     padding: 0.6rem 0;
   }
 
-  .durations__item {
+  .errors__item {
     display: flex;
     justify-content: space-between;
     padding: 0.3rem 0.6rem;
     background: hsl(0, 0%, 10%);
     border-radius: 0.5rem;
   }
-
-  .durations__item-name {
+  
+  .errors__item-name {
     flex: 1;
     min-width: 0;
     max-width: 68rem;

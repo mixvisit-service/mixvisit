@@ -40,3 +40,9 @@ export type LocationDataRaw = {
   },
   languages: string;
 };
+
+export type GroupedError = {
+  code: string;
+  message: string;
+  params: string[];
+};
