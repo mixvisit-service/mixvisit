@@ -144,3 +144,10 @@ export function isDesktopWebKit(): boolean {
     Document && hasProperty(Document.prototype, 'pointerLockElement'),
   ]) >= 4;
 }
+
+/**
+ * Determines if the browser is built on Blink
+ */
+export function isBlink(): boolean {
+  return isChromium() && !isWebKit();
+}
