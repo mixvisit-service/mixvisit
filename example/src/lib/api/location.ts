@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 
 import type { LocationDataRaw, LocationData } from '../types';
-import { fetchJSON, TDef } from '../utils';
+import { TDef } from '../utils/common';
+import { fetchJSON } from '../utils/fetch';
 
 export const getLocationData = async (): Promise<LocationData | null> => {
   try {

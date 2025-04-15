@@ -1,10 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  import Accordion from './Accordion.svelte';
-  
-  import { initVisitorBlock, saveVisitorData } from '../services/visitor';
-  import type { VisitorData } from '../types';
+  import { Accordion } from '../ui';
+  import { initVisitorBlock, saveVisitorData } from '../../services/visitor';
+  import type { VisitorData } from '../../types';
   
   export let visitorData: VisitorData | null;
 
