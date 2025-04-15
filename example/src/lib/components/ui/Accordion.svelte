@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+
   import ToggleIcon from './ToggleIcon.svelte';
 
   export let title = '';

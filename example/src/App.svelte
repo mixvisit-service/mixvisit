@@ -2,18 +2,14 @@
   import { onMount } from 'svelte';
   import highlightStyle from 'svelte-highlight/styles/circus';
 
-  import About from './lib/components/About.svelte';
-  import Badges from './lib/components/Badges.svelte';
-  import ClientData from './lib/components/ClientData.svelte';
-  import Durations from './lib/components/Durations.svelte';
-  import Errors from './lib/components/Errors.svelte';
-  import GoToTop from './lib/components/GoToTop.svelte';
-  import UsageExample from './lib/components/UsageExample.svelte';
-  import Visitor from './lib/components/Visitor.svelte';
+  import { Badges, GoToTop } from '$lib/components/ui';
+  import { About, ClientData, Durations, Errors, UsageExample, Visitor } from '$lib/components/sections';
 
-  import { getLocationData } from './lib/api/location';
-  import { TDef, getMixVisitClientData } from './lib/utils';
-  import type { GroupedError, VisitorData } from './lib/types';
+  import { getMixVisitClientData } from '$lib/services/mixvisit';
+  import { getLocationData } from '$lib/api/location';
+  import { TDef } from '$lib/utils/common';
+
+  import type { GroupedError, VisitorData } from '$lib/types';
   
   let status = 'not loaded';
   let loadTime = '';

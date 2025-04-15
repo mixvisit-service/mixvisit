@@ -1,3 +1,5 @@
+import type { ClientData } from '@mix-visit/lite';
+
 export type VisitorData = {
   visitorID: string;
   location: LocationData;
@@ -45,4 +47,10 @@ export type GroupedError = {
   code: string;
   message: string;
   params: string[];
+};
+
+export type MixVisitResult = {
+  fingerprintHash: string | null;
+  loadTime: number | null;
+  data: ClientData | null;
 };

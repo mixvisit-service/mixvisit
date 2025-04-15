@@ -1,5 +1,5 @@
 <script>
-  import Accordion from './Accordion.svelte';
+  import { Accordion } from '../ui';
 </script>
 
 <Accordion title="About" isOpen={true}>

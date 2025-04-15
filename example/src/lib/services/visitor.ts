@@ -11,7 +11,7 @@ import {
   formatDate,
   formatDateDifference,
   TDef,
-} from '../utils';
+} from '../utils/common';
 
 type VisitorInfo = {
   personalId: string;

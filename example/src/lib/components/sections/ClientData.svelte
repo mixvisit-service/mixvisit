@@ -2,7 +2,7 @@
   import Highlight from 'svelte-highlight';
   import json from 'svelte-highlight/languages/json';
 
-  import Accordion from './Accordion.svelte';
+  import { Accordion } from '../ui';
 
   export let clientData = '';
   export let loadTime = '';
