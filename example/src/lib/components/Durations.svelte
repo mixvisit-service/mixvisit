@@ -6,7 +6,7 @@
 
   let sortOrder = 'desc';
 
-  function toggleSortOrder() {
+  function toggleSortOrder(): void {
     sortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
   }
 </script>

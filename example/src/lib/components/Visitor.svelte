@@ -9,10 +9,6 @@
   export let visitorData: VisitorData | null;
 
   onMount(async () => {
-    await main();
-  });
-
-  async function main(): Promise<void> {
     try {
       if (visitorData) {
         saveVisitorData(visitorData);
@@ -21,7 +17,7 @@
     } catch (err) {
       console.error(err);
     }
-  }
+  });
 </script>
 
 <Accordion title="Use case" isOpen={true}>

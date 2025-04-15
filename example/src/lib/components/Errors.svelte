@@ -1,9 +1,11 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
-  import ErrorInfo from './ErrorInfo.svelte';
+
   import Accordion from './Accordion.svelte';
+  import ErrorBadge from './ErrorBadge.svelte';
+
   import type { GroupedError } from '../types';
-  
+
   export let errorsData: GroupedError[] = [];
 
   let sortOrder = 'desc';
@@ -14,7 +16,7 @@
       : a.code.localeCompare(b.code)
   );
 
-  function toggleSortOrder() {
+  function toggleSortOrder(): void {
     sortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
   }
 </script>
@@ -27,7 +29,7 @@
     {#each errors as { code, message, params }}
       <div class="errors__item">
         <span class="errors__item-name">{params.join(', ')}</span>
-        <ErrorInfo error={{ code, message }} />
+        <ErrorBadge error={{ code, message }} />
       </div>
     {/each}
   </div>

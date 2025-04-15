@@ -1,12 +1,12 @@
 <script lang="ts">
   import type { Instance } from 'tippy.js';
-  import { tooltip } from '../utils/tippy';
+  import { tooltip } from '../utils';
 
   export let error: { code: string; message: string };
 
   let tooltipInstance: Instance | null = null;
 
-  async function copyToClipboard() {
+  async function copyToClipboard(): Promise<void> {
     try {
       await navigator.clipboard.writeText(error.message);
 
