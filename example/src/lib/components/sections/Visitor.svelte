@@ -1,10 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  import { Accordion } from '../ui';
-  import { initVisitorBlock, saveVisitorData } from '../../services/visitor';
-  import type { VisitorData } from '../../types';
-  
+  import { Accordion } from '@components/ui';
+
+  import { initVisitorBlock, saveVisitorData } from '@services/visitor';
+
+  import type { VisitorData } from '$lib/types';
+
   export let visitorData: VisitorData | null;
 
   onMount(async () => {

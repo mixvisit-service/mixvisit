@@ -2,12 +2,12 @@
   import { onMount } from 'svelte';
   import highlightStyle from 'svelte-highlight/styles/circus';
 
-  import { Badges, GoToTop } from '$lib/components/ui';
-  import { About, ClientData, Durations, Errors, UsageExample, Visitor } from '$lib/components/sections';
+  import { Badges, GoToTop } from '@components/ui';
+  import { About, ClientData, Durations, Errors, UsageExample, Visitor } from '@components/sections';
 
-  import { getMixVisitClientData } from '$lib/services/mixvisit';
-  import { getLocationData } from '$lib/api/location';
-  import { TDef } from '$lib/utils/common';
+  import { getMixVisitClientData } from '@services/mixvisit';
+  import { getLocationData } from '@api/location';
+  import { TDef } from '@utils/common';
 
   import type { GroupedError, VisitorData } from '$lib/types';
   

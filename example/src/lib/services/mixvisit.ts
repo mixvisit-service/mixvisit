@@ -1,6 +1,6 @@
 import { MixVisit, type ClientData } from '@mix-visit/lite';
 
-import type { MixVisitResult } from '../types';
+import type { MixVisitResult } from '$lib/types';
 
 export async function getMixVisitClientData(): Promise<MixVisitResult> {
   const mixvisit = new MixVisit();

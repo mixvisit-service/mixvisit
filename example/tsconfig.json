@@ -9,8 +9,11 @@
     "checkJs": true,
     "isolatedModules": true,
     "paths": {
-      "$lib": ["./src/lib/"],
-      "$lib/*": ["./src/lib/*"]
+      "$lib/*": ["./src/lib/*"],
+      "@api/*": ["./src/lib/api/*"],
+      "@components/*": ["./src/lib/components/*"],
+      "@services/*": ["./src/lib/services/*"],
+      "@utils/*": ["./src/lib/utils/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
