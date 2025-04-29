@@ -17,5 +17,9 @@
     "dev:example": "yarn workspace @mix-visit/example run dev",
     "dev:lite": "yarn workspace @mix-visit/lite run dev"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.3"
+  }
 }

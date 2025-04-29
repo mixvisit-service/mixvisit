@@ -5,10 +5,9 @@
   import { Badges, GoToTop } from '@components/ui';
   import { About, ClientData, Durations, Errors, UsageExample, Visitor } from '@components/sections';
 
-  import { getMixVisitClientData } from '@services/mixvisit';
   import { getLocationData } from '@api/location';
   import { TDef } from '@utils/common';
-
+  
   import type { GroupedError, VisitorData } from '$lib/types';
   
   let status = 'not loaded';
@@ -21,16 +20,21 @@
   const releaseYear = 2024;
   const currentYear = new Date().getFullYear();
   const productYears = currentYear === releaseYear 
-    ? currentYear.toString() 
-    : `${releaseYear}-${currentYear}`; 
-
+  ? currentYear.toString() 
+  : `${releaseYear}-${currentYear}`; 
+  
   onMount(main);
   
   async function main(): Promise<void> {
     try {
+      // import { getMixVisitClientData } from '@services/mixvisit';
+      const { getMixVisitClientData } = await import('@services/mixvisit');
+      
       const mixvisitClientData = await getMixVisitClientData();
       const { data, fingerprintHash, loadTime: loadTimeRes } = mixvisitClientData || {};
       const location = await getLocationData();
+
+      console.log('data :>> ', {mixvisitClientData, location});
 
       if (
         !(
