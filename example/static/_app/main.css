@@ -12,8 +12,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-*, 
-*::before, 
+*,
+*::before,
 *::after {
   box-sizing: border-box;
 }
@@ -52,7 +52,7 @@ h1.lib-title {
   margin: 0;
   background-image: linear-gradient(45deg, hsl(57, 83%, 68%), hsl(343, 56%, 57%));
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; 
+  -webkit-text-fill-color: transparent;
   -moz-background-clip: text;
   -moz-text-fill-color: transparent;
 }
@@ -79,6 +79,10 @@ a {
 
 a:hover {
   color: hsl(36, 69%, 66%);
+}
+
+.leaflet-control-attribution {
+  display: none;
 }
 
 @media screen and (max-width: 690px) {

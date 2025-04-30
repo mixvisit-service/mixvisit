@@ -1,54 +1,144 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import Icon from '@iconify/svelte';
 
   import { Accordion } from '@components/ui';
+  import { VisitorInfo } from '@components/ui';
 
-  import { initVisitorBlock, saveVisitorData } from '@services/visitor';
+  import { genereteVisitDataArr, genereteVisitorInfoObj, saveVisitorData } from '$lib/services/visitor';
 
-  import type { VisitorData } from '$lib/types';
+  import type { VisitData, VisitorData, VisitorInfo as VisitorInfoType } from '$lib/types';
+  import { TDef } from '$lib/utils/common';
 
   export let visitorData: VisitorData | null;
 
-  onMount(async () => {
+  let visitorInfo: VisitorInfoType | null = null;
+  let currentVisit: VisitData | null = null;
+
+  onMount(main);
+
+  async function main(): Promise<void> {
     try {
-      if (visitorData) {
-        saveVisitorData(visitorData);
-        initVisitorBlock('#visitor');
+      if (!(visitorData && TDef.isObject(visitorData) && Object.keys(visitorData).length)) {
+        return;
       }
+
+      const allSavedVisitorData = saveVisitorData(visitorData);
+
+      const currVisit = allSavedVisitorData[allSavedVisitorData.length - 1];
+      const onlyWithCurrHashData = allSavedVisitorData.filter((item) => item.visitorID === currVisit.visitorID);
+      visitorInfo = genereteVisitorInfoObj(onlyWithCurrHashData);
+
+      const visitForMapArr = genereteVisitDataArr(onlyWithCurrHashData);
+      const currentVisitIdx = visitForMapArr.length - 1;
+      currentVisit = visitForMapArr[currentVisitIdx];
+
+      console.log('visitForMapArr[currentVisitIdx] :>> ', visitForMapArr[currentVisitIdx]);
+      console.log('visitorInfo :>> ', visitorInfo);
     } catch (err) {
       console.error(err);
     }
-  });
+  }
 </script>
 
 <Accordion title="Use case" isOpen={true}>
-  <svg width="0" height="0" class="copy-svg">
-    <svg
-      id="copyIcon"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-    >
-      <path
-        d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"
-      />
-    </svg>
-    <svg
-      id="infoIcon"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-    >
-      <path
-        d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 7H13V9H11V7ZM11 11H13V17H11V11Z"
-      />
-    </svg>
-  </svg>
-  <div id="visitor"></div>
+  <div id="visitor">
+    <div class="visit-map-slider">
+      <div id="visit-map"></div>
+      <div class="visit-map-slider-controls">
+        <button class="slider-button">
+          <Icon icon="akar-icons:chevron-left" width="20" height="20" />
+        </button>
+        <button class="slider-button">
+          <Icon icon="akar-icons:chevron-right" width="20" height="20" />
+        </button>
+      </div>
+      <div class="visit-map-date-info">
+        <span class="date-info">{currentVisit?.time ?? '—'}</span>
+        <span class="date-info">{currentVisit?.when ?? '—'}</span>
+        <span class="visit-info">{currentVisit?.visitStatus ?? '—'}</span>
+      </div>
+    </div>
+    <VisitorInfo {visitorInfo} />
+  </div>
 </Accordion>
 
 <style>
-  .copy-svg {
-    display: none;
+  #visitor {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #visit-map {
+    width: 100%;
+    height: 12rem;
+    background-size: cover;
+    background-position: center;
+    border-radius: 0.6rem;
+  }
+
+  .visit-map-slider {
+    width: 100%;
+    min-width: 12rem;
+  }
+
+  .visit-map-slider-controls {
+    width: 6rem;
+    display: flex;
+    justify-content: space-between;
+    margin: 1.3rem auto;
+  }
+
+  .slider-button {
+    background: hsl(0, 0%, 95%);
+    color: hsl(0, 0%, 0%);
+    border: none;
+    padding: 0.6rem 0.8rem;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .slider-button:active {
+    opacity: 0.6;
+  }
+
+  .slider-button.disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .visit-map-date-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .visit-map-date-info span {
+    padding-top: 0.3rem;
+  }
+
+  .date-info {
+    font-weight: 600;
+  }
+
+  .visit-info {
+    color: hsl(0, 0%, 67%);
+    font-size: smaller;
+  }
+
+  @supports (-webkit-hyphens: none) {
+    .slider-button {
+      font-size: 1.13rem;
+      padding: 0.63rem 0.9rem;
+    }
+  }
+
+  @media screen and (max-width: 1100px) {
+    #visitor {
+      display: grid;
+    }
+    .visit-map-slider {
+      margin-bottom: 1.25rem;
+    }
   }
 </style>

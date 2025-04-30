@@ -1,10 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import highlightStyle from 'svelte-highlight/styles/circus';
-
+  
   import { Badges, GoToTop } from '@components/ui';
   import { About, ClientData, Durations, Errors, UsageExample, Visitor } from '@components/sections';
-
+  
+  import { getMixVisitClientData }from '@services/mixvisit';
   import { getLocationData } from '@api/location';
   import { TDef } from '@utils/common';
   
@@ -27,9 +28,6 @@
   
   async function main(): Promise<void> {
     try {
-      // import { getMixVisitClientData } from '@services/mixvisit';
-      const { getMixVisitClientData } = await import('@services/mixvisit');
-      
       const mixvisitClientData = await getMixVisitClientData();
       const { data, fingerprintHash, loadTime: loadTimeRes } = mixvisitClientData || {};
       const location = await getLocationData();
@@ -48,12 +46,12 @@
         throw new Error('Something wrong with fingerprint or location data');
       }
 
+      status = 'loaded';
+
       visitorData = {
         visitorID: fingerprintHash,
         location,
       };
-
-      status = 'loaded';
 
       if (data && TDef.isObject(data)) {
         clientData = JSON.stringify(data, null, 2);
