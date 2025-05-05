@@ -6,16 +6,19 @@
   import { TDef } from '$lib/utils/common';
 
   export let field: string;
-  export let value: any;
-  
+  export let value: string | number | null;
+
   let tooltipInstance: Instance | null = null;
-  
+
   $: isCorrectValue = !(TDef.isNull(value) || TDef.isUndefined(value));
   $: isCopyAvailable = field === 'personalId' || field === 'location';
-  $: qualifier = ['visitCounter', 'incognitoCounter'].includes(field) ? 'sessions' 
-    : field === 'ipAddress' ? 'IP' 
-    : field === 'geolocations' ? 'locations' 
-    : '';
+  $: qualifier = ['visitCounter', 'incognitoCounter'].includes(field)
+    ? 'sessions'
+    : field === 'ipAddress'
+      ? 'IP'
+      : field === 'geolocations'
+        ? 'locations'
+        : '';
 
   const defaultTooltipContent = 'Click to copy';
   const visitorInfoFields: Record<string, { name: string; description: string }> = {
@@ -27,7 +30,7 @@
       name: 'Location',
       description: 'Location info about visitor',
     },
-    ip: { 
+    ip: {
       name: 'IP',
       description: 'Your IP address',
     },
@@ -55,7 +58,7 @@
 
   async function copyToClipboard(): Promise<void> {
     try {
-      await navigator.clipboard.writeText(JSON.stringify(value));
+      await navigator.clipboard.writeText(String(value));
 
       tooltipInstance?.setContent('Copied!');
       tooltipInstance?.show();
@@ -69,16 +72,17 @@
   }
 </script>
 
-{#if isCorrectValue }
+{#if isCorrectValue}
   <div class="location-item">
-    <span>{visitorInfoFields[field].name}</span>
-    <span>
-      <div class="value">
-        <div class="bold">{value ?? '—'}</div> {qualifier}
+    <div class="location-item__name-column">{visitorInfoFields[field].name}</div>
+    <div class="location-item__value-column">
+      <div class="location-item__value">
+        <div class="bold">{value ?? '—'}</div>
+        {qualifier}
         {#if isCopyAvailable}
-          <button 
-            class="button-copy" 
-            aria-label="copy" 
+          <button
+            class="location-item__copy"
+            aria-label="copy"
             on:click={copyToClipboard}
             use:tooltip={{
               content: defaultTooltipContent,
@@ -92,14 +96,14 @@
           </button>
         {/if}
       </div>
-      <button 
-        class="button-info" 
+      <button
+        class="location-item__info"
         aria-label="info"
-        use:tooltip={{content: visitorInfoFields[field].description }}
+        use:tooltip={{ content: visitorInfoFields[field].description }}
       >
         <Icon icon="akar-icons:info" width="20" height="20" />
       </button>
-    </span>
+    </div>
   </div>
 {/if}
 
@@ -114,18 +118,18 @@
     padding: 1.57rem;
   }
 
-  .location-item span:first-of-type {
+  .location-item__name-column {
     width: 9rem;
     margin-right: 0.63rem;
   }
 
-  .location-item span:last-of-type {
+  .location-item__value-column {
     display: flex;
     flex-direction: row;
     width: auto;
   }
 
-  .location-item span > .value {
+  .location-item__value {
     display: flex;
     background: hsl(0, 0%, 19%);
     border-radius: 0.3rem;
@@ -134,7 +138,15 @@
     max-width: 12rem;
   }
 
-  .location-item span > .value .bold {
+  .location-item:not(:last-child) {
+    border-bottom: 0.13rem solid hsl(0, 0%, 42%);
+  }
+
+  .location-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .location-item__value .bold {
     font-weight: 600;
     margin-right: 0.3rem;
     overflow: hidden;
@@ -142,20 +154,12 @@
     text-overflow: ellipsis;
   }
 
-  .location-item span > .value {
+  .location-item__value {
     max-width: max-content;
     width: auto;
   }
-  
-  .location-item:not(:last-child) {
-    border-bottom: 0.13rem solid hsl(0, 0%, 42%);
-  }
-  
-  .location-item:last-child {
-    margin-bottom: 0;
-  }
 
-  button.button-copy {
+  .location-item__copy {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -167,15 +171,15 @@
     transition: background-color 0.3s ease;
   }
 
-  button.button-copy:hover {
+  .location-item__copy:hover {
     color: hsl(240, 3%, 57%);
   }
 
-  button.button-copy:active {
+  .location-item__copy:active {
     color: hsl(240, 8%, 75%);
   }
 
-  button.button-info {
+  .location-item__info {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -186,9 +190,8 @@
     border: none;
   }
 
-
   @media screen and (max-width: 760px) {
-    .location-item span > .value {
+    .location-item__value {
       width: fit-content;
       max-width: 11.88rem;
     }
