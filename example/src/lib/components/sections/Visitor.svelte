@@ -25,25 +25,23 @@
 
       const currVisit = allSavedVisitorData[allSavedVisitorData.length - 1];
       const onlyWithCurrHashData = allSavedVisitorData.filter((item) => item.visitorID === currVisit.visitorID);
-      console.log('onlyWithCurrHashData :>> ', onlyWithCurrHashData);
 
       visitorInfo = genereteVisitorInfoObj(onlyWithCurrHashData);
       visits = genereteVisitDataArr(onlyWithCurrHashData);
-
-      console.log('visitorInfo :>> ', visitorInfo);
-      console.log('visits :>> ', visits);
     } catch (err) {
       console.error(err);
     }
   }
 </script>
 
-<Accordion title="Use case" isOpen={true}>
-  <div class="visitor">
-    <VisitMapSlider {visits} />
-    <VisitorInfo {visitorInfo} />
-  </div>
-</Accordion>
+{#if visits && visitorInfo}
+  <Accordion title="Use case" isOpen={true}>
+    <div class="visitor">
+      <VisitMapSlider {visits} />
+      <VisitorInfo {visitorInfo} />
+    </div>
+  </Accordion>
+{/if}
 
 <style>
   .visitor {

@@ -17,7 +17,7 @@
 
 <details bind:open={isOpen} bind:this={detailsEl}>
   <summary>
-    <ToggleIcon {isOpen} size={24} />
+    <ToggleIcon {isOpen} />
     {#if title}
       <h3>{title}</h3>
     {/if}

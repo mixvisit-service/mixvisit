@@ -85,6 +85,11 @@ a:hover {
   display: none;
 }
 
+.description {
+  font-size: 0.8rem;
+  color: hsl(0, 0%, 70%);
+}
+
 @media screen and (max-width: 690px) {
   #app {
     width: -webkit-fill-available;

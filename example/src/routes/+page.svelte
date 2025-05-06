@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import highlightStyle from 'svelte-highlight/styles/circus';
 
-  import { Badges, GoToTop } from '@components/ui';
+  import { AboutInfo, Badges, GoToTop, NoJSInfo } from '@components/ui';
   import { About, ClientData, Durations, Errors, UsageExample, Visitor } from '@components/sections';
 
   import { getMixVisitClientData } from '@services/mixvisit';
@@ -11,6 +11,7 @@
 
   import type { GroupedError, VisitorData } from '$lib/types';
 
+  let jsEnabled = false;
   let status = 'not loaded';
   let loadTime = '';
   let clientData = '';
@@ -26,11 +27,10 @@
 
   async function main(): Promise<void> {
     try {
+      jsEnabled = true;
       const mixvisitClientData = await getMixVisitClientData();
       const { data, fingerprintHash, loadTime: loadTimeRes } = mixvisitClientData || {};
       const location = await getLocationData();
-
-      console.log('data :>> ', { mixvisitClientData, location });
 
       if (
         !(fingerprintHash && location && TDef.isObject(data) && TDef.isObject(location) && TDef.isNumber(loadTimeRes))
@@ -41,7 +41,7 @@
       status = 'loaded';
 
       visitorData = {
-        visitorID: 'asdasdasdkasjdl', // fingerprintHash,
+        visitorID: fingerprintHash,
         location,
       };
 
@@ -98,22 +98,33 @@
   <h2>JS Fingerprint to identify & track devices</h2>
   <Badges />
 
-  {#if status === 'loaded'}
-    <About />
-    <Visitor {visitorData} />
-    <UsageExample />
-    <ClientData {clientData} {loadTime} />
-    {#if durationsData.length}
-      <Durations {durationsData} />
+  <noscript>
+    <section>
+      <AboutInfo />
+    </section>
+    <section>
+      <NoJSInfo />
+    </section>
+  </noscript>
+
+  {#if jsEnabled}
+    {#if status === 'loaded'}
+      <About />
+      <Visitor {visitorData} />
+      <UsageExample />
+      <ClientData {clientData} {loadTime} />
+      {#if durationsData.length}
+        <Durations {durationsData} />
+      {/if}
+      {#if errorsData.length}
+        <Errors {errorsData} />
+      {/if}
+      <GoToTop />
+    {:else if status === 'not loaded'}
+      <p>Loading ...</p>
+    {:else}
+      <p>Something wrong</p>
     {/if}
-    {#if errorsData.length}
-      <Errors {errorsData} />
-    {/if}
-    <GoToTop />
-  {:else if status === 'not loaded'}
-    <p>Loading ...</p>
-  {:else}
-    <p>Something wrong</p>
   {/if}
 </main>
 

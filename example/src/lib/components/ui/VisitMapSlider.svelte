@@ -36,6 +36,10 @@
   onMount(async (): Promise<void> => {
     Leaflet = await import('leaflet');
 
+    if (!(visits && mapContainer)) {
+      return;
+    }
+
     const minZoom = 4;
     const maxZoom = 14;
     const location = Leaflet.latLng(0, 0);
@@ -131,18 +135,32 @@
     background: hsl(0, 0%, 95%);
     color: hsl(0, 0%, 0%);
     border: none;
-    padding: 0.6rem 0.8rem;
-    border-radius: 50%;
+    padding: 0.6rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0.0625rem hsl(0, 0%, 0%);
+    transition:
+      background-color 0.2s ease,
+      transform 0.1s ease;
   }
 
-  .visit-map-slider__button:active {
-    opacity: 0.6;
+  .visit-map-slider__button:hover {
+    background-color: hsl(0, 0%, 94%);
+  }
+
+  .visit-map-slider__button:not(:disabled):active {
+    outline: 0.125rem solid hsl(0, 0%, 0%);
+    background-color: hsl(0, 0%, 87%);
   }
 
   .visit-map-slider__button:disabled {
-    cursor: default;
-    opacity: 0.5;
+    background-color: hsl(0, 0%, 98%);
+    color: hsl(0, 0%, 67%);
+    cursor: not-allowed;
+    box-shadow: 0 0 0 0.0625rem hsl(0, 0%, 80%);
   }
 
   .visit-map-slider__info {
