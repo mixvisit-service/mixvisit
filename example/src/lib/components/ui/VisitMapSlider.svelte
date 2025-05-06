@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import Icon from '@iconify/svelte';
 
   import type { VisitData } from '$lib/types';
@@ -8,8 +8,11 @@
 
   let currentVisit: VisitData | null = null;
   let currentVisitIdx: number = -1;
+
+  let mapContainer: HTMLDivElement;
   let map: L.Map;
   let marker: L.Marker;
+  let Leaflet: typeof import('leaflet') | null = null;
 
   $: lastElementIdx = visits ? visits?.length - 1 : -1;
   $: atStart = currentVisitIdx <= 0;
@@ -22,28 +25,50 @@
     }
   }
 
-  $: if (currentVisit && map) {
+  $: if (Leaflet && map && marker && currentVisit) {
     const { lat, lng } = currentVisit;
     const latlng: [number, number] = [lat, lng];
 
     marker.setLatLng(latlng);
-    map.setView(latlng, 13);
+    map.setView(latlng, map.getZoom() ?? 6);
   }
 
-  onMount(initMap);
+  onMount(async (): Promise<void> => {
+    Leaflet = await import('leaflet');
 
-  // test init map
-  async function initMap(): Promise<void> {
-    const L = await import('leaflet');
+    const minZoom = 4;
+    const maxZoom = 14;
+    const location = Leaflet.latLng(0, 0);
 
-    map = L.map('visit-map').setView([0, 0], 2);
+    map = Leaflet.map(mapContainer, {
+      center: location,
+      minZoom,
+      maxZoom,
+      zoom: 8,
+    });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
+    marker = Leaflet.marker(location, {
+      icon: Leaflet.icon({
+        iconUrl: '/_app/location-marker.svg',
+        iconSize: [26, 36],
+        iconAnchor: [16, 36],
+        popupAnchor: [-2, -40],
+      }),
+    });
+
+    marker.addTo(map);
+    map.scrollWheelZoom.disable();
+
+    Leaflet.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      subdomains: 'abcd',
     }).addTo(map);
+  });
 
-    marker = L.marker([0, 0]).addTo(map);
-  }
+  onDestroy(async (): Promise<void> => {
+    if (map) {
+      map.remove();
+    }
+  });
 
   function prevVisit(): void {
     if (visits && currentVisitIdx > 0) {
@@ -62,7 +87,7 @@
 
 {#if visits}
   <div class="visit-map-slider">
-    <div id="visit-map"></div>
+    <div bind:this={mapContainer} class="visit-map-slider__map"></div>
 
     <div class="visit-map-slider__controls">
       <button class="visit-map-slider__button" on:click={prevVisit} disabled={atStart}>
@@ -82,17 +107,17 @@
 {/if}
 
 <style>
-  #visit-map {
+  .visit-map-slider {
+    width: 100%;
+    min-width: 12rem;
+  }
+
+  .visit-map-slider__map {
     width: 100%;
     height: 12rem;
     background-size: cover;
     background-position: center;
     border-radius: 0.6rem;
-  }
-
-  .visit-map-slider {
-    width: 100%;
-    min-width: 12rem;
   }
 
   .visit-map-slider__controls {
