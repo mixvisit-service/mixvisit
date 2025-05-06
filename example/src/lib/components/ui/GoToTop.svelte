@@ -9,7 +9,7 @@
 
     return () => window.removeEventListener('scroll', scrollFunction);
   });
-  
+
   function goToTop(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }

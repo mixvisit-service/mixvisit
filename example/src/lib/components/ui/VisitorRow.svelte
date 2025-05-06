@@ -75,6 +75,7 @@
 {#if isCorrectValue}
   <div class="location-item">
     <div class="location-item__name-column">{visitorInfoFields[field].name}</div>
+
     <div class="location-item__value-column">
       <div class="location-item__value">
         <div class="bold">{value ?? '—'}</div>
@@ -96,6 +97,7 @@
           </button>
         {/if}
       </div>
+
       <button
         class="location-item__info"
         aria-label="info"

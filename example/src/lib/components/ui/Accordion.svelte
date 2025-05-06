@@ -6,7 +6,7 @@
   export let title = '';
   export let isOpen = false;
 
-  let detailsEl: HTMLDetailsElement | null = null;;
+  let detailsEl: HTMLDetailsElement | null = null;
 
   onMount(() => {
     if (detailsEl && isOpen) {
@@ -19,7 +19,7 @@
   <summary>
     <ToggleIcon {isOpen} size={24} />
     {#if title}
-    <h3>{title}</h3>
+      <h3>{title}</h3>
     {/if}
   </summary>
   <div class="content">

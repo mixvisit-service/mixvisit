@@ -31,7 +31,7 @@
     placement: 'top',
     onCreate(instance) {
       tooltipInstance = instance;
-    }
+    },
   }}
 >
   {error.code}
