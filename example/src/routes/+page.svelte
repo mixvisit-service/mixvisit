@@ -3,7 +3,7 @@
   import highlightStyle from 'svelte-highlight/styles/circus';
 
   import { AboutInfo, Badges, GoToTop, NoJSInfo } from '@components/ui';
-  import { About, ClientData, Durations, Errors, UsageExample, Visitor } from '@components/sections';
+  import { About, ClientData, Footer, Durations, Errors, UsageExample, Visitor } from '@components/sections';
 
   import { getMixVisitClientData } from '@services/mixvisit';
   import { getLocationData } from '@api/location';
@@ -19,18 +19,14 @@
   let durationsData: { name: string; duration: number }[] = [];
   let errorsData: GroupedError[] = [];
 
-  const releaseYear = 2024;
-  const currentYear = new Date().getFullYear();
-  const productYears = currentYear === releaseYear ? currentYear.toString() : `${releaseYear}-${currentYear}`;
-
-  onMount(main);
-
-  async function main(): Promise<void> {
+  onMount(async () => {
     try {
       jsEnabled = true;
+
       const mixvisitClientData = await getMixVisitClientData();
-      const { data, fingerprintHash, loadTime: loadTimeRes } = mixvisitClientData || {};
       const location = await getLocationData();
+
+      const { data, fingerprintHash, loadTime: loadTimeRes } = mixvisitClientData || {};
 
       if (
         !(fingerprintHash && location && TDef.isObject(data) && TDef.isObject(location) && TDef.isNumber(loadTimeRes))
@@ -86,7 +82,7 @@
       status = 'error';
       console.error(err);
     }
-  }
+  });
 </script>
 
 <svelte:head>
@@ -99,12 +95,8 @@
   <Badges />
 
   <noscript>
-    <section>
-      <AboutInfo />
-    </section>
-    <section>
-      <NoJSInfo />
-    </section>
+    <AboutInfo />
+    <NoJSInfo />
   </noscript>
 
   {#if jsEnabled}
@@ -128,17 +120,11 @@
   {/if}
 </main>
 
-<footer>
-  <p>
-    Copyright &copy; {productYears} MixVisitJS. All rights reserved.
-    <a href="https://opensource.org/licenses/MIT" target="_blank">MIT - License</a>
-  </p>
-</footer>
+<Footer />
 
 <style>
   h1,
-  h2,
-  footer {
+  h2 {
     text-align: center;
     word-wrap: break-word;
   }

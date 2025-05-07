@@ -33,7 +33,7 @@
     map.setView(latlng, map.getZoom() ?? 6);
   }
 
-  onMount(async (): Promise<void> => {
+  onMount(async () => {
     Leaflet = await import('leaflet');
 
     if (!(visits && mapContainer)) {
@@ -68,7 +68,7 @@
     }).addTo(map);
   });
 
-  onDestroy(async (): Promise<void> => {
+  onDestroy(() => {
     if (map) {
       map.remove();
     }

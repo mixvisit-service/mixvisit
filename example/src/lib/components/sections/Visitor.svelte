@@ -4,18 +4,15 @@
   import { Accordion, VisitMapSlider, VisitorInfo } from '@components/ui';
 
   import { genereteVisitDataArr, genereteVisitorInfoObj, saveVisitorData } from '$lib/services/visitor';
-
-  import type { VisitData, VisitorData, VisitorInfo as VisitorInfoType } from '$lib/types';
   import { TDef } from '$lib/utils/common';
+  import type { VisitData, VisitorData, VisitorInfo as VisitorInfoType } from '$lib/types';
 
   export let visitorData: VisitorData | null;
 
   let visitorInfo: VisitorInfoType | null = null;
   let visits: VisitData[] | null = null;
 
-  onMount(main);
-
-  async function main(): Promise<void> {
+  onMount(async () => {
     try {
       if (!(visitorData && TDef.isObject(visitorData) && Object.keys(visitorData).length)) {
         return;
@@ -31,7 +28,7 @@
     } catch (err) {
       console.error(err);
     }
-  }
+  });
 </script>
 
 {#if visits && visitorInfo}
