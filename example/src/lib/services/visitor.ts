@@ -4,6 +4,12 @@ import { formatDate, formatDateDifference } from '$lib/utils/common';
 import { VisitStatus } from '$lib/enums';
 import type { VisitData, VisitorData, VisitorInfo, VisitorStorageData } from '$lib/types';
 
+/**
+ * Generate VisitData array based on VisitorStorageData array.
+ *
+ * @param visitorStorageDataArr - An array of VisitorStorageData objects.
+ * @returns An array of VisitData objects.
+ */
 export function genereteVisitDataArr(visitorStorageDataArr: VisitorStorageData[]): VisitData[] {
   return visitorStorageDataArr.reduce((res, item, idx) => {
     let visitStatus = VisitStatus.Prev;
@@ -32,6 +38,12 @@ export function genereteVisitDataArr(visitorStorageDataArr: VisitorStorageData[]
   }, [] as VisitData[]);
 }
 
+/**
+ * Generate VisitorInfo object based on VisitorStorageData array.
+ *
+ * @param visitorStorageDataArr - An array of VisitorStorageData objects.
+ * @returns An object of VisitorInfo.
+ */
 export function genereteVisitorInfoObj(visitorStorageDataArr: VisitorStorageData[]): VisitorInfo {
   const currVisit = visitorStorageDataArr[visitorStorageDataArr.length - 1];
 
@@ -64,6 +76,16 @@ export function genereteVisitorInfoObj(visitorStorageDataArr: VisitorStorageData
   };
 }
 
+/**
+ * Saves VisitorData to local storage.
+ *
+ * If there are more than `maxVisitsRecordsCount` records in local storage, it will be cleared.
+ * If there are less than `maxVisitsRecordsCount` records on the current day, they will be kept.
+ * Otherwise, the new record will be added to the array.
+ *
+ * @param visitorData - VisitorData object.
+ * @returns An array of VisitorStorageData objects.
+ */
 export function saveVisitorData(visitorData: VisitorData): VisitorStorageData[] {
   try {
     const maxVisitsRecordsCount = 50;
@@ -95,6 +117,11 @@ export function saveVisitorData(visitorData: VisitorData): VisitorStorageData[] 
   }
 }
 
+/**
+ * Retrieves VisitorStorageData array from local storage.
+ *
+ * @returns {VisitorStorageData[]} VisitorStorageData array.
+ */
 export function getVisitorData(): VisitorStorageData[] {
   try {
     const visitorDataFromStorage = localStorage.getItem(LOCAL_STORAGE_VARS.VISITOR_DATA);
