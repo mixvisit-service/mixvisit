@@ -1,7 +1,7 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
 
-  import { Accordion } from '../ui';
+  import { Accordion } from '@components/ui';
 
   export let durationsData: { name: string; duration: number }[] = [];
 

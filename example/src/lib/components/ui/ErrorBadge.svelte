@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Instance } from 'tippy.js';
 
-  import { tooltip } from '../../utils/tippy';
+  import { tooltip } from '@utils/tippy';
 
   export let error: { code: string; message: string };
 

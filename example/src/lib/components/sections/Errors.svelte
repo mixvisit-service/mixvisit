@@ -1,8 +1,9 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
 
-  import { Accordion, ErrorBadge } from '../ui';
-  import type { GroupedError } from '../../types';
+  import { Accordion, ErrorBadge } from '@components/ui';
+
+  import type { GroupedError } from '$lib/types';
 
   export let errorsData: GroupedError[] = [];
 

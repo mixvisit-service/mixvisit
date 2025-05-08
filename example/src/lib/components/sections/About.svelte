@@ -1,5 +1,5 @@
 <script>
-  import { Accordion } from '../ui';
+  import { Accordion } from '@components/ui';
 </script>
 
 <Accordion title="About" isOpen={true}>

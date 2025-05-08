@@ -11,45 +11,61 @@ type IPsResult = {
 
 export async function getWebrtcIPs(
   param: IceServerParam = { iceServer: 'stun.l.google.com:19302' },
+  timeoutMs: number = 4000
 ): Promise<IPsResult> {
-  return new Promise((resolve, reject) => {
-    const ips: string[] = [];
-    const servers = { iceServers: [{ urls: `stun:${param.iceServer}` }] };
-    const pc = new RTCPeerConnection(servers);
+  const ips = new Set<string>();
+  const servers = { iceServers: [{ urls: `stun:${param.iceServer}` }] };
+  const pc = new RTCPeerConnection(servers);
 
-    pc.onicecandidate = (event) => {
-      if (event.candidate) {
-        const { candidate } = event.candidate;
-        const ipMatch = /candidate:\d+ \d+ udp \d+ (.+) \d+ typ (\w+)/.exec(candidate);
+  try {
+    pc.createDataChannel('');
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
 
-        if (Array.isArray(ipMatch) && ipMatch.length && !ips.includes(ipMatch[1])) {
-          ips.push(ipMatch[1]);
+    await new Promise<void>((resolve) => {
+      const timeout = setTimeout(() => {
+        resolve();
+      }, timeoutMs);
+
+      pc.onicegatheringstatechange = () => {
+        if (pc.iceGatheringState === 'complete') {
+          clearTimeout(timeout);
+          resolve();
         }
-      } else {
-        const ipResult: IPsResult = {
-          public: [],
-          private: [],
-          allRes: ips,
-          log: pc.localDescription?.sdp || '',
-        };
+      };
+    });
 
-        ips.forEach((ip) => {
-          if (isPrivateIP(ip)) {
-            ipResult.private.push(ip);
-          } else if (!ip.endsWith('.local')) {
-            ipResult.public.push(ip);
-          }
-        });
-        resolve(ipResult);
-        pc.close();
+    const sdp = pc.localDescription?.sdp || '';
+    const ipMatches = [...sdp.matchAll(/(?:c=IN IP4|c=IN IP6) ([\d.a-fA-F:]+)/g)];
+
+    for (const match of ipMatches) {
+      const ip = match[1];
+      if (ip && !ips.has(ip)) {
+        ips.add(ip);
       }
+    }
+
+    const result: IPsResult = {
+      public: [],
+      private: [],
+      allRes: Array.from(ips),
+      log: sdp,
     };
 
-    pc.createDataChannel('');
-    pc.createOffer()
-      .then((offer) => pc.setLocalDescription(offer))
-      .catch(reject);
-  });
+    for (const ip of ips) {
+      if (isPrivateIP(ip)) {
+        result.private.push(ip);
+      } else if (!ip.endsWith('.local')) {
+        result.public.push(ip);
+      }
+    }
+
+    return result;
+  } catch (error) {
+    throw error;
+  } finally {
+    pc.close();
+  }
 }
 
 function isPrivateIP(ip: string): boolean {

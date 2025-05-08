@@ -3,7 +3,7 @@
   import typescript from 'svelte-highlight/languages/typescript';
   import bash from 'svelte-highlight/languages/bash';
   
-  import { Accordion } from '../ui';
+  import { Accordion } from '@components/ui';
 
   const installingExample = `# with npm package manager
 npm install @mix-visit/lite

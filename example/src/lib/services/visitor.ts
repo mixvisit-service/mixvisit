@@ -3,15 +3,16 @@
 import Leaflet from 'leaflet';
 import tippy from 'tippy.js';
 
-import { DISABLED, LOCAL_STORAGE_VARS } from '../constants';
-import { VisitorBlockTooltips } from '../enums';
-import type { VisitorData, VisitorStorageData } from '../types';
+import { DISABLED, LOCAL_STORAGE_VARS } from '$lib/constants';
+import { VisitorBlockTooltips } from '$lib/enums';
 import {
   bindMarkerPopup,
   formatDate,
   formatDateDifference,
   TDef,
-} from '../utils/common';
+} from '@utils/common';
+
+import type { VisitorData, VisitorStorageData } from '$lib/types';
 
 type VisitorInfo = {
   personalId: string;
