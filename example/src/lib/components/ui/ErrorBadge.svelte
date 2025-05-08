@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Instance } from 'tippy.js';
 
-  import { tooltip } from '@utils/tippy';
+  import { tooltip } from '@hooks/tooltip';
 
   export let error: { code: string; message: string };
 
@@ -31,7 +31,7 @@
     placement: 'top',
     onCreate(instance) {
       tooltipInstance = instance;
-    }
+    },
   }}
 >
   {error.code}

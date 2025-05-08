@@ -10,9 +10,7 @@
   let sortOrder = 'desc';
 
   $: errors = [...errorsData].sort((a, b) =>
-    sortOrder === 'desc'
-      ? b.code.localeCompare(a.code)
-      : a.code.localeCompare(b.code)
+    sortOrder === 'desc' ? b.code.localeCompare(a.code) : a.code.localeCompare(b.code),
   );
 
   function toggleSortOrder(): void {
@@ -49,7 +47,7 @@
     background: hsl(0, 0%, 10%);
     border-radius: 0.5rem;
   }
-  
+
   .errors__item-name {
     flex: 1;
     min-width: 0;

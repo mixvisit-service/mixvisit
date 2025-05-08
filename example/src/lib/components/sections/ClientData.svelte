@@ -10,8 +10,8 @@
   $: formattedLoadTime = loadTime ? `(${loadTime} ms)` : '';
 </script>
 
-<Accordion title={`Client data obtained ${formattedLoadTime}`} isOpen={true}>
-  {#if clientData}
-  <Highlight language={json} code={clientData} />
-  {/if}
-</Accordion>
+{#if clientData}
+  <Accordion title={`Client data obtained ${formattedLoadTime}`} isOpen={true}>
+    <Highlight language={json} code={clientData} />
+  </Accordion>
+{/if}

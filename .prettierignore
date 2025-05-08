@@ -1,0 +1,33 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+
+# Log files
+*.log
+
+# Temporary files
+tmp/
+temp/
+
+# Configuration files
+# *.config.js
+# *.config.ts
+*.json
+*.yml
+*.yaml
+
+# VSCode settings
+.vscode/
+
+# Compiled files
+*.d.ts
+
+# Ignore specific files and directories
+public/
+*.min.js
+*.bundle.js
+*.map

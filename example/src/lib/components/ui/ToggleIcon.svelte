@@ -1,23 +1,17 @@
-<script>
+<script lang="ts">
   import Icon from '@iconify/svelte';
-  import { cubicOut } from 'svelte/easing';
-  import { tweened } from 'svelte/motion';
 
-  export let isOpen = false;
-  export let color = 'currentColor';
   export let size = 24;
+  export let color = 'currentColor';
+  export let isOpen = false;
 
   const iconClosed = 'iconamoon:arrow-down-2-bold';
-
-  let rotation = tweened(0, { duration: 200, easing: cubicOut });
-
-  $: rotation.set(isOpen ? -180 : 0);
 </script>
 
 <Icon
   icon={iconClosed}
   width={size}
   height={size}
-  color={color}
-  style="transform: rotate({$rotation}deg);"
+  {color}
+  style="transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); transform: rotate({isOpen ? 180 : 0}deg);"
 />

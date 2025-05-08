@@ -44,13 +44,9 @@
     "dev": "vite build --watch",
     "build": "vite build"
   },
-  "dependencies": {
-    "typescript": "^5.4.5"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/node": "^20.12.7",
     "@webgpu/types": "^0.1.43",
-    "vite": "^5.2.9",
     "vite-plugin-dts": "^3.8.3"
   }
 }

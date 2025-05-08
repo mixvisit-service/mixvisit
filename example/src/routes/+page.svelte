@@ -2,54 +2,44 @@
   import { onMount } from 'svelte';
   import highlightStyle from 'svelte-highlight/styles/circus';
 
-  import { Badges, GoToTop } from '@components/ui';
-  import { About, ClientData, Durations, Errors, UsageExample, Visitor } from '@components/sections';
+  import { AboutInfo, Badges, GoToTop, NoJSInfo } from '@components/ui';
+  import { About, ClientData, Footer, Durations, Errors, UsageExample, Visitor } from '@components/sections';
 
   import { getMixVisitClientData } from '@services/mixvisit';
   import { getLocationData } from '@api/location';
   import { TDef } from '@utils/common';
 
   import type { GroupedError, VisitorData } from '$lib/types';
-  
+
+  let jsEnabled = false;
   let status = 'not loaded';
   let loadTime = '';
   let clientData = '';
   let visitorData: VisitorData | null = null;
   let durationsData: { name: string; duration: number }[] = [];
   let errorsData: GroupedError[] = [];
-  
-  const releaseYear = 2024;
-  const currentYear = new Date().getFullYear();
-  const productYears = currentYear === releaseYear 
-    ? currentYear.toString() 
-    : `${releaseYear}-${currentYear}`; 
 
-  onMount(main);
-  
-  async function main(): Promise<void> {
+  onMount(async () => {
     try {
+      jsEnabled = true;
+
       const mixvisitClientData = await getMixVisitClientData();
-      const { data, fingerprintHash, loadTime: loadTimeRes } = mixvisitClientData || {};
       const location = await getLocationData();
 
+      const { data, fingerprintHash, loadTime: loadTimeRes } = mixvisitClientData || {};
+
       if (
-        !(
-          fingerprintHash &&
-          location &&
-          TDef.isObject(data) &&
-          TDef.isObject(location) &&
-          TDef.isNumber(loadTimeRes)
-        )
+        !(fingerprintHash && location && TDef.isObject(data) && TDef.isObject(location) && TDef.isNumber(loadTimeRes))
       ) {
         throw new Error('Something wrong with fingerprint or location data');
       }
+
+      status = 'loaded';
 
       visitorData = {
         visitorID: fingerprintHash,
         location,
       };
-
-      status = 'loaded';
 
       if (data && TDef.isObject(data)) {
         clientData = JSON.stringify(data, null, 2);
@@ -92,7 +82,7 @@
       status = 'error';
       console.error(err);
     }
-  }
+  });
 </script>
 
 <svelte:head>
@@ -104,31 +94,37 @@
   <h2>JS Fingerprint to identify & track devices</h2>
   <Badges />
 
-  {#if status === 'loaded'}
-    <About /> 
-    <Visitor {visitorData} />
-    <UsageExample /> 
-    <ClientData {clientData} {loadTime} />
-    {#if durationsData.length}
-      <Durations {durationsData} />
+  <noscript>
+    <AboutInfo />
+    <NoJSInfo />
+  </noscript>
+
+  {#if jsEnabled}
+    {#if status === 'loaded'}
+      <About />
+      <Visitor {visitorData} />
+      <UsageExample />
+      <ClientData {clientData} {loadTime} />
+      {#if durationsData.length}
+        <Durations {durationsData} />
+      {/if}
+      {#if errorsData.length}
+        <Errors {errorsData} />
+      {/if}
+      <GoToTop />
+    {:else if status === 'not loaded'}
+      <p>Loading ...</p>
+    {:else}
+      <p>Something wrong</p>
     {/if}
-    {#if errorsData.length}
-      <Errors {errorsData} />
-    {/if}
-    <GoToTop />
-  {:else if status === 'not loaded'}
-    <p>Loading ...</p>
-  {:else}
-    <p>Something wrong</p>
   {/if}
 </main>
 
-<footer>
-  <p>Copyright &copy; {productYears} MixVisitJS. All rights reserved. <a href="https://opensource.org/licenses/MIT" target="_blank">MIT - License</a></p>
-</footer>
+<Footer />
 
 <style>
-  h1, h2, footer {
+  h1,
+  h2 {
     text-align: center;
     word-wrap: break-word;
   }

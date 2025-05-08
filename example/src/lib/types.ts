@@ -1,4 +1,5 @@
 import type { ClientData } from '@mix-visit/lite';
+import { VisitStatus } from './enums';
 
 export type VisitorData = {
   visitorID: string;
@@ -7,6 +8,28 @@ export type VisitorData = {
 
 export type VisitorStorageData = VisitorData & {
   time: string;
+};
+
+export type VisitData = {
+  country: string;
+  city: string;
+  lat: number;
+  lng: number;
+  time: string;
+  when: string;
+  visitStatus: (typeof VisitStatus)[keyof typeof VisitStatus];
+  isIncognito: null;
+};
+
+export type VisitorInfo = {
+  personalId: string;
+  ip: string;
+  location: string;
+  ipAddress: number;
+  geolocations: number;
+  visitCounter: number;
+  isIncognito: null;
+  incognitoCounter: null;
 };
 
 export type LocationData = {
@@ -39,7 +62,7 @@ export type LocationDataRaw = {
   regionCode: string;
   timezone: {
     name: string;
-  },
+  };
   languages: string;
 };
 

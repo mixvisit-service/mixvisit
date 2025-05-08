@@ -5,6 +5,11 @@ import { fetchJSON } from '@utils/fetch';
 
 import type { LocationDataRaw, LocationData } from '$lib/types';
 
+/**
+ * Gets the location data of the visitor.
+ *
+ * @returns The location data in the object format or null if the data can't be retrieved.
+ */
 export const getLocationData = async (): Promise<LocationData | null> => {
   try {
     const location = await fetchJSON<LocationDataRaw>('https://ipgeo.iphey.com/');

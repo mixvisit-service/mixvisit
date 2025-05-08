@@ -1,5 +1,9 @@
-import type { Marker } from 'leaflet';
-
+/**
+ * Gets the type of a value.
+ *
+ * @param value - The value to get the type for.
+ * @returns The type of the value.
+ */
 export const type = (value: any): string => {
   const matches = Object.prototype.toString.call(value).match(/^\[object (\S+?)\]$/) || [];
 
@@ -31,6 +35,12 @@ export const TDef = {
   isNil: (value: any) => TDef.isUndefined(value) || TDef.isNull(value),
 };
 
+/**
+ * Format a date string as `DD MMM YYYY HH:MM`.
+ *
+ * @param date - A date string in any format supported by the Date constructor.
+ * @returns A string in the format `DD MMM YYYY HH:MM`.
+ */
 export function formatDate(date: string): string {
   const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'] as const;
   const givenDate = new Date(date);
@@ -44,6 +54,12 @@ export function formatDate(date: string): string {
   return `${day} ${month} ${year} ${hours}:${minutes}`;
 }
 
+/**
+ * Format a date string as a string indicating how many days ago it was.
+ *
+ * @param date - A date string in any format supported by the Date constructor.
+ * @returns A string like 'TODAY', 'YESTERDAY', or a number followed by 'DAYS AGO'.
+ */
 export function formatDateDifference(date: string): string {
   const today = new Date();
   const givenDate = new Date(date);
@@ -60,26 +76,5 @@ export function formatDateDifference(date: string): string {
       return 'YESTERDAY';
     default:
       return `${diffDays} DAYS AGO`;
-  }
-}
-
-export function bindMarkerPopup(data: { marker: Marker<any>; country: string; city: string }): void {
-  const { marker, country, city } = data || {};
-  if (!marker) {
-    return;
-  }
-
-  marker.closePopup();
-
-  if (!(country && city)) {
-    marker.unbindPopup();
-
-    return;
-  }
-
-  const infoArr = [city, country].filter((el) => el);
-  const locationInfo = infoArr.length ? `<b>${infoArr.join(', ')}</b>` : '';
-  if (locationInfo) {
-    marker.bindPopup(locationInfo);
   }
 }
