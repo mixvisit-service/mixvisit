@@ -1,6 +1,6 @@
 {
   "name": "@mix-visit/lite",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Fingerprint library for generating client fingerprint",
   "license": "MIT",
   "type": "module",
