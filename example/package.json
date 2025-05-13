@@ -15,7 +15,7 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
   },
   "dependencies": {
-    "@mix-visit/lite": "1.0.13",
+    "@mix-visit/lite": "1.0.14",
     "leaflet": "^1.9.4",
     "tippy.js": "^6.3.7"
   },
